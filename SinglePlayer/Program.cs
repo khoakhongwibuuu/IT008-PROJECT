@@ -13,7 +13,7 @@ namespace SinglePlayer
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
             // This is the change
-            
+            // Second change
         }
     }
 }
