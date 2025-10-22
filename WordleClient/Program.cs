@@ -1,4 +1,9 @@
+using System;
+using System.Linq;
+using System.Diagnostics;
 using WordleClient.libraries.lowlevel;
+using WordleClient.libraries.ingame;
+using WordleClient.tests;
 
 namespace WordleClient
 {
@@ -15,7 +20,7 @@ namespace WordleClient
             //ApplicationConfiguration.Initialize();
             //Application.Run(new Form1());
             // Hello
-
+            TestGameInstance.Exec();
         }
     }
 }
