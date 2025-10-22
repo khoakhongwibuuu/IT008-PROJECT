@@ -11,13 +11,13 @@ namespace WordleClient.libraries.ingame
     {
         string targetWord;
         int maxAttempts;
-        List<AlphabetArray> previousGuesses;
+        List<string> previousGuesses;
 
         public GameInstance(string targetWord, int maxAttempts)
         {
             this.targetWord = targetWord;
             this.maxAttempts = maxAttempts;
-            previousGuesses = new List<AlphabetArray>();
+            previousGuesses = new List<string>();
         }
         public StateArray EvaluateGuess(string guess)
         {
@@ -51,11 +51,7 @@ namespace WordleClient.libraries.ingame
                 }
                 result.Set(i, found ? TriState.INVALID_ORDER : TriState.NOT_EXIST);
             }
-            previousGuesses.Add(new AlphabetArray(guess.Length));
-            for (int i = 0; i < guess.Length; i++)
-            {
-                previousGuesses.Last().Set(i, guess[i]);
-            }
+            previousGuesses.Add(guess);
             return result;
         }
     }

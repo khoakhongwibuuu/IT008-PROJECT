@@ -9,9 +9,9 @@ namespace WordleClient.libraries.lowlevel
 {
     public enum TriState : byte
     {
-        NOT_EXIST = 0, // Character does not exist in the word
-        MATCH = 1, // Character exists in the word and is in the correct position
-        INVALID_ORDER = 2 // Character exists in the word but is in the wrong position
+        NOT_EXIST = 0,      // Character does not exist in the word
+        MATCH = 1,          // Character exists in the word and is in the correct position
+        INVALID_ORDER = 2   // Character exists in the word but is in the wrong position
     }
     public class StateArray : IEnumerable<TriState>, IEnumerable
     {
@@ -23,7 +23,7 @@ namespace WordleClient.libraries.lowlevel
             if (length < 0)
                 throw new ArgumentOutOfRangeException(nameof(length));
             Length = length;
-            data = new byte[(length + 3) / 4]; // 4 values per byte
+            data = new byte[(length + 0b11) >> 2]; // 4 values per byte
         }
 
         /// <summary>
@@ -34,8 +34,8 @@ namespace WordleClient.libraries.lowlevel
             if ((uint)index >= (uint)Length)
                 throw new IndexOutOfRangeException();
 
-            int byteIndex = index >> 2;         // index / 4
-            int bitOffset = (index & 3) * 2;    // (index % 4) * 2
+            int byteIndex = index >> 2;             // index / 4
+            int bitOffset = (index & 0b11) << 1;    // (index % 4) * 2
             byte mask = (byte)(0b11 << bitOffset);
 
             data[byteIndex] = (byte)(data[byteIndex] & ~mask | ((byte)value & 0b11) << bitOffset);
@@ -50,7 +50,7 @@ namespace WordleClient.libraries.lowlevel
                 throw new IndexOutOfRangeException();
 
             int byteIndex = index >> 2;
-            int bitOffset = (index & 3) * 2;
+            int bitOffset = (index & 0b11) << 1;
             return (TriState)(data[byteIndex] >> bitOffset & 0b11);
         }
 
