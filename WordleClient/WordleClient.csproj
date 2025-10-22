@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <Folder Include="assets\" />
+    <Folder Include="libraries\gui\" />
     <Folder Include="views\" />
   </ItemGroup>
 

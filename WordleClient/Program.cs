@@ -1,4 +1,4 @@
-using WordleClient.libraries;
+using WordleClient.libraries.lowlevel;
 
 namespace WordleClient
 {
@@ -7,7 +7,7 @@ namespace WordleClient
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
-        [STAThread]
+        //[STAThread]
         static void Main()
         {
             // To customize application configuration such as set high DPI settings or default font,
@@ -16,19 +16,6 @@ namespace WordleClient
             //Application.Run(new Form1());
             // Hello
 
-            var states = new StateArray(5);
-
-            states.SetAll(TriState.NOT_EXIST);
-
-            states.Set(0, TriState.MATCH);
-            states.Set(1, TriState.INVALID_ORDER);
-
-            Console.WriteLine("Values:");
-            foreach (var s in states)
-                Console.Write($"{s} ");
-
-            Console.WriteLine();
-            Console.WriteLine($"Memory used: {states.RawData.Length} bytes");
         }
     }
 }

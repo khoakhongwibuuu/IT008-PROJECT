@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WordleClient.libraries
+namespace WordleClient.libraries.lowlevel
 {
     public enum TriState : byte
     {
@@ -38,7 +38,7 @@ namespace WordleClient.libraries
             int bitOffset = (index & 3) * 2;    // (index % 4) * 2
             byte mask = (byte)(0b11 << bitOffset);
 
-            data[byteIndex] = (byte)((data[byteIndex] & ~mask) | (((byte)value & 0b11) << bitOffset));
+            data[byteIndex] = (byte)(data[byteIndex] & ~mask | ((byte)value & 0b11) << bitOffset);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace WordleClient.libraries
 
             int byteIndex = index >> 2;
             int bitOffset = (index & 3) * 2;
-            return (TriState)((data[byteIndex] >> bitOffset) & 0b11);
+            return (TriState)(data[byteIndex] >> bitOffset & 0b11);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace WordleClient.libraries
             byte valBits = (byte)((byte)value & 0b11);
             // Each byte holds 4 of the same 2-bit values
             for (int i = 0; i < 4; i++)
-                pattern |= (byte)(valBits << (i * 2));
+                pattern |= (byte)(valBits << i * 2);
 
             Array.Fill(data, pattern);
         }
