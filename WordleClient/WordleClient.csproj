@@ -8,4 +8,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="assets\" />
+    <Folder Include="views\" />
+  </ItemGroup>
+
 </Project>
