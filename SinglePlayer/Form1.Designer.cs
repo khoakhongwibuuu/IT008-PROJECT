@@ -28,19 +28,55 @@
         /// </summary>
         private void InitializeComponent()
         {
+            panel1 = new Panel();
+            button1 = new Button();
+            panel1.SuspendLayout();
             SuspendLayout();
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.Silver;
+            panel1.Controls.Add(button1);
+            panel1.Location = new Point(275, 276);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(572, 348);
+            panel1.TabIndex = 0;
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.Silver;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.ForeColor = Color.DimGray;
+            button1.Location = new Point(70, 131);
+            button1.Name = "button1";
+            button1.Size = new Size(431, 71);
+            button1.TabIndex = 0;
+            button1.Text = "SinglePlayer";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            BackgroundImage = Properties.Resources.Wordle_game;
+            BackgroundImageLayout = ImageLayout.Stretch;
+            ClientSize = new Size(1143, 733);
+            Controls.Add(panel1);
+            DoubleBuffered = true;
+            Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
-            Text = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "FormMenu";
             Load += Form1_Load;
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
+
+        private Panel panel1;
+        private Button button1;
     }
 }
