@@ -7,19 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-namespace SinglePlayer
+namespace WordleClient
 {
-    public partial class fSinglePlayer : Form
+    public partial class MainArea : Form
     {
         private int wordLength;
         private const int guessCount = 6;
         private TableLayoutPanel? tableLayout;
-        public fSinglePlayer(int wordLength)
+        public MainArea(int wordLength)
         {
             InitializeComponent();
             this.wordLength = wordLength;
         }
-        private void fSinglePlayer_Load(object sender, EventArgs e)
+        private void MainArea_Load(object sender, EventArgs e)
         {
             SetupLayout();
             CreateBoard();

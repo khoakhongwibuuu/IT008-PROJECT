@@ -1,6 +1,6 @@
-﻿namespace SinglePlayer
+﻿namespace WordleClient
 {
-    partial class Form1
+    partial class MainMenu
     {
         /// <summary>
         ///  Required designer variable.
@@ -52,21 +52,21 @@
             button1.Name = "button1";
             button1.Size = new Size(431, 71);
             button1.TabIndex = 0;
-            button1.Text = "SinglePlayer";
+            button1.Text = "WordleClient";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
-            // Form1
+            // MainMenu
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.Wordle_game;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1143, 733);
+            ClientSize = new Size(1119, 770);
             Controls.Add(panel1);
             DoubleBuffered = true;
             Margin = new Padding(3, 4, 3, 4);
-            Name = "Form1";
+            Name = "MainMenu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FormMenu";
             Load += Form1_Load;

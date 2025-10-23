@@ -1,6 +1,6 @@
-﻿namespace SinglePlayer
+﻿namespace WordleClient
 {
-    partial class fSinglePlayer
+    partial class MainArea
     {
         /// <summary>
         /// Required designer variable.
@@ -30,15 +30,15 @@
         {
             SuspendLayout();
             // 
-            // fSinglePlayer
+            // MainArea
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1220, 833);
-            Name = "fSinglePlayer";
+            Name = "MainArea";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "fSinglePlayer";
-            Load += fSinglePlayer_Load;
+            Text = "MainArea";
+            Load += MainArea_Load;
             ResumeLayout(false);
         }
 

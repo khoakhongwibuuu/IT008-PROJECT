@@ -1,8 +1,8 @@
-namespace SinglePlayer
+namespace WordleClient
 {
-    public partial class Form1 : Form
+    public partial class MainMenu : Form
     {
-        public Form1()
+        public MainMenu()
         {
             InitializeComponent();
         }
@@ -15,8 +15,8 @@ namespace SinglePlayer
         private void button1_Click(object sender, EventArgs e)
         {
             int wordlength = 5;
-            fSinglePlayer fSinglePlayer = new fSinglePlayer(wordlength);
-            fSinglePlayer.ShowDialog();
+            MainArea fWordleClient = new MainArea(wordlength);
+            fWordleClient.ShowDialog();
         }
     }
 }
