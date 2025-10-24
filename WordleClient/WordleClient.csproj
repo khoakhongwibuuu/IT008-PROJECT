@@ -9,11 +9,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="database\words.db" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="database\words.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="assets\" />
     <Folder Include="libraries\gui\" />
     <Folder Include="libraries\network\" />
-    <Folder Include="database\" />
     <Folder Include="views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SQLite.EF6" Version="2.0.2" />
   </ItemGroup>
 
 </Project>
