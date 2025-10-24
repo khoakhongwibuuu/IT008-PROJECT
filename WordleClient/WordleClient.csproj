@@ -12,6 +12,7 @@
     <Folder Include="assets\" />
     <Folder Include="libraries\gui\" />
     <Folder Include="libraries\network\" />
+    <Folder Include="database\" />
     <Folder Include="views\" />
   </ItemGroup>
 
