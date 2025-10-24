@@ -97,7 +97,7 @@ namespace WordleClient.tests
         {
             TriState.MATCH => "0x538d4e",          // Green / match
             TriState.INVALID_ORDER => "0xb59f3b",  // Yellow / wrong position
-            TriState.NOT_EXIST => "#3a3a3c",      // Dot for not exist
+            TriState.NOT_EXIST => "0x3a3a3c",      // Dot for not exist
             _ => "?"
         };
 
