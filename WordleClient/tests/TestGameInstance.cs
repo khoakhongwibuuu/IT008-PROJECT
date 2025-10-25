@@ -7,7 +7,6 @@ using System.Diagnostics;
 using WordleClient.libraries.lowlevel;
 using WordleClient.libraries.ingame;
 
-
 namespace WordleClient.tests
 {
     public static class TestGameInstance
