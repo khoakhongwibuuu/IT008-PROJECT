@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows7.0</TargetFramework>
@@ -7,34 +8,22 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <StartupObject>WordleClient.Program</StartupObject>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="database\words.db" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="database\words.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="assets\" />
-    <Folder Include="libraries\gui\" />
-    <Folder Include="libraries\network\" />
-    <Folder Include="views\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Data.SQLite.EF6" Version="2.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+<ItemGroup>
+  <None Remove="database\words.db" />
+</ItemGroup>
+<ItemGroup>
+  <Content Include="database\words.db">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
+<ItemGroup>
+  <Folder Include="assets\" />
+  <Folder Include="libraries\gui\" />
+  <Folder Include="libraries\network\" />
+  <Folder Include="Properties\" />
+  <Folder Include="views\" />
+</ItemGroup>
+<ItemGroup>
+  <PackageReference Include="System.Data.SQLite.EF6" Version="2.0.2" />
+</ItemGroup>
 </Project>
