@@ -64,6 +64,30 @@ namespace WordleClient.libraries.ingame
                 : null;
         }
 
+        public List<string> loadLevels()
+        {
+            List<string> levels = new List<string>();
+            using var cmd = new SQLiteCommand("SELECT DISTINCT LEVEL FROM SAMPLE_WORD_LIST", sql_con);
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                levels.Add(reader.GetString(0));
+            }
+            return levels;
+        }
+
+        public List<string> loadGroups()
+        {
+            List<string> groups = new List<string>();
+            using var cmd = new SQLiteCommand("SELECT DISTINCT GROUP_NAME FROM SAMPLE_WORD_LIST", sql_con);
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                groups.Add(reader.GetString(0));
+            }
+            return groups;
+        }
+
 
         public void Close() => sql_con.Close();
     }
