@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using WordleClient.views;
 namespace WordleClient
 {
     public partial class MainMenu : Form
@@ -20,9 +20,9 @@ namespace WordleClient
         private void button1_Click(object sender, EventArgs e)
         {
             this.Hide();
-            using (MatrixDemo demo = new MatrixDemo(6, 5))
+            using (var f = new FormOption())
             {
-                demo.ShowDialog();
+                f.ShowDialog(this);
             }
             this.Show();
         }
