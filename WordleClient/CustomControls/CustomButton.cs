@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace WordleClient
 {
-    public partial class CustomControl1 : Control
+    public partial class CustomButton : Control
     {
         // Fields
         private int borderSize = 2;
@@ -17,7 +17,6 @@ namespace WordleClient
         private Image? buttonImage;
         private int imageSize = 24; // Kích thước icon
         private ContentAlignment textAlign = ContentAlignment.MiddleCenter; // Căn text
-
         // Properties
         [Category("CustomControl")]
         public int BorderSize { get => borderSize; set { borderSize = value; Invalidate(); } }
@@ -44,7 +43,7 @@ namespace WordleClient
         public ContentAlignment TextAlign { get => textAlign; set { textAlign = value; Invalidate(); } }
 
         // Constructor
-        public CustomControl1()
+        public CustomButton()
         {
             this.Size = new Size(150, 40);
             this.DoubleBuffered = true;
