@@ -23,13 +23,13 @@ namespace WordleClient.libraries.ingame
 
         public WDBRecord? ReadRandomWord(string? group, string? level)
         {
-            Debug.WriteLine($"DBREADER_OUTPUT: Taken group={group} and level={level}");
-            string baseQuery = "FROM SAMPLE_WORD_LIST WHERE 0=0";
+            Debug.WriteLine($"DB_READER_OUTPUT: Taken group={group} and level={level}");
+            string baseQuery = "FROM SAMPLE_WORD_LIST WHERE (LENGTH(TOKEN) >= 4 AND LENGTH(TOKEN) <= 8)";
             using var countCmd = new SQLiteCommand(sql_con);
 
             if (group != null)
             {
-                baseQuery += " AND GROUP_NAME = @group";
+                baseQuery += " AND (GROUP_NAME = @group)";
                 countCmd.Parameters.AddWithValue("@group", group);
             }
             if (level != null)

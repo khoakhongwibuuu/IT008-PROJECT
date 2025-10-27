@@ -44,7 +44,7 @@ namespace WordleClient.views
             else
             {
                 this.Hide();
-                Debug.WriteLine($"QUERY DATABASE DONE: Chosen word: {TheChosenRecord.TOKEN}, Topic: {TheChosenRecord.GROUP_NAME}, Difficulty: {TheChosenRecord.LEVEL}");
+                Debug.WriteLine($"QRY_DB_DONE: Chosen word: {TheChosenRecord.TOKEN}, Topic: {TheChosenRecord.GROUP_NAME}, Difficulty: {TheChosenRecord.LEVEL}");
                 var game = new GameInstance(TheChosenRecord, 6);
                 game.StartGameForm(6);
             }

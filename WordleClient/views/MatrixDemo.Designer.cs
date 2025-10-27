@@ -23,7 +23,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 500);
+            this.ClientSize = new System.Drawing.Size(1280, 720);
             this.Name = "MatrixDemo";
             this.Text = "Matrix Demo";
             this.ResumeLayout(false);
