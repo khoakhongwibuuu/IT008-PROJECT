@@ -98,7 +98,6 @@ namespace WordleClient
             // Vẽ image + text
             int padding = 8;
             Rectangle textRect = rectSurface;
-
             if (buttonImage != null)
             {
                 Rectangle imageRect = new Rectangle(padding, (this.Height - imageSize) / 2, imageSize, imageSize);
