@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using WordleClient.libraries.lowlevel;
+using System.Diagnostics;
 
 namespace WordleClient.libraries.ingame
 {
@@ -22,6 +23,7 @@ namespace WordleClient.libraries.ingame
 
         public WDBRecord? ReadRandomWord(string? group, string? level)
         {
+            Debug.WriteLine($"DBREADER_OUTPUT: Taken group={group} and level={level}");
             string baseQuery = "FROM SAMPLE_WORD_LIST WHERE 0=0";
             using var countCmd = new SQLiteCommand(sql_con);
 
@@ -32,8 +34,14 @@ namespace WordleClient.libraries.ingame
             }
             if (level != null)
             {
-                baseQuery += " AND LEVEL = @level";
-                countCmd.Parameters.AddWithValue("@level", level);
+                if (level == "EASY")
+                {
+                    baseQuery += " AND (LEVEL = 'A1' OR LEVEL = 'A2' OR LEVEL = 'B1')";
+                }
+                else if (level == "HARD")
+                {
+                    baseQuery += " AND (LEVEL = 'B2' OR LEVEL = 'C1' OR LEVEL = 'C2')";
+                }
             }
 
             countCmd.CommandText = $"SELECT COUNT(*) {baseQuery}";

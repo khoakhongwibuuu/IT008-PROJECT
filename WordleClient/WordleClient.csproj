@@ -8,6 +8,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <StartupObject>WordleClient.Program</StartupObject>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="libraries\gui\**" />
+    <EmbeddedResource Remove="libraries\gui\**" />
+    <None Remove="libraries\gui\**" />
+  </ItemGroup>
 <ItemGroup>
   <None Remove="database\words.db" />
 </ItemGroup>
@@ -18,7 +24,6 @@
 </ItemGroup>
 <ItemGroup>
   <Folder Include="assets\" />
-  <Folder Include="libraries\gui\" />
   <Folder Include="libraries\network\" />
   <Folder Include="libraries\CustomControl\" />
   <Folder Include="Properties\" />

@@ -55,8 +55,9 @@ namespace WordleClient.views
             panel1.Controls.Add(groupBox1);
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
+            panel1.Margin = new Padding(3, 2, 3, 2);
             panel1.Name = "panel1";
-            panel1.Size = new Size(743, 750);
+            panel1.Size = new Size(650, 562);
             panel1.TabIndex = 0;
             // 
             // btn_StartGame
@@ -68,9 +69,10 @@ namespace WordleClient.views
             btn_StartGame.ButtonImage = null;
             btn_StartGame.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_StartGame.ImageSize = 24;
-            btn_StartGame.Location = new Point(208, 644);
+            btn_StartGame.Location = new Point(182, 483);
+            btn_StartGame.Margin = new Padding(3, 2, 3, 2);
             btn_StartGame.Name = "btn_StartGame";
-            btn_StartGame.Size = new Size(365, 75);
+            btn_StartGame.Size = new Size(319, 56);
             btn_StartGame.TabIndex = 2;
             btn_StartGame.Text = "StartGame";
             btn_StartGame.TextAlign = ContentAlignment.MiddleCenter;
@@ -85,9 +87,11 @@ namespace WordleClient.views
             groupBox2.Controls.Add(trackbar_GuessCount);
             groupBox2.Controls.Add(cbb_Topic);
             groupBox2.Font = new Font("Segoe UI", 12F);
-            groupBox2.Location = new Point(208, 342);
+            groupBox2.Location = new Point(182, 256);
+            groupBox2.Margin = new Padding(3, 2, 3, 2);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(365, 278);
+            groupBox2.Padding = new Padding(3, 2, 3, 2);
+            groupBox2.Size = new Size(319, 208);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "Chọn Topic and Số lượt đoán";
@@ -95,37 +99,38 @@ namespace WordleClient.views
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(313, 214);
+            label3.Location = new Point(274, 160);
             label3.Name = "label3";
-            label3.Size = new Size(23, 28);
+            label3.Size = new Size(19, 21);
             label3.TabIndex = 2;
             label3.Text = "8";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(176, 214);
+            label2.Location = new Point(154, 160);
             label2.Name = "label2";
-            label2.Size = new Size(23, 28);
+            label2.Size = new Size(19, 21);
             label2.TabIndex = 2;
             label2.Text = "7";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(49, 214);
+            label1.Location = new Point(43, 160);
             label1.Name = "label1";
-            label1.Size = new Size(23, 28);
+            label1.Size = new Size(19, 21);
             label1.TabIndex = 2;
             label1.Text = "6";
             // 
             // trackbar_GuessCount
             // 
-            trackbar_GuessCount.Location = new Point(40, 176);
+            trackbar_GuessCount.Location = new Point(35, 132);
+            trackbar_GuessCount.Margin = new Padding(3, 2, 3, 2);
             trackbar_GuessCount.Maximum = 8;
             trackbar_GuessCount.Minimum = 6;
             trackbar_GuessCount.Name = "trackbar_GuessCount";
-            trackbar_GuessCount.Size = new Size(296, 56);
+            trackbar_GuessCount.Size = new Size(259, 45);
             trackbar_GuessCount.TabIndex = 1;
             trackbar_GuessCount.Value = 6;
             // 
@@ -133,10 +138,12 @@ namespace WordleClient.views
             // 
             cbb_Topic.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbb_Topic.FormattingEnabled = true;
-            cbb_Topic.Location = new Point(49, 70);
+            cbb_Topic.Location = new Point(43, 52);
+            cbb_Topic.Margin = new Padding(3, 2, 3, 2);
             cbb_Topic.Name = "cbb_Topic";
-            cbb_Topic.Size = new Size(287, 39);
+            cbb_Topic.Size = new Size(252, 33);
             cbb_Topic.TabIndex = 0;
+            cbb_Topic.SelectedIndexChanged += cbb_Topic_SelectedIndexChanged;
             // 
             // groupBox1
             // 
@@ -144,9 +151,11 @@ namespace WordleClient.views
             groupBox1.Controls.Add(rad_Hard);
             groupBox1.Controls.Add(rad_Easy);
             groupBox1.Font = new Font("Segoe UI", 12F);
-            groupBox1.Location = new Point(208, 35);
+            groupBox1.Location = new Point(182, 26);
+            groupBox1.Margin = new Padding(3, 2, 3, 2);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(365, 291);
+            groupBox1.Padding = new Padding(3, 2, 3, 2);
+            groupBox1.Size = new Size(319, 218);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Chọn LEVEL";
@@ -154,42 +163,49 @@ namespace WordleClient.views
             // rad_Random
             // 
             rad_Random.AutoSize = true;
-            rad_Random.Location = new Point(49, 218);
+            rad_Random.Location = new Point(43, 41);
+            rad_Random.Margin = new Padding(3, 2, 3, 2);
             rad_Random.Name = "rad_Random";
-            rad_Random.Size = new Size(107, 32);
-            rad_Random.TabIndex = 2;
+            rad_Random.Size = new Size(87, 25);
+            rad_Random.TabIndex = 0;
             rad_Random.TabStop = true;
             rad_Random.Text = "Random";
             rad_Random.UseVisualStyleBackColor = true;
+            rad_Random.CheckedChanged += rad_Random_CheckedChanged;
             // 
             // rad_Hard
             // 
             rad_Hard.AutoSize = true;
-            rad_Hard.Location = new Point(49, 147);
+            rad_Hard.Location = new Point(43, 124);
+            rad_Hard.Margin = new Padding(3, 2, 3, 2);
             rad_Hard.Name = "rad_Hard";
-            rad_Hard.Size = new Size(76, 32);
-            rad_Hard.TabIndex = 1;
+            rad_Hard.Size = new Size(62, 25);
+            rad_Hard.TabIndex = 2;
             rad_Hard.TabStop = true;
             rad_Hard.Text = "Hard";
             rad_Hard.UseVisualStyleBackColor = true;
+            rad_Hard.CheckedChanged += rad_Hard_CheckedChanged;
             // 
             // rad_Easy
             // 
             rad_Easy.AutoSize = true;
-            rad_Easy.Location = new Point(49, 75);
+            rad_Easy.Location = new Point(43, 81);
+            rad_Easy.Margin = new Padding(3, 2, 3, 2);
             rad_Easy.Name = "rad_Easy";
-            rad_Easy.Size = new Size(71, 32);
-            rad_Easy.TabIndex = 0;
+            rad_Easy.Size = new Size(59, 25);
+            rad_Easy.TabIndex = 1;
             rad_Easy.TabStop = true;
             rad_Easy.Text = "Easy";
             rad_Easy.UseVisualStyleBackColor = true;
+            rad_Easy.CheckedChanged += rad_Easy_CheckedChanged;
             // 
             // FormOption
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(743, 750);
+            ClientSize = new Size(650, 562);
             Controls.Add(panel1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "FormOption";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FormOption";
