@@ -8,7 +8,7 @@ namespace WordleClient
 {
     public partial class CustomButtonAnimation : Control
     {
-        //Thuộc tính:
+        //Fields
         private int borderSize = 2;
         private int borderRadius = 20;
         private Color borderColor = Color.FromArgb(153, 214, 214);
@@ -17,7 +17,7 @@ namespace WordleClient
         private Image? buttonImage;
         private int imageSize = 24;
         private ContentAlignment textAlign = ContentAlignment.MiddleCenter;
-        //Hiệu ứng sọc:
+        //Animation fields
         private System.Windows.Forms.Timer stripeTimer;
         private int stripeOffset = 0;
         private bool enableStripe = true;
@@ -51,8 +51,8 @@ namespace WordleClient
             this.Size = new Size(150, 40);
             this.DoubleBuffered = true;
             this.Cursor = Cursors.Hand;
-            this.Resize += CustomControl1_Resize;
-            // Timer hiệu ứng sọc
+            this.Resize += CustomButtonAnimation_Resize;
+            //Timer with tick event for animation
             stripeTimer = new Timer();
             stripeTimer.Interval = 30;
             stripeTimer.Tick += (s, e) =>
@@ -62,12 +62,12 @@ namespace WordleClient
             };
             stripeTimer.Start();
         }
-        private void CustomControl1_Resize(object? sender, EventArgs e)
+        private void CustomButtonAnimation_Resize(object? sender, EventArgs e)
         {
             if (borderRadius > this.Height)
                 borderRadius = this.Height;
         }
-        //Path bo tròn:
+        //Create round rectangle path
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)
         {
             GraphicsPath path = new GraphicsPath();
@@ -80,26 +80,26 @@ namespace WordleClient
             path.CloseFigure();
             return path;
         }
-        //Vẽ control:
+        //Start paint
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             Rectangle rectSurface = this.ClientRectangle;
             Rectangle rectBorder = Rectangle.Inflate(rectSurface, -borderSize, -borderSize);
-            //Nền cơ bản:
+            //Paint surface
             using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius))
             using (SolidBrush brush = new SolidBrush(backgroundColor))
             {
                 e.Graphics.FillPath(brush, pathSurface);
                 this.Region = new Region(pathSurface);
-            //Hiệu ứng sọc động
+            //Animation sọc:
                 if (enableStripe)
                 {
                     DrawMovingStripes(e.Graphics, rectSurface, borderRadius);
                 }             
             }
-            // Viền:
+            //Paint border
             if (borderSize > 0)
             {
                 using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius - borderSize))
@@ -109,7 +109,7 @@ namespace WordleClient
                     e.Graphics.DrawPath(penBorder, pathBorder);
                 }
             }
-            // Ảnh + text
+            //Paint text and image
             int padding = 8;
             Rectangle textRect = rectSurface;
             if (buttonImage != null)
@@ -132,16 +132,17 @@ namespace WordleClient
                 case ContentAlignment.BottomCenter: flags |= TextFormatFlags.Bottom | TextFormatFlags.HorizontalCenter; break;
                 case ContentAlignment.BottomRight: flags |= TextFormatFlags.Bottom | TextFormatFlags.Right; break;
             }
+            // Draw text
             TextRenderer.DrawText(e.Graphics, this.Text, this.Font, textRect, textColor, flags);
         }
-        //Hàm vẽ hiệu ứng sọc:
+        //Funcion draw moving stripes
         private void DrawMovingStripes(Graphics g, Rectangle rect, int radius)
         {
-            //tạo brush dạng chéo 45:
+            //Create linear gradient brush 45 degrees
             using (LinearGradientBrush brush = new LinearGradientBrush(
                 new Rectangle(0, 0, 40, 40), stripeColor1,stripeColor2, 45f))
             {
-            //tạo texture pattern:
+                //Create texture brush from the gradient
                 using (Bitmap bmp = new Bitmap(40, 40))
                 using (Graphics g2 = Graphics.FromImage(bmp))
                 {
@@ -156,7 +157,7 @@ namespace WordleClient
                 }
             }
         }
-        //Hiệu ứng nhấn:
+        //Animation mouse down/up effect
         private Color originalBack;
         protected override void OnMouseDown(MouseEventArgs e)
         {

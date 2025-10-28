@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-
 namespace WordleClient
 {
     public partial class CustomButton : Control
@@ -15,47 +14,39 @@ namespace WordleClient
         private Color backgroundColor = Color.FromArgb(153, 214, 214);
         private Color textColor = Color.White;
         private Image? buttonImage;
-        private int imageSize = 24; // Kích thước icon
-        private ContentAlignment textAlign = ContentAlignment.MiddleCenter; // Căn text
+        private int imageSize = 24; //Size of the image
+        private ContentAlignment textAlign = ContentAlignment.MiddleCenter;
         // Properties
         [Category("CustomControl")]
         public int BorderSize { get => borderSize; set { borderSize = value; Invalidate(); } }
-
         [Category("CustomControl")]
         public int BorderRadius { get => borderRadius; set { borderRadius = value; Invalidate(); } }
-
         [Category("CustomControl")]
         public Color BorderColor { get => borderColor; set { borderColor = value; Invalidate(); } }
-
         [Category("CustomControl")]
         public Color BackgroundColor { get => backgroundColor; set { backgroundColor = value; Invalidate(); } }
-
         [Category("CustomControl")]
         public Color TextColor { get => textColor; set { textColor = value; Invalidate(); } }
-
         [Category("CustomControl")]
         public Image? ButtonImage { get => buttonImage; set { buttonImage = value; Invalidate(); } }
-
         [Category("CustomControl")]
         public int ImageSize { get => imageSize; set { imageSize = value; Invalidate(); } }
-
         [Category("CustomControl")]
         public ContentAlignment TextAlign { get => textAlign; set { textAlign = value; Invalidate(); } }
-
         // Constructor
         public CustomButton()
         {
             this.Size = new Size(150, 40);
             this.DoubleBuffered = true;
             this.Cursor = Cursors.Hand;
-            this.Resize += CustomControl1_Resize;
+            this.Resize += CustomButton_Resize;
         }
-        private void CustomControl1_Resize(object? sender, EventArgs e)
+        private void CustomButton_Resize(object? sender, EventArgs e)
         {
             if (borderRadius > this.Height)
                 borderRadius = this.Height;
         }
-        // Tạo path bo tròn
+        //Create round rectangle path
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)
         {
             GraphicsPath path = new GraphicsPath();
@@ -68,23 +59,22 @@ namespace WordleClient
             path.CloseFigure();
             return path;
         }
+        //Start paint
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
+            //Fields
             Rectangle rectSurface = this.ClientRectangle;
             Rectangle rectBorder = Rectangle.Inflate(rectSurface, -borderSize, -borderSize);
-
-            // Vẽ background
+            //Paint surface
             using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius))
             using (SolidBrush brush = new SolidBrush(backgroundColor))
             {
                 e.Graphics.FillPath(brush, pathSurface);
                 this.Region = new Region(pathSurface);
             }
-
-            // Vẽ border
+            //Paint border
             if (borderSize > 0)
             {
                 using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius - borderSize))
@@ -94,7 +84,7 @@ namespace WordleClient
                     e.Graphics.DrawPath(penBorder, pathBorder);
                 }
             }
-            // Vẽ image + text
+            //Pain text and image
             int padding = 8;
             Rectangle textRect = rectSurface;
             if (buttonImage != null)
@@ -102,10 +92,9 @@ namespace WordleClient
                 Rectangle imageRect = new Rectangle(padding, (this.Height - imageSize) / 2, imageSize, imageSize);
                 e.Graphics.DrawImage(buttonImage, imageRect);
 
-                textRect = new Rectangle(imageRect.Right + padding, 0,
-                                         this.Width - imageRect.Right - 2 * padding, this.Height);
+                textRect = new Rectangle(imageRect.Right + padding, 0, this.Width - imageRect.Right - 2 * padding, this.Height);
             }
-            // Chuyển ContentAlignment sang TextFormatFlags
+            //Text alignment
             TextFormatFlags flags = TextFormatFlags.SingleLine;
             switch (textAlign)
             {
@@ -119,9 +108,10 @@ namespace WordleClient
                 case ContentAlignment.BottomCenter: flags |= TextFormatFlags.Bottom | TextFormatFlags.HorizontalCenter; break;
                 case ContentAlignment.BottomRight: flags |= TextFormatFlags.Bottom | TextFormatFlags.Right; break;
             }
+            //Draw text
             TextRenderer.DrawText(e.Graphics, this.Text, this.Font, textRect, textColor, flags);
         }
-        // Hiệu ứng nhấn
+        //Animation on mouse down
         private Color originalBack;
         protected override void OnMouseDown(MouseEventArgs e)
         {
