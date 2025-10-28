@@ -6,7 +6,7 @@ namespace WordleClient.CustomControls
 {
     public class CustomForm : Form
     {
-        private int borderRadius = 30;
+        private int borderRadius = 40;
         private GraphicsPath? roundedPath;
         public int BorderRadius
         {
