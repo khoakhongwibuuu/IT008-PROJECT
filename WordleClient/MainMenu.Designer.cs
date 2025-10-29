@@ -33,7 +33,7 @@
             btn_MultiPlayer = new CustomButtonAnimation();
             btn_Exit = new CustomButtonAnimation();
             cuttomPanel1 = new WordleClient.CuttomControls.CustomPanel();
-            customPictureBox1 = new WordleClient.CustomControls.CustomPictureBox();
+            btn_Setting = new WordleClient.CustomControls.CustomPictureBox();
             maximumsize = new WordleClient.CustomControls.CustomPictureBox();
             minimunsize = new WordleClient.CustomControls.CustomPictureBox();
             Exit = new WordleClient.CustomControls.CustomPictureBox();
@@ -47,7 +47,7 @@
             customLabel8 = new WordleClient.CustomControls.CustomLabel();
             customLabel9 = new WordleClient.CustomControls.CustomLabel();
             customLabel10 = new WordleClient.CustomControls.CustomLabel();
-            ((System.ComponentModel.ISupportInitialize)customPictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)btn_Setting).BeginInit();
             ((System.ComponentModel.ISupportInitialize)maximumsize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)minimunsize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Exit).BeginInit();
@@ -132,23 +132,22 @@
             cuttomPanel1.Name = "cuttomPanel1";
             cuttomPanel1.Size = new Size(726, 308);
             cuttomPanel1.TabIndex = 3;
-            cuttomPanel1.Load += cuttomPanel1_Load;
             // 
-            // customPictureBox1
+            // btn_Setting
             // 
-            customPictureBox1.boderGradientBottom1 = Color.White;
-            customPictureBox1.boderGradientTop1 = Color.White;
-            customPictureBox1.boderRadius1 = 40;
-            customPictureBox1.boderSize1 = 0;
-            customPictureBox1.gradientAngle1 = 90F;
-            customPictureBox1.Image = Properties.Resources.iconSetting;
-            customPictureBox1.Location = new Point(12, 0);
-            customPictureBox1.Name = "customPictureBox1";
-            customPictureBox1.Size = new Size(57, 52);
-            customPictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            customPictureBox1.TabIndex = 4;
-            customPictureBox1.TabStop = false;
-            customPictureBox1.Click += customPictureBox1_Click;
+            btn_Setting.boderGradientBottom1 = Color.White;
+            btn_Setting.boderGradientTop1 = Color.White;
+            btn_Setting.boderRadius1 = 40;
+            btn_Setting.boderSize1 = 0;
+            btn_Setting.gradientAngle1 = 90F;
+            btn_Setting.Image = Properties.Resources.iconSetting;
+            btn_Setting.Location = new Point(12, 0);
+            btn_Setting.Name = "btn_Setting";
+            btn_Setting.Size = new Size(57, 52);
+            btn_Setting.SizeMode = PictureBoxSizeMode.StretchImage;
+            btn_Setting.TabIndex = 4;
+            btn_Setting.TabStop = false;
+            btn_Setting.Click += btn_Setting_Click_1;
             // 
             // maximumsize
             // 
@@ -367,7 +366,7 @@
             Controls.Add(Exit);
             Controls.Add(minimunsize);
             Controls.Add(maximumsize);
-            Controls.Add(customPictureBox1);
+            Controls.Add(btn_Setting);
             Controls.Add(btn_Exit);
             Controls.Add(btn_MultiPlayer);
             Controls.Add(btn_SinglePlayer);
@@ -377,7 +376,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MainMenu";
             Load += MainMenu_Load;
-            ((System.ComponentModel.ISupportInitialize)customPictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)btn_Setting).EndInit();
             ((System.ComponentModel.ISupportInitialize)maximumsize).EndInit();
             ((System.ComponentModel.ISupportInitialize)minimunsize).EndInit();
             ((System.ComponentModel.ISupportInitialize)Exit).EndInit();
@@ -389,7 +388,7 @@
         private CustomButtonAnimation btn_MultiPlayer;
         private CustomButtonAnimation btn_Exit;
         private CuttomControls.CustomPanel cuttomPanel1;
-        private CustomControls.CustomPictureBox customPictureBox1;
+        private CustomControls.CustomPictureBox btn_Setting;
         private CustomControls.CustomPictureBox maximumsize;
         private CustomControls.CustomPictureBox minimunsize;
         private CustomControls.CustomPictureBox Exit;

@@ -41,30 +41,20 @@ namespace WordleClient
             }
         }
 
-        private void cuttomPanel1_Load(object sender, EventArgs e)
-        {
 
-        }
-
-        private void customControl11_Click(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
-            FormSetting formSetting = new FormSetting();
-            formSetting.ShowDialog();
-        }
 
         private void Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void customPictureBox1_Click(object sender, EventArgs e)
+      
+
+        private void btn_Setting_Click_1(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
             FormSetting formSetting = new FormSetting();
             formSetting.ShowDialog();
         }
-
-     
     }
 }
