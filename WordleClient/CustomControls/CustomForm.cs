@@ -45,10 +45,10 @@ namespace WordleClient.CustomControls
             }
             roundedPath = new GraphicsPath();
             int r = borderRadius;
-            roundedPath.AddArc(0, 0, r, r, 180, 90); 
-            roundedPath.AddArc(this.Width - r, 0, r, r, 270, 90); 
-            roundedPath.AddArc(this.Width - r, this.Height - r, r, r, 0, 90); 
-            roundedPath.AddArc(0, this.Height - r, r, r, 90, 90); 
+            roundedPath.AddArc(0, 0, r, r, 180, 90);
+            roundedPath.AddArc(this.Width - r, 0, r, r, 270, 90);
+            roundedPath.AddArc(this.Width - r, this.Height - r, r, r, 0, 90);
+            roundedPath.AddArc(0, this.Height - r, r, r, 90, 90);
             roundedPath.CloseFigure();
             this.Region = new Region(roundedPath);
         }
