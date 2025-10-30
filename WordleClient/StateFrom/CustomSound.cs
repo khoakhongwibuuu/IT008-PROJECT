@@ -10,7 +10,7 @@ namespace WordleClient.StateFrom
         // Phát nhạc nền
         private static WaveOutEvent? outputDevice;
         // Nhạc nền lặp
-        private static LoopStream? loopStream;           
+        private static LoopStream? loopStream;
         // Phát nhạc nền lặp
 
         public static void PlayBackgroundLoop()
@@ -42,7 +42,12 @@ namespace WordleClient.StateFrom
         // Dừng nhạc nền
         public static void StopBackground()
         {
-            try { outputDevice?.Stop(); } catch { }
+            try
+            {
+                outputDevice?.Stop();
+            }
+            catch
+            { }
             outputDevice?.Dispose(); outputDevice = null;
             loopStream?.Dispose(); loopStream = null;
         }
@@ -58,7 +63,9 @@ namespace WordleClient.StateFrom
                     player.Init(reader);
                     player.Play();
                     while (player.PlaybackState == PlaybackState.Playing)
+                    {
                         Task.Delay(50).Wait();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -66,7 +73,6 @@ namespace WordleClient.StateFrom
                 }
             });
         }
-
         public static void PlayClick()
         {
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -77,10 +83,15 @@ namespace WordleClient.StateFrom
         public static void ToggleMute()
         {
             isMuted = !isMuted;
-            if (isMuted) StopBackground();
-            else PlayBackgroundLoop();
+            if (isMuted)
+            {
+                StopBackground();
+            }
+            else
+            {
+                PlayBackgroundLoop();
+            }
         }
-
         // Lấy trạng thái mute
         public static bool IsMuted() => isMuted;
     }
@@ -117,7 +128,13 @@ namespace WordleClient.StateFrom
         public float Volume
         {
             get => (sourceStream as AudioFileReader)?.Volume ?? 1f;
-            set { if (sourceStream is AudioFileReader reader) reader.Volume = value; }
+            set
+            {
+                if (sourceStream is AudioFileReader reader)
+                {
+                    reader.Volume = value;
+                }
+            }
         }
     }
 }

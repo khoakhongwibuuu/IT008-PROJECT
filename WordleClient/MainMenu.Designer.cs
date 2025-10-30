@@ -32,7 +32,7 @@
             btn_SinglePlayer = new CustomButtonAnimation();
             btn_MultiPlayer = new CustomButtonAnimation();
             btn_Exit = new CustomButtonAnimation();
-            cuttomPanel1 = new WordleClient.CuttomControls.CustomPanel();
+            Panel_Menu = new WordleClient.CuttomControls.CustomPanel();
             btn_Setting = new WordleClient.CustomControls.CustomPictureBox();
             maximumsize = new WordleClient.CustomControls.CustomPictureBox();
             minimunsize = new WordleClient.CustomControls.CustomPictureBox();
@@ -118,20 +118,20 @@
             btn_Exit.TextColor = Color.Black;
             btn_Exit.Click += btn_Exit_Click;
             // 
-            // cuttomPanel1
+            // Panel_Menu
             // 
-            cuttomPanel1.BackColor = Color.White;
-            cuttomPanel1.BackgroundImage = (Image)resources.GetObject("cuttomPanel1.BackgroundImage");
-            cuttomPanel1.BackgroundImageLayout = ImageLayout.Stretch;
-            cuttomPanel1.BorderRadius = 35;
-            cuttomPanel1.ForeColor = Color.Black;
-            cuttomPanel1.GradientAngle = 90F;
-            cuttomPanel1.GradientBottomColor = Color.Cyan;
-            cuttomPanel1.GradientTopColor = Color.MediumBlue;
-            cuttomPanel1.Location = new Point(274, 498);
-            cuttomPanel1.Name = "cuttomPanel1";
-            cuttomPanel1.Size = new Size(726, 308);
-            cuttomPanel1.TabIndex = 3;
+            Panel_Menu.BackColor = Color.White;
+            Panel_Menu.BackgroundImage = (Image)resources.GetObject("Panel_Menu.BackgroundImage");
+            Panel_Menu.BackgroundImageLayout = ImageLayout.Stretch;
+            Panel_Menu.BorderRadius = 35;
+            Panel_Menu.ForeColor = Color.Black;
+            Panel_Menu.GradientAngle = 90F;
+            Panel_Menu.GradientBottomColor = Color.Cyan;
+            Panel_Menu.GradientTopColor = Color.MediumBlue;
+            Panel_Menu.Location = new Point(274, 498);
+            Panel_Menu.Name = "Panel_Menu";
+            Panel_Menu.Size = new Size(726, 308);
+            Panel_Menu.TabIndex = 3;
             // 
             // btn_Setting
             // 
@@ -178,6 +178,7 @@
             minimunsize.SizeMode = PictureBoxSizeMode.StretchImage;
             minimunsize.TabIndex = 5;
             minimunsize.TabStop = false;
+            minimunsize.Click += minimunsize_Click;
             // 
             // Exit
             // 
@@ -370,7 +371,7 @@
             Controls.Add(btn_Exit);
             Controls.Add(btn_MultiPlayer);
             Controls.Add(btn_SinglePlayer);
-            Controls.Add(cuttomPanel1);
+            Controls.Add(Panel_Menu);
             Cursor = Cursors.Hand;
             Name = "MainMenu";
             StartPosition = FormStartPosition.CenterScreen;
@@ -387,7 +388,7 @@
         private CustomButtonAnimation btn_SinglePlayer;
         private CustomButtonAnimation btn_MultiPlayer;
         private CustomButtonAnimation btn_Exit;
-        private CuttomControls.CustomPanel cuttomPanel1;
+        private CuttomControls.CustomPanel Panel_Menu;
         private CustomControls.CustomPictureBox btn_Setting;
         private CustomControls.CustomPictureBox maximumsize;
         private CustomControls.CustomPictureBox minimunsize;

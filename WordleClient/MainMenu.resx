@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="cuttomPanel1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="Panel_Menu.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         R0lGODlh7ATQAvMPAOzw3j2sP9zfrZqbmZfSltrAPri4uI+Pj6KiomO1Vre3Vt7HVv///1C1Vnp6egAA
         ACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFFAAPACwAAAAA7ATQAgAE/5BJKVq6OOvNu/8YMFHFYp5oqq5s
