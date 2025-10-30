@@ -178,6 +178,7 @@
             minimunsize.SizeMode = PictureBoxSizeMode.StretchImage;
             minimunsize.TabIndex = 5;
             minimunsize.TabStop = false;
+            minimunsize.Click += minimunsize_Click;
             // 
             // Exit
             // 
