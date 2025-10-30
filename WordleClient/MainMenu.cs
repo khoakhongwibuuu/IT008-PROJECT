@@ -24,8 +24,8 @@ namespace WordleClient
         private void btn_SinglePlayer_Click_1(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            FormOption formOption = new FormOption();
-            formOption.ShowDialog();
+           FormOption formOption = new FormOption();
+            formOption.ShowDialog();    
         }
 
         private void btn_MultiPlayer_Click(object sender, EventArgs e)
@@ -53,12 +53,13 @@ namespace WordleClient
         private void btn_Setting_Click_1(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            FormSetting formSetting = new FormSetting();
-            formSetting.ShowDialog();
+            FormSetting setting = new FormSetting();
+            setting.ShowDialog();
         }
 
         private void minimunsize_Click(object sender, EventArgs e)
         {
+            CustomSound.PlayClick();
             this.WindowState = FormWindowState.Minimized;
         }
     }
