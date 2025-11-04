@@ -140,8 +140,8 @@
             // 
             // btn_StartGame
             // 
-            btn_StartGame.BackgroundColor = Color.FromArgb(153, 214, 214);
-            btn_StartGame.BorderColor = Color.FromArgb(153, 214, 214);
+            btn_StartGame.BackgroundColor = Color.FromArgb(128, 255, 255);
+            btn_StartGame.BorderColor = Color.FromArgb(192, 255, 255);
             btn_StartGame.BorderRadius = 20;
             btn_StartGame.BorderSize = 2;
             btn_StartGame.ButtonImage = null;
@@ -155,7 +155,7 @@
             btn_StartGame.TabIndex = 2;
             btn_StartGame.Text = "StartGame";
             btn_StartGame.TextAlign = ContentAlignment.MiddleCenter;
-            btn_StartGame.TextColor = Color.White;
+            btn_StartGame.TextColor = Color.Black;
             btn_StartGame.Click += btn_StartGame_Click;
             // 
             // customGroupBox2
