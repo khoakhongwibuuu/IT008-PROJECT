@@ -276,6 +276,7 @@
             Name = "FormOption";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FormOption";
+            Load += FormOption_Load;
             customGroupBox1.ResumeLayout(false);
             customGroupBox1.PerformLayout();
             customGroupBox2.ResumeLayout(false);

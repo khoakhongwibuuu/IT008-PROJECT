@@ -28,5 +28,10 @@ namespace WordleClient.GUI
         {
             CustomSound.PlayClick();
         }
+
+        private void FormOption_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
