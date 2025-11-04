@@ -65,7 +65,7 @@
             btn_SinglePlayer.EnableStripe = true;
             btn_SinglePlayer.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             btn_SinglePlayer.ImageSize = 24;
-            btn_SinglePlayer.Location = new Point(483, 531);
+            btn_SinglePlayer.Location = new Point(483, 525);
             btn_SinglePlayer.Name = "btn_SinglePlayer";
             btn_SinglePlayer.Size = new Size(317, 69);
             btn_SinglePlayer.StripeSpeed = 3;
@@ -87,7 +87,7 @@
             btn_MultiPlayer.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_MultiPlayer.ForeColor = Color.Yellow;
             btn_MultiPlayer.ImageSize = 24;
-            btn_MultiPlayer.Location = new Point(483, 630);
+            btn_MultiPlayer.Location = new Point(483, 620);
             btn_MultiPlayer.Name = "btn_MultiPlayer";
             btn_MultiPlayer.Size = new Size(317, 69);
             btn_MultiPlayer.StripeSpeed = 4;
@@ -108,7 +108,7 @@
             btn_Exit.EnableStripe = true;
             btn_Exit.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             btn_Exit.ImageSize = 24;
-            btn_Exit.Location = new Point(483, 728);
+            btn_Exit.Location = new Point(483, 714);
             btn_Exit.Name = "btn_Exit";
             btn_Exit.Size = new Size(317, 69);
             btn_Exit.StripeSpeed = 4;

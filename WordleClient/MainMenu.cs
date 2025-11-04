@@ -45,6 +45,7 @@ namespace WordleClient
 
         private void Exit_Click(object sender, EventArgs e)
         {
+            CustomSound.PlayClick();
             Application.Exit();
         }
 

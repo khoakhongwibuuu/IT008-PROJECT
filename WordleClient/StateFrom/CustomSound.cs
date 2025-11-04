@@ -12,7 +12,6 @@ namespace WordleClient.StateFrom
         // Nhạc nền lặp
         private static LoopStream? loopStream;           
         // Phát nhạc nền lặp
-
         public static void PlayBackgroundLoop()
         {
             if (isMuted) return;
