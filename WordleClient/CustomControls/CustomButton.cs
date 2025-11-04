@@ -42,14 +42,15 @@ namespace WordleClient
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             this.UpdateStyles();
             this.Size = new Size(150, 40);
-            this.DoubleBuffered = true;
             this.Cursor = Cursors.Hand;
             this.Resize += CustomButton_Resize;
         }
         private void CustomButton_Resize(object? sender, EventArgs e)
         {
             if (borderRadius > this.Height)
+            {
                 borderRadius = this.Height;
+            }            
         }
         //Create round rectangle path
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)
@@ -96,7 +97,6 @@ namespace WordleClient
             {
                 Rectangle imageRect = new Rectangle(padding, (this.Height - imageSize) / 2, imageSize, imageSize);
                 e.Graphics.DrawImage(buttonImage, imageRect);
-
                 textRect = new Rectangle(imageRect.Right + padding, 0, this.Width - imageRect.Right - 2 * padding, this.Height);
             }
             //Text alignment

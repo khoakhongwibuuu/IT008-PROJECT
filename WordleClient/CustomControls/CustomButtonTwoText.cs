@@ -45,7 +45,6 @@ namespace WordleClient
             this.SetStyle(ControlStyles.UserPaint, true);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             this.UpdateStyles();
-            this.DoubleBuffered = true;
             this.Size = new Size(200, 50);
             this.Cursor = Cursors.Hand;
         }

@@ -54,7 +54,6 @@ namespace WordleClient
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             this.UpdateStyles();
             this.Size = new Size(150, 40);
-            this.DoubleBuffered = true;
             this.Cursor = Cursors.Hand;
             this.Resize += CustomButtonAnimation_Resize;
             //Timer with tick event for animation
@@ -70,7 +69,9 @@ namespace WordleClient
         private void CustomButtonAnimation_Resize(object? sender, EventArgs e)
         {
             if (borderRadius > this.Height)
+            {
                 borderRadius = this.Height;
+            }             
         }
         //Create round rectangle path
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)
