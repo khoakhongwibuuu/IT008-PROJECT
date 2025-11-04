@@ -8,6 +8,7 @@ namespace WordleClient
 {
     public class CustomButtonTwoText : Control
     {
+        // Fields
         private string leftText = "Left";
         private string rightText = "Right";
         private Color leftBackColor = Color.MediumSlateBlue;
@@ -15,7 +16,7 @@ namespace WordleClient
         private Color borderColor = Color.DarkSlateBlue;
         private int borderSize = 2;
         private int borderRadius = 20;
-
+        // Properties
         [Category("Custom")]
         public string LeftText { get => leftText; set { leftText = value; Invalidate(); } }
 
@@ -36,13 +37,19 @@ namespace WordleClient
 
         [Category("Custom")]
         public int BorderRadius { get => borderRadius; set { borderRadius = value; Invalidate(); } }
-
+        // Constructor
         public CustomButtonTwoText()
         {
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.UpdateStyles();
             this.DoubleBuffered = true;
             this.Size = new Size(200, 50);
             this.Cursor = Cursors.Hand;
         }
+        //Create round rectangle path
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)
         {
             GraphicsPath path = new GraphicsPath();
@@ -55,7 +62,7 @@ namespace WordleClient
             path.CloseFigure();
             return path;
         }
-
+        //Paint event
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -63,44 +70,38 @@ namespace WordleClient
             this.Region = new Region(GetFigurePath(this.ClientRectangle, borderRadius));
             Rectangle rectSurface = this.ClientRectangle;
             Rectangle rectBorder = Rectangle.Inflate(rectSurface, -borderSize, -borderSize);
-
             int midX = rectSurface.Width / 2;
-
-            // Vẽ nửa trái
+            //Paint left half
             Rectangle leftRect = new Rectangle(rectSurface.X, rectSurface.Y, midX, rectSurface.Height);
             using (GraphicsPath pathLeft = GetFigurePath(leftRect, borderRadius))
             using (SolidBrush brushLeft = new SolidBrush(leftBackColor))
             {
                 e.Graphics.FillRectangle(brushLeft, leftRect);
             }
-
-            // Vẽ nửa phải
+            //Paint right half
             Rectangle rightRect = new Rectangle(rectSurface.X + midX, rectSurface.Y, midX, rectSurface.Height);
             using (SolidBrush brushRight = new SolidBrush(rightBackColor))
             {
                 e.Graphics.FillRectangle(brushRight, rightRect);
             }
-
-            // Vẽ border xung quanh button
+            //Paint border
             using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius - borderSize))
             using (Pen penBorder = new Pen(borderColor, borderSize))
             {
                 penBorder.Alignment = PenAlignment.Inset;
                 e.Graphics.DrawPath(penBorder, pathBorder);
             }
-
-            // Vẽ đường dọc ngăn cách 2 nửa
+            //Paint center line
             using (Pen linePen = new Pen(borderColor, 1))
             {
                 int lineX = midX;
                 e.Graphics.DrawLine(linePen, lineX, 4, lineX, rectSurface.Height - 4);
             }
-
-            // Vẽ text 2 bên
+            //Paint texts
             TextRenderer.DrawText(e.Graphics, leftText, this.Font, leftRect, Color.White,TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
             TextRenderer.DrawText(e.Graphics, rightText, this.Font, rightRect, Color.White,TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
         }
-        // Hiệu ứng nhấn
+        //Animate on mouse down
         private Color originalLeft, originalRight;
         protected override void OnMouseDown(MouseEventArgs e)
         {

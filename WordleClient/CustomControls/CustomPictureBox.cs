@@ -17,7 +17,12 @@ namespace WordleClient.CustomControls
         //Constructor
         public CustomPictureBox()
         {
-           SizeMode = PictureBoxSizeMode.StretchImage;
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.UpdateStyles();
+            SizeMode = PictureBoxSizeMode.StretchImage;
            Size = new Size(120, 120);
         }
         //Properties

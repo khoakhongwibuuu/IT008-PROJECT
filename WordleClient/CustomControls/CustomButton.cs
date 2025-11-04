@@ -36,6 +36,11 @@ namespace WordleClient
         // Constructor
         public CustomButton()
         {
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.UpdateStyles();
             this.Size = new Size(150, 40);
             this.DoubleBuffered = true;
             this.Cursor = Cursors.Hand;

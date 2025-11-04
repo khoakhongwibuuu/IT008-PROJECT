@@ -7,12 +7,14 @@ namespace WordleClient
 {
     public class CustomCheckboxToggle : Control
     {
+        // Fields
         private bool isChecked = false;
         private Image? circleImage = null;
         private string textLabel = "";
         private Color backColorUnchecked = Color.LightGray;
         private Color backColorChecked = Color.MediumSeaGreen;
-        private int padding = 10; // Khoảng cách hình tròn
+        private int padding = 10;
+        // Properties
         [Category("Custom")]
         public bool Checked
         {
@@ -43,12 +45,18 @@ namespace WordleClient
             get => backColorChecked;
             set { backColorChecked = value; Invalidate(); }
         }
+        // Constructor
         public CustomCheckboxToggle()
         {
             this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.UpdateStyles();
             this.Size = new Size(200, 40);
             this.Cursor = Cursors.Hand;
         }
+        // Paint event
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -68,7 +76,7 @@ namespace WordleClient
                 }
                 this.Region = new Region(path);
             }
-            // Vẽ hình tròn
+            //Paint circle
             int circleDiameter = rect.Height - 2 * padding;
             int circleX = isChecked ? rect.Width - circleDiameter - padding : padding;
             int circleY = padding;
@@ -77,12 +85,12 @@ namespace WordleClient
             {
                 e.Graphics.FillEllipse(brush, circleRect);
             }
-            // Vẽ ảnh bên trong hình tròn nếu có
+            //Paint circle image
             if (circleImage != null)
             {
                 e.Graphics.DrawImage(circleImage, new Rectangle(circleRect.X + 2, circleRect.Y + 2, circleRect.Width - 4, circleRect.Height - 4));
             }
-            // Vẽ text label
+            //Paint text
             int textX = isChecked ? padding : padding + circleDiameter + padding;
             int textWidth = rect.Width - circleDiameter - 3 * padding;
             Rectangle textRect = new Rectangle(textX, 0, textWidth, rect.Height);
@@ -97,7 +105,7 @@ namespace WordleClient
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-            Invalidate(); // Vẽ lại khi resize
+            Invalidate(); //Paint again when resize
         }
     }
 }

@@ -48,10 +48,14 @@ namespace WordleClient.CustomControls
         //Constructor:
         public CustomLabel()
         {
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.UpdateStyles();
             this.Size = new Size(100, 100);
             this.Font = new Font("Segoe UI", 18, FontStyle.Bold);
             this.ForeColor = Color.White;
-            this.DoubleBuffered = true;
         }
         //Start paint:
         protected override void OnPaint(PaintEventArgs e)

@@ -35,6 +35,11 @@ namespace WordleClient.CustomControls
         //Constructor
         public CustomRadioButton()
         {
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.UpdateStyles();
             this.MinimumSize = new Size(0, 21);
             this.Padding = new Padding(10, 0, 0, 0);
         }

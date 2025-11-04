@@ -7,6 +7,7 @@ namespace WordleClient.CuttomControls
 {
     public class CustomGroupBox : GroupBox
     {
+        //Fields
         private int borderRadius = 15;
         private int borderSize = 2;
         private Color borderColor = Color.Teal;
@@ -14,6 +15,7 @@ namespace WordleClient.CuttomControls
         private Color textColor = Color.Black;
         private ContentAlignment titleAlign = ContentAlignment.TopLeft;
         private int titlePadding = 10;
+        //Properties
         [Category("Custom GroupBox")]
         public int BorderRadius
         {
@@ -56,13 +58,18 @@ namespace WordleClient.CuttomControls
             get => titlePadding;
             set { titlePadding = value; Invalidate(); }
         }
+        //Constructor
         public CustomGroupBox()
         {
-            DoubleBuffered = true;
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.UpdateStyles();
             ResizeRedraw = true;
             BackColor = Color.Transparent;
         }
-        // Boder Radius
+        //Boder Radius
         private GraphicsPath GetRoundPath(Rectangle rect, int radius)
         {
             GraphicsPath path = new GraphicsPath();
