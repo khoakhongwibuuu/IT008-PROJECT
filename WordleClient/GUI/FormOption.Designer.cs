@@ -148,9 +148,9 @@
             btn_StartGame.EnableStripe = true;
             btn_StartGame.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             btn_StartGame.ImageSize = 24;
-            btn_StartGame.Location = new Point(187, 660);
+            btn_StartGame.Location = new Point(187, 666);
             btn_StartGame.Name = "btn_StartGame";
-            btn_StartGame.Size = new Size(394, 84);
+            btn_StartGame.Size = new Size(394, 78);
             btn_StartGame.StripeSpeed = 4;
             btn_StartGame.TabIndex = 2;
             btn_StartGame.Text = "StartGame";
@@ -177,7 +177,7 @@
             customGroupBox2.Size = new Size(394, 263);
             customGroupBox2.TabIndex = 3;
             customGroupBox2.TabStop = false;
-            customGroupBox2.Text = "Chọn Topic và cơ hội đoán";
+            customGroupBox2.Text = "Chọn Topic và số cơ hội đoán";
             customGroupBox2.TextColor = Color.Black;
             customGroupBox2.TitleAlign = ContentAlignment.TopLeft;
             customGroupBox2.TitlePadding = 10;
@@ -239,9 +239,11 @@
             // 
             // cbbTopic
             // 
+            cbbTopic.DropDownStyle = ComboBoxStyle.DropDownList;
             cbbTopic.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbbTopic.FormattingEnabled = true;
             cbbTopic.Location = new Point(81, 64);
+            cbbTopic.MaxDropDownItems = 5;
             cbbTopic.Name = "cbbTopic";
             cbbTopic.Size = new Size(245, 39);
             cbbTopic.TabIndex = 0;
