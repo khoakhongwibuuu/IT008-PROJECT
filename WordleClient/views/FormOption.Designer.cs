@@ -1,4 +1,5 @@
-﻿using WordleClient.libraries.CustomControl;
+﻿using WordleClient.libraries.CustomControls;
+
 namespace WordleClient.views
 {
     partial class FormOption
@@ -29,208 +30,299 @@ namespace WordleClient.views
         /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
-            btn_StartGame = new RenewedButtons();
-            groupBox2 = new GroupBox();
-            label3 = new Label();
-            label2 = new Label();
-            label1 = new Label();
-            trackbar_GuessCount = new TrackBar();
-            cbb_Topic = new ComboBox();
-            groupBox1 = new GroupBox();
-            rad_Random = new RadioButton();
-            rad_Hard = new RadioButton();
-            rad_Easy = new RadioButton();
-            panel1.SuspendLayout();
-            groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackbar_GuessCount).BeginInit();
-            groupBox1.SuspendLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOption));
+            customPanel1 = new CustomPanel();
+            customGroupBox1 = new CustomGroupBox();
+            rd_Easy = new CustomRadioButton();
+            rd_Hard = new CustomRadioButton();
+            rd_Random = new CustomRadioButton();
+            btn_StartGame = new CustomButtonAnimation();
+            customGroupBox2 = new CustomGroupBox();
+            customLabel3 = new CustomLabel();
+            customLabel2 = new CustomLabel();
+            customLabel1 = new CustomLabel();
+            trackBarGuess = new TrackBar();
+            cbbTopic = new ComboBox();
+            btn_Exit = new CustomPictureBox();
+            customGroupBox1.SuspendLayout();
+            customGroupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBarGuess).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)btn_Exit).BeginInit();
             SuspendLayout();
             // 
-            // panel1
+            // customPanel1
             // 
-            panel1.BackColor = Color.Silver;
-            panel1.Controls.Add(btn_StartGame);
-            panel1.Controls.Add(groupBox2);
-            panel1.Controls.Add(groupBox1);
-            panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(0, 0);
-            panel1.Margin = new Padding(3, 2, 3, 2);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(650, 562);
-            panel1.TabIndex = 0;
+            customPanel1.BackColor = Color.White;
+            customPanel1.BorderRadius = 30;
+            customPanel1.Dock = DockStyle.Fill;
+            customPanel1.ForeColor = Color.Black;
+            customPanel1.GradientAngle = 90F;
+            customPanel1.GradientBottomColor = Color.SkyBlue;
+            customPanel1.GradientTopColor = Color.FromArgb(192, 255, 255);
+            customPanel1.Location = new Point(0, 0);
+            customPanel1.Margin = new Padding(3, 2, 3, 2);
+            customPanel1.Name = "customPanel1";
+            customPanel1.Size = new Size(665, 588);
+            customPanel1.TabIndex = 0;
+            // 
+            // customGroupBox1
+            // 
+            customGroupBox1.BackColor = Color.Transparent;
+            customGroupBox1.BackgroundColor = Color.White;
+            customGroupBox1.BorderColor = Color.Teal;
+            customGroupBox1.BorderRadius = 15;
+            customGroupBox1.BorderSize = 2;
+            customGroupBox1.Controls.Add(rd_Easy);
+            customGroupBox1.Controls.Add(rd_Hard);
+            customGroupBox1.Controls.Add(rd_Random);
+            customGroupBox1.Font = new Font("Segoe UI", 12F);
+            customGroupBox1.ForeColor = Color.White;
+            customGroupBox1.Location = new Point(164, 28);
+            customGroupBox1.Margin = new Padding(3, 2, 3, 2);
+            customGroupBox1.Name = "customGroupBox1";
+            customGroupBox1.Padding = new Padding(3, 2, 3, 2);
+            customGroupBox1.Size = new Size(345, 218);
+            customGroupBox1.TabIndex = 1;
+            customGroupBox1.TabStop = false;
+            customGroupBox1.Text = "Chọn Level";
+            customGroupBox1.TextColor = Color.Black;
+            customGroupBox1.TitleAlign = ContentAlignment.TopLeft;
+            customGroupBox1.TitlePadding = 10;
+            // 
+            // rd_Easy
+            // 
+            rd_Easy.AutoSize = true;
+            rd_Easy.BackColor = Color.White;
+            rd_Easy.CheckedColor = Color.MediumSlateBlue;
+            rd_Easy.Font = new Font("Segoe UI", 13.8F);
+            rd_Easy.ForeColor = Color.Black;
+            rd_Easy.Location = new Point(20, 161);
+            rd_Easy.Margin = new Padding(3, 2, 3, 2);
+            rd_Easy.MinimumSize = new Size(0, 16);
+            rd_Easy.Name = "rd_Easy";
+            rd_Easy.Padding = new Padding(9, 0, 0, 0);
+            rd_Easy.Size = new Size(76, 29);
+            rd_Easy.TabIndex = 2;
+            rd_Easy.TabStop = true;
+            rd_Easy.Text = "Easy";
+            rd_Easy.UnCheckedColor = Color.Gray;
+            rd_Easy.UseVisualStyleBackColor = false;
+            rd_Easy.CheckedChanged += rd_Easy_CheckedChanged;
+            // 
+            // rd_Hard
+            // 
+            rd_Hard.AutoSize = true;
+            rd_Hard.BackColor = Color.White;
+            rd_Hard.CheckedColor = Color.MediumSlateBlue;
+            rd_Hard.Font = new Font("Segoe UI", 13.8F);
+            rd_Hard.ForeColor = Color.Black;
+            rd_Hard.Location = new Point(20, 101);
+            rd_Hard.Margin = new Padding(3, 2, 3, 2);
+            rd_Hard.MinimumSize = new Size(0, 16);
+            rd_Hard.Name = "rd_Hard";
+            rd_Hard.Padding = new Padding(9, 0, 0, 0);
+            rd_Hard.Size = new Size(80, 29);
+            rd_Hard.TabIndex = 1;
+            rd_Hard.TabStop = true;
+            rd_Hard.Text = "Hard";
+            rd_Hard.UnCheckedColor = Color.Gray;
+            rd_Hard.UseVisualStyleBackColor = false;
+            rd_Hard.CheckedChanged += rd_Hard_CheckedChanged;
+            // 
+            // rd_Random
+            // 
+            rd_Random.AutoSize = true;
+            rd_Random.BackColor = Color.White;
+            rd_Random.CheckedColor = Color.MediumSlateBlue;
+            rd_Random.Font = new Font("Segoe UI", 13.8F);
+            rd_Random.ForeColor = Color.Black;
+            rd_Random.Location = new Point(20, 46);
+            rd_Random.Margin = new Padding(3, 2, 3, 2);
+            rd_Random.MinimumSize = new Size(0, 16);
+            rd_Random.Name = "rd_Random";
+            rd_Random.Padding = new Padding(9, 0, 0, 0);
+            rd_Random.Size = new Size(109, 29);
+            rd_Random.TabIndex = 0;
+            rd_Random.TabStop = true;
+            rd_Random.Text = "Random";
+            rd_Random.UnCheckedColor = Color.Gray;
+            rd_Random.UseVisualStyleBackColor = false;
+            rd_Random.CheckedChanged += rd_Random_CheckedChanged;
             // 
             // btn_StartGame
             // 
-            btn_StartGame.BackgroundColor = Color.FromArgb(153, 214, 214);
-            btn_StartGame.BorderColor = Color.FromArgb(153, 214, 214);
+            btn_StartGame.BackgroundColor = Color.FromArgb(128, 255, 255);
+            btn_StartGame.BorderColor = Color.FromArgb(192, 255, 255);
             btn_StartGame.BorderRadius = 20;
             btn_StartGame.BorderSize = 2;
             btn_StartGame.ButtonImage = null;
-            btn_StartGame.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_StartGame.EnableStripe = true;
+            btn_StartGame.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             btn_StartGame.ImageSize = 24;
-            btn_StartGame.Location = new Point(182, 483);
+            btn_StartGame.Location = new Point(164, 500);
             btn_StartGame.Margin = new Padding(3, 2, 3, 2);
             btn_StartGame.Name = "btn_StartGame";
-            btn_StartGame.Size = new Size(319, 56);
+            btn_StartGame.Size = new Size(345, 58);
+            btn_StartGame.StripeSpeed = 4;
             btn_StartGame.TabIndex = 2;
             btn_StartGame.Text = "StartGame";
             btn_StartGame.TextAlign = ContentAlignment.MiddleCenter;
-            btn_StartGame.TextColor = Color.White;
+            btn_StartGame.TextColor = Color.Black;
             btn_StartGame.Click += btn_StartGame_Click;
             // 
-            // groupBox2
+            // customGroupBox2
             // 
-            groupBox2.Controls.Add(label3);
-            groupBox2.Controls.Add(label2);
-            groupBox2.Controls.Add(label1);
-            groupBox2.Controls.Add(trackbar_GuessCount);
-            groupBox2.Controls.Add(cbb_Topic);
-            groupBox2.Font = new Font("Segoe UI", 12F);
-            groupBox2.Location = new Point(182, 256);
-            groupBox2.Margin = new Padding(3, 2, 3, 2);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Padding = new Padding(3, 2, 3, 2);
-            groupBox2.Size = new Size(319, 208);
-            groupBox2.TabIndex = 1;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Chọn Topic and Số lượt đoán";
+            customGroupBox2.BackColor = Color.Transparent;
+            customGroupBox2.BackgroundColor = Color.White;
+            customGroupBox2.BorderColor = Color.Teal;
+            customGroupBox2.BorderRadius = 15;
+            customGroupBox2.BorderSize = 2;
+            customGroupBox2.Controls.Add(customLabel3);
+            customGroupBox2.Controls.Add(customLabel2);
+            customGroupBox2.Controls.Add(customLabel1);
+            customGroupBox2.Controls.Add(trackBarGuess);
+            customGroupBox2.Controls.Add(cbbTopic);
+            customGroupBox2.Font = new Font("Segoe UI", 12F);
+            customGroupBox2.ForeColor = Color.White;
+            customGroupBox2.Location = new Point(164, 274);
+            customGroupBox2.Margin = new Padding(3, 2, 3, 2);
+            customGroupBox2.Name = "customGroupBox2";
+            customGroupBox2.Padding = new Padding(3, 2, 3, 2);
+            customGroupBox2.Size = new Size(345, 197);
+            customGroupBox2.TabIndex = 3;
+            customGroupBox2.TabStop = false;
+            customGroupBox2.Text = "Chọn Topic và số cơ hội đoán";
+            customGroupBox2.TextColor = Color.Black;
+            customGroupBox2.TitleAlign = ContentAlignment.TopLeft;
+            customGroupBox2.TitlePadding = 10;
             // 
-            // label3
+            // customLabel3
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(274, 160);
-            label3.Name = "label3";
-            label3.Size = new Size(19, 21);
-            label3.TabIndex = 2;
-            label3.Text = "8";
+            customLabel3.BoderRadius = 3F;
+            customLabel3.BorderColor = Color.White;
+            customLabel3.EndColor = Color.MediumPurple;
+            customLabel3.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            customLabel3.ForeColor = Color.White;
+            customLabel3.Location = new Point(164, 127);
+            customLabel3.Margin = new Padding(3, 2, 3, 2);
+            customLabel3.Name = "customLabel3";
+            customLabel3.ShadowOffset = 4;
+            customLabel3.Size = new Size(30, 39);
+            customLabel3.StartColor = Color.MediumSlateBlue;
+            customLabel3.TabIndex = 2;
+            customLabel3.Text = "7";
             // 
-            // label2
+            // customLabel2
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(154, 160);
-            label2.Name = "label2";
-            label2.Size = new Size(19, 21);
-            label2.TabIndex = 2;
-            label2.Text = "7";
+            customLabel2.BoderRadius = 3F;
+            customLabel2.BorderColor = Color.White;
+            customLabel2.EndColor = Color.MediumPurple;
+            customLabel2.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            customLabel2.ForeColor = Color.White;
+            customLabel2.Location = new Point(256, 127);
+            customLabel2.Margin = new Padding(3, 2, 3, 2);
+            customLabel2.Name = "customLabel2";
+            customLabel2.ShadowOffset = 4;
+            customLabel2.Size = new Size(30, 39);
+            customLabel2.StartColor = Color.MediumSlateBlue;
+            customLabel2.TabIndex = 2;
+            customLabel2.Text = "8";
             // 
-            // label1
+            // customLabel1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(43, 160);
-            label1.Name = "label1";
-            label1.Size = new Size(19, 21);
-            label1.TabIndex = 2;
-            label1.Text = "6";
+            customLabel1.BoderRadius = 3F;
+            customLabel1.BorderColor = Color.White;
+            customLabel1.EndColor = Color.MediumPurple;
+            customLabel1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            customLabel1.ForeColor = Color.White;
+            customLabel1.Location = new Point(74, 127);
+            customLabel1.Margin = new Padding(3, 2, 3, 2);
+            customLabel1.Name = "customLabel1";
+            customLabel1.ShadowOffset = 4;
+            customLabel1.Size = new Size(30, 39);
+            customLabel1.StartColor = Color.MediumSlateBlue;
+            customLabel1.TabIndex = 2;
+            customLabel1.Text = "6";
             // 
-            // trackbar_GuessCount
+            // trackBarGuess
             // 
-            trackbar_GuessCount.Location = new Point(35, 132);
-            trackbar_GuessCount.Margin = new Padding(3, 2, 3, 2);
-            trackbar_GuessCount.Maximum = 8;
-            trackbar_GuessCount.Minimum = 6;
-            trackbar_GuessCount.Name = "trackbar_GuessCount";
-            trackbar_GuessCount.Size = new Size(259, 45);
-            trackbar_GuessCount.TabIndex = 1;
-            trackbar_GuessCount.Value = 6;
+            trackBarGuess.Location = new Point(71, 108);
+            trackBarGuess.Margin = new Padding(3, 2, 3, 2);
+            trackBarGuess.Maximum = 8;
+            trackBarGuess.Minimum = 6;
+            trackBarGuess.Name = "trackBarGuess";
+            trackBarGuess.Size = new Size(214, 45);
+            trackBarGuess.TabIndex = 1;
+            trackBarGuess.Value = 6;
             // 
-            // cbb_Topic
+            // cbbTopic
             // 
-            cbb_Topic.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            cbb_Topic.FormattingEnabled = true;
-            cbb_Topic.Location = new Point(43, 52);
-            cbb_Topic.Margin = new Padding(3, 2, 3, 2);
-            cbb_Topic.Name = "cbb_Topic";
-            cbb_Topic.Size = new Size(252, 33);
-            cbb_Topic.TabIndex = 0;
-            cbb_Topic.SelectedIndexChanged += cbb_Topic_SelectedIndexChanged;
+            cbbTopic.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbbTopic.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cbbTopic.FormattingEnabled = true;
+            cbbTopic.Location = new Point(71, 48);
+            cbbTopic.Margin = new Padding(3, 2, 3, 2);
+            cbbTopic.MaxDropDownItems = 5;
+            cbbTopic.Name = "cbbTopic";
+            cbbTopic.Size = new Size(215, 33);
+            cbbTopic.TabIndex = 0;
+            cbbTopic.SelectedIndexChanged += cbbTopic_SelectedIndexChanged;
             // 
-            // groupBox1
+            // btn_Exit
             // 
-            groupBox1.Controls.Add(rad_Random);
-            groupBox1.Controls.Add(rad_Hard);
-            groupBox1.Controls.Add(rad_Easy);
-            groupBox1.Font = new Font("Segoe UI", 12F);
-            groupBox1.Location = new Point(182, 26);
-            groupBox1.Margin = new Padding(3, 2, 3, 2);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Padding = new Padding(3, 2, 3, 2);
-            groupBox1.Size = new Size(319, 218);
-            groupBox1.TabIndex = 0;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Chọn LEVEL";
-            // 
-            // rad_Random
-            // 
-            rad_Random.AutoSize = true;
-            rad_Random.Location = new Point(43, 41);
-            rad_Random.Margin = new Padding(3, 2, 3, 2);
-            rad_Random.Name = "rad_Random";
-            rad_Random.Size = new Size(87, 25);
-            rad_Random.TabIndex = 0;
-            rad_Random.TabStop = true;
-            rad_Random.Text = "Random";
-            rad_Random.UseVisualStyleBackColor = true;
-            rad_Random.CheckedChanged += rad_Random_CheckedChanged;
-            // 
-            // rad_Hard
-            // 
-            rad_Hard.AutoSize = true;
-            rad_Hard.Location = new Point(43, 124);
-            rad_Hard.Margin = new Padding(3, 2, 3, 2);
-            rad_Hard.Name = "rad_Hard";
-            rad_Hard.Size = new Size(62, 25);
-            rad_Hard.TabIndex = 2;
-            rad_Hard.TabStop = true;
-            rad_Hard.Text = "Hard";
-            rad_Hard.UseVisualStyleBackColor = true;
-            rad_Hard.CheckedChanged += rad_Hard_CheckedChanged;
-            // 
-            // rad_Easy
-            // 
-            rad_Easy.AutoSize = true;
-            rad_Easy.Location = new Point(43, 81);
-            rad_Easy.Margin = new Padding(3, 2, 3, 2);
-            rad_Easy.Name = "rad_Easy";
-            rad_Easy.Size = new Size(59, 25);
-            rad_Easy.TabIndex = 1;
-            rad_Easy.TabStop = true;
-            rad_Easy.Text = "Easy";
-            rad_Easy.UseVisualStyleBackColor = true;
-            rad_Easy.CheckedChanged += rad_Easy_CheckedChanged;
+            btn_Exit.boderGradientBottom1 = Color.White;
+            btn_Exit.boderGradientTop1 = Color.White;
+            btn_Exit.boderRadius1 = 40;
+            btn_Exit.boderSize1 = 0;
+            btn_Exit.Cursor = Cursors.Hand;
+            btn_Exit.gradientAngle1 = 90F;
+            btn_Exit.Image = (Image)resources.GetObject("btn_Exit.Image");
+            btn_Exit.Location = new Point(635, 0);
+            btn_Exit.Margin = new Padding(3, 2, 3, 2);
+            btn_Exit.Name = "btn_Exit";
+            btn_Exit.Size = new Size(30, 26);
+            btn_Exit.SizeMode = PictureBoxSizeMode.StretchImage;
+            btn_Exit.TabIndex = 7;
+            btn_Exit.TabStop = false;
+            btn_Exit.Click += btn_Exit_Click;
             // 
             // FormOption
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(650, 562);
-            Controls.Add(panel1);
+            ClientSize = new Size(665, 588);
+            Controls.Add(btn_Exit);
+            Controls.Add(customGroupBox2);
+            Controls.Add(btn_StartGame);
+            Controls.Add(customGroupBox1);
+            Controls.Add(customPanel1);
             Margin = new Padding(3, 2, 3, 2);
             Name = "FormOption";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FormOption";
-            panel1.ResumeLayout(false);
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackbar_GuessCount).EndInit();
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
+            customGroupBox1.ResumeLayout(false);
+            customGroupBox1.PerformLayout();
+            customGroupBox2.ResumeLayout(false);
+            customGroupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBarGuess).EndInit();
+            ((System.ComponentModel.ISupportInitialize)btn_Exit).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Panel panel1;
-        private RenewedButtons btn_StartGame;
-        private GroupBox groupBox2;
-        private TrackBar trackbar_GuessCount;
-        private ComboBox cbb_Topic;
-        private GroupBox groupBox1;
-        private RadioButton rad_Random;
-        private RadioButton rad_Hard;
-        private RadioButton rad_Easy;
-        private Label label3;
-        private Label label2;
-        private Label label1;
+        private CustomPanel customPanel1;
+        private CustomGroupBox customGroupBox1;
+        private CustomRadioButton rd_Random;
+        private CustomButtonAnimation btn_StartGame;
+        private CustomRadioButton rd_Easy;
+        private CustomRadioButton rd_Hard;
+        private CustomGroupBox customGroupBox2;
+        private TrackBar trackBarGuess;
+        private ComboBox cbbTopic;
+        private CustomPictureBox btn_Exit;
+        private CustomLabel customLabel3;
+        private CustomLabel customLabel2;
+        private CustomLabel customLabel1;
     }
 }

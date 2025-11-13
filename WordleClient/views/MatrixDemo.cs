@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using WordleClient.libraries.ingame;
 
-namespace WordleClient
+namespace WordleClient.views
 {
     public partial class MatrixDemo : Form
     {

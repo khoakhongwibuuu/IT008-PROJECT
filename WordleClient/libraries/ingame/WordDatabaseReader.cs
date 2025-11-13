@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SQLite;
+﻿using System.Data.SQLite;
 using WordleClient.libraries.lowlevel;
 using System.Diagnostics;
 
@@ -15,7 +10,8 @@ namespace WordleClient.libraries.ingame
 
         public WordDatabaseReader()
         {
-            string dbPath = Path.Combine(Environment.CurrentDirectory, "database", "words.db");
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
+            string dbPath = Path.Combine(basePath, "database", "words.db");
             string ConnectionString = $"Data Source={dbPath};Read Only=True;Version=3;";
             sql_con = new SQLiteConnection(ConnectionString);
             sql_con.Open();

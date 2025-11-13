@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WordleClient.libraries.lowlevel;
+﻿using WordleClient.libraries.lowlevel;
 using WordleClient.views;
 
 namespace WordleClient.libraries.ingame

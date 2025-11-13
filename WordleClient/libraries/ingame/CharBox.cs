@@ -1,8 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-
-namespace WordleClient.libraries.ingame
+﻿namespace WordleClient.libraries.ingame
 {
     // Simple user control that acts as a "box" which can show one character
     // and have its background color changed via the public methods.

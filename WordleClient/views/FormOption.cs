@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Diagnostics;
+﻿using WordleClient.libraries.CustomControls;
+using WordleClient.libraries.StateFrom;
 using WordleClient.libraries.ingame;
 using WordleClient.libraries.lowlevel;
+using System.Diagnostics;
+
 namespace WordleClient.views
 {
-    public partial class FormOption : Form
+    public partial class FormOption : CustomForm
     {
         private List<string> topics = new List<string>();
         private string? selectedTopic;
@@ -24,38 +18,46 @@ namespace WordleClient.views
             topics = wdr.loadGroups();
             for (int i = 0; i < topics.Count; i++)
             {
-                cbb_Topic.Items.Add(topics[i]);
+                cbbTopic.Items.Add(topics[i]);
             }
-            cbb_Topic.Items.Add("(random)");
-            cbb_Topic.SelectedIndex = topics.Count();
+            cbbTopic.Items.Add("(Random)");
+            cbbTopic.SelectedIndex = topics.Count();
+        }
+
+        private void btn_Exit_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            this.Close();
         }
 
         private void btn_StartGame_Click(object sender, EventArgs e)
         {
-            int LengthGuess = trackbar_GuessCount.Value;
+            CustomSound.PlayClick();
+            int MaxGuessCount = trackBarGuess.Value;
             Debug.WriteLine($"START_BTN_OUTPUT: Param1={selectedTopic}, Param2={selectedDifficulty}");
 
             WordDatabaseReader wdr = new WordDatabaseReader();
-            WDBRecord? TheChosenRecord = wdr.ReadRandomWord(selectedTopic, selectedDifficulty);
-            if (TheChosenRecord == null)
+            WDBRecord? TheChosenOne = wdr.ReadRandomWord(selectedTopic, selectedDifficulty);
+            if (TheChosenOne == null)
             {
                 MessageBox.Show("No word found for the selected topic and difficulty. Please with another criteria.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
                 this.Hide();
-                Debug.WriteLine($"QRY_DB_DONE: Chosen word: {TheChosenRecord.TOKEN}, Topic: {TheChosenRecord.GROUP_NAME}, Difficulty: {TheChosenRecord.LEVEL}");
-                var game = new GameInstance(TheChosenRecord, 6);
-                game.StartGameForm(6);
+                CustomSound.StopBackground();
+                GameInstance game = new GameInstance(TheChosenOne, MaxGuessCount);
+                game.StartGameForm(MaxGuessCount);
             }
         }
-        private void cbb_Topic_SelectedIndexChanged(object sender, EventArgs e)
+
+        private void cbbTopic_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedTopicIndex = 0;
-            if (cbb_Topic.SelectedIndex != topics.Count)
+            int selectedTopicIdx = 0;
+            if (cbbTopic.SelectedIndex != topics.Count)
             {
-                selectedTopicIndex = cbb_Topic.SelectedIndex;
-                selectedTopic = topics[selectedTopicIndex];
+                selectedTopicIdx = cbbTopic.SelectedIndex;
+                selectedTopic = topics[selectedTopicIdx];
             }
             else
             {
@@ -63,17 +65,17 @@ namespace WordleClient.views
             }
         }
 
-        private void rad_Easy_CheckedChanged(object sender, EventArgs e)
+        private void rd_Random_CheckedChanged(object sender, EventArgs e)
         {
             selectedDifficulty = "EASY";
         }
 
-        private void rad_Hard_CheckedChanged(object sender, EventArgs e)
+        private void rd_Hard_CheckedChanged(object sender, EventArgs e)
         {
             selectedDifficulty = "HARD";
         }
 
-        private void rad_Random_CheckedChanged(object sender, EventArgs e)
+        private void rd_Easy_CheckedChanged(object sender, EventArgs e)
         {
             selectedDifficulty = null;
         }
