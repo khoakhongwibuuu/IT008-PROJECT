@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSetting));
             customPanel1 = new WordleClient.CuttomControls.CustomPanel();
             btn_Exit = new WordleClient.CustomControls.CustomPictureBox();
             btn_Sound = new WordleClient.CustomControls.CustomPictureBox();
@@ -62,8 +61,8 @@
             btn_Exit.boderSize1 = 0;
             btn_Exit.Cursor = Cursors.Hand;
             btn_Exit.gradientAngle1 = 90F;
-            btn_Exit.Image = (Image)resources.GetObject("btn_Exit.Image");
-            btn_Exit.Location = new Point(713, 0);
+            btn_Exit.Image = Properties.Resources.exit;
+            btn_Exit.Location = new Point(710, 2);
             btn_Exit.Name = "btn_Exit";
             btn_Exit.Size = new Size(34, 35);
             btn_Exit.SizeMode = PictureBoxSizeMode.StretchImage;

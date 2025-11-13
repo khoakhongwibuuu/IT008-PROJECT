@@ -140,8 +140,8 @@
             btn_Setting.boderRadius1 = 40;
             btn_Setting.boderSize1 = 0;
             btn_Setting.gradientAngle1 = 90F;
-            btn_Setting.Image = Properties.Resources.iconSetting;
-            btn_Setting.Location = new Point(12, 0);
+            btn_Setting.Image = (Image)resources.GetObject("btn_Setting.Image");
+            btn_Setting.Location = new Point(12, 12);
             btn_Setting.Name = "btn_Setting";
             btn_Setting.Size = new Size(57, 52);
             btn_Setting.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -156,8 +156,8 @@
             maximumsize.boderRadius1 = 40;
             maximumsize.boderSize1 = 0;
             maximumsize.gradientAngle1 = 90F;
-            maximumsize.Image = (Image)resources.GetObject("maximumsize.Image");
-            maximumsize.Location = new Point(1194, 0);
+            maximumsize.Image = Properties.Resources.maximize;
+            maximumsize.Location = new Point(1184, 0);
             maximumsize.Name = "maximumsize";
             maximumsize.Size = new Size(34, 35);
             maximumsize.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -171,10 +171,10 @@
             minimunsize.boderRadius1 = 40;
             minimunsize.boderSize1 = 0;
             minimunsize.gradientAngle1 = 90F;
-            minimunsize.Image = (Image)resources.GetObject("minimunsize.Image");
-            minimunsize.Location = new Point(1154, 0);
+            minimunsize.Image = Properties.Resources.minisize;
+            minimunsize.Location = new Point(1132, 0);
             minimunsize.Name = "minimunsize";
-            minimunsize.Size = new Size(31, 35);
+            minimunsize.Size = new Size(33, 35);
             minimunsize.SizeMode = PictureBoxSizeMode.StretchImage;
             minimunsize.TabIndex = 5;
             minimunsize.TabStop = false;
@@ -188,7 +188,7 @@
             Exit.boderSize1 = 0;
             Exit.Cursor = Cursors.Hand;
             Exit.gradientAngle1 = 90F;
-            Exit.Image = (Image)resources.GetObject("Exit.Image");
+            Exit.Image = Properties.Resources.exit;
             Exit.Location = new Point(1234, 0);
             Exit.Name = "Exit";
             Exit.Size = new Size(34, 35);
@@ -353,7 +353,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1268, 818);
+            ClientSize = new Size(1275, 818);
             Controls.Add(customLabel7);
             Controls.Add(customLabel5);
             Controls.Add(customLabel4);

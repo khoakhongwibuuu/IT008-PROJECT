@@ -23,12 +23,16 @@ namespace WordleClient.GUI
             CustomSound.PlayClick();
             this.Close();
         }
-
         private void btn_StartGame_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
+            int wordLength = 7;
+            int cntGuess = (int)trackBarGuess.Value;
+            this.Hide();
+            FormArea formArea = new FormArea(cntGuess, wordLength);
+            formArea.ShowDialog();
+            this.Show();
         }
-
         private void FormOption_Load(object sender, EventArgs e)
         {
 

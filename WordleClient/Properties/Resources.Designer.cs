@@ -73,9 +73,9 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Exit {
+        internal static System.Drawing.Bitmap exit {
             get {
-                object obj = ResourceManager.GetObject("Exit", resourceCulture);
+                object obj = ResourceManager.GetObject("exit", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap iconSetting {
+        internal static System.Drawing.Bitmap Hint {
             get {
-                object obj = ResourceManager.GetObject("iconSetting", resourceCulture);
+                object obj = ResourceManager.GetObject("Hint", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Maximizesize {
+        internal static System.Drawing.Bitmap maximize {
             get {
-                object obj = ResourceManager.GetObject("Maximizesize", resourceCulture);
+                object obj = ResourceManager.GetObject("maximize", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -136,6 +136,16 @@ namespace WordleClient.Properties {
         internal static System.Drawing.Bitmap SoundONicon {
             get {
                 object obj = ResourceManager.GetObject("SoundONicon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap user_setting {
+            get {
+                object obj = ResourceManager.GetObject("user-setting", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
