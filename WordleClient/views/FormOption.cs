@@ -21,7 +21,12 @@ namespace WordleClient.views
                 cbbTopic.Items.Add(topics[i]);
             }
             cbbTopic.Items.Add("(Random)");
+
+            // choose Random topic by default
             cbbTopic.SelectedIndex = topics.Count();
+            
+            customGroupBox1.TabIndex = 0;
+            selectedDifficulty = null;
         }
 
         private void btn_Exit_Click(object sender, EventArgs e)
@@ -40,7 +45,10 @@ namespace WordleClient.views
             WDBRecord? TheChosenOne = wdr.ReadRandomWord(selectedTopic, selectedDifficulty);
             if (TheChosenOne == null)
             {
-                MessageBox.Show("No word found for the selected topic and difficulty. Please with another criteria.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "No word found for the selected topic and difficulty. Please with another criteria.",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error
+                );
             }
             else
             {
@@ -67,7 +75,8 @@ namespace WordleClient.views
 
         private void rd_Random_CheckedChanged(object sender, EventArgs e)
         {
-            selectedDifficulty = "EASY";
+            selectedDifficulty = null;
+
         }
 
         private void rd_Hard_CheckedChanged(object sender, EventArgs e)
@@ -77,7 +86,7 @@ namespace WordleClient.views
 
         private void rd_Easy_CheckedChanged(object sender, EventArgs e)
         {
-            selectedDifficulty = null;
+            selectedDifficulty = "EASY";
         }
     }
 }
