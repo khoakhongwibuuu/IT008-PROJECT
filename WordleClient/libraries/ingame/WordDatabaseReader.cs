@@ -18,7 +18,7 @@ namespace WordleClient.libraries.ingame
         public WDBRecord? ReadRandomWord(string? group, string? level)
         {
             Debug.WriteLine($"DB_READER_OUTPUT: Taken group={group} and level={level}");
-            string baseQuery = "FROM SAMPLE_WORD_LIST WHERE (LENGTH(TOKEN) >= 4 AND LENGTH(TOKEN) <= 8)";
+            string baseQuery = "FROM SAMPLE_WORD_LIST WHERE (LENGTH(TOKEN) >= 4 AND LENGTH(TOKEN) <= 6)";
             using var countCmd = new SQLiteCommand(sql_con);
 
             if (group != null)
@@ -58,7 +58,7 @@ namespace WordleClient.libraries.ingame
             return reader.Read()
                 ? new WDBRecord
                 {
-                    TOKEN = reader.GetString(0),
+                    TOKEN = reader.GetString(0).ToUpper(),
                     GROUP_NAME = reader.GetString(1),
                     LEVEL = reader.GetString(2),
                     DEFINITION = reader.GetString(3)
@@ -90,8 +90,8 @@ namespace WordleClient.libraries.ingame
         public List<string> loadDistinctTokens(int length)
         {
             List<string> tokens = new List<string>();
-            string QUERY = $"SELECT DISTINCT TOKEN FROM SAMPLE_WORD_LIST WHERE (LENGTH(TOKEN) = {length})";
-            using var cmd = new SQLiteCommand(QUERY, sql_con);
+            using var cmd = new SQLiteCommand("SELECT DISTINCT TOKEN FROM SAMPLE_WORD_LIST WHERE (LENGTH(TOKEN) = @length)", sql_con);
+            cmd.Parameters.AddWithValue("@length", length);
             using var reader = cmd.ExecuteReader();
             while(reader.Read())
             {

@@ -1,5 +1,5 @@
-﻿using WordleClient.libraries.lowlevel;
-using WordleClient.views;
+﻿using System.Diagnostics;
+using WordleClient.libraries.lowlevel;
 
 namespace WordleClient.libraries.ingame
 {
@@ -27,7 +27,8 @@ namespace WordleClient.libraries.ingame
         }
         public bool isFoundInDictionary(string guess)
         {
-            return dictionary.Contains(guess);
+            Debug.WriteLine($"Checking if '{guess}' is in dictionary of size {dictionary.Count}");
+            return dictionary.Contains(guess.ToLower());
         }
         public StateArray EvaluateGuess(string guess)
         {
@@ -65,11 +66,6 @@ namespace WordleClient.libraries.ingame
             }
             previousGuesses.Add(guess);
             return result;
-        }
-        public void StartGameForm(int guessCount)
-        {
-            var gameForm = new Playground(guessCount, targetRecord.TOKEN.Length);
-            gameForm.ShowDialog();
         }
         public void Dispose()
         {
