@@ -20,7 +20,7 @@ namespace WordleClient.GUI
         Label? lblSetting;
         PictureBox? picHint;
         System.Windows.Forms.Timer? gameTimer;
-        public FormArea(int cntGuess,int wordlength)
+        public FormArea(int cntGuess, int wordlength)
         {
             InitializeComponent();
             this.KeyPreview = true;
@@ -41,7 +41,8 @@ namespace WordleClient.GUI
         }
         private void CreateBoard(int cols)
         {
-            if (TablePlay == null) {
+            if (TablePlay == null)
+            {
                 return;
             }
             TablePlay.Controls.Clear();
@@ -66,7 +67,7 @@ namespace WordleClient.GUI
                     Label lbl = new Label();
                     lbl.Text = "-";
                     lbl.Dock = DockStyle.Fill;
-                    lbl.Font = new Font("Segoe UI", 36, FontStyle.Bold); 
+                    lbl.Font = new Font("Segoe UI", 36, FontStyle.Bold);
                     lbl.TextAlign = ContentAlignment.MiddleCenter;
                     lbl.BackColor = Color.White;
                     lbl.BorderStyle = BorderStyle.FixedSingle;
@@ -109,14 +110,14 @@ namespace WordleClient.GUI
         private void UpdateRowDisplay()
         {
             for (int i = 0; i < wordlength; i++)
-            {             
+            {
                 Label lbl = (Label)TablePlay.GetControlFromPosition(i, currentRow);
                 lbl.Text = i < currentInput.Length ? currentInput[i].ToString() : "-";
             }
         }
         private void gameTimer_Tick(object? sender, EventArgs e)
         {
-            if(lblTimer == null)
+            if (lblTimer == null)
             {
                 return;
             }
@@ -139,7 +140,7 @@ namespace WordleClient.GUI
             lblScore.Text = "⭐ Score: 0";
             lblScore.Font = new Font("Segoe UI", 22, FontStyle.Bold);
             lblScore.ForeColor = Color.DarkGreen;
-            lblScore.Location = new Point(80, 40);
+            lblScore.Location = new Point(200, 40);
             lblScore.AutoSize = true;
             this.Controls.Add(lblScore);
             // Timer
@@ -147,7 +148,7 @@ namespace WordleClient.GUI
             lblTimer.Text = "⏱ 0s";
             lblTimer.Font = new Font("Segoe UI", 22, FontStyle.Bold);
             lblTimer.ForeColor = Color.DarkBlue;
-            lblTimer.Location = new Point(400, 40);
+            lblTimer.Location = new Point(450, 40);
             lblTimer.AutoSize = true;
             this.Controls.Add(lblTimer);
             // Hint
@@ -161,13 +162,22 @@ namespace WordleClient.GUI
             this.Controls.Add(picHint);
             //Setting
             PictureBox picSetting = new PictureBox();
-            picSetting.Image = Properties.Resources.user_setting; 
+            picSetting.Image = Properties.Resources.user_setting;
             picSetting.SizeMode = PictureBoxSizeMode.Zoom;
-            picSetting.Size = new Size(60, 60);
-            picSetting.Location = new Point(picHint.Right + 100, picHint.Top); 
+            picSetting.Size = new Size(60, 60); // bằng Hint
+            picSetting.Location = new Point(picHint.Right + 100, picHint.Top);
             picSetting.Cursor = Cursors.Hand;
             picSetting.Click += PicSetting_Click;
             this.Controls.Add(picSetting);
+            //Rank
+            PictureBox picRank = new PictureBox();
+            picRank.Image = Properties.Resources.ranking;
+            picRank.SizeMode = PictureBoxSizeMode.Zoom;
+            picRank.Size = new Size(60, 60); 
+            picRank.Location = new Point(lblScore.Left - 120, lblScore.Top);
+            picRank.Cursor = Cursors.Hand;
+            picRank.Click += PicRank_Click; ;
+            this.Controls.Add(picRank);
             // Table Play
             TablePlay = new TableLayoutPanel();
             TablePlay.BackColor = Color.White;
@@ -177,6 +187,12 @@ namespace WordleClient.GUI
             this.Controls.Add(TablePlay);
             this.Load += FormArea_Load;
         }
+
+        private void PicRank_Click(object? sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+        }
+
         private void PicSetting_Click(object? sender, EventArgs e)
         {
             CustomSound.PlayClick();
@@ -190,7 +206,7 @@ namespace WordleClient.GUI
         }
         private void CenterBoard()
         {
-            if(TablePlay == null)
+            if (TablePlay == null)
             {
                 return;
             }
