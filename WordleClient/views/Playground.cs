@@ -1,20 +1,22 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
+﻿using System.Diagnostics;
 using System.Text;
-using System.Windows.Forms;
 using WordleClient.libraries.ingame;
+using WordleClient.libraries.lowlevel;
 
 namespace WordleClient.views
 {
     public partial class Playground : Form
     {
+        // Matrix dimensions
         private readonly int rows;
         private readonly int cols;
-        private Panel matrixPanel;
+        private readonly Panel matrixPanel;
+
+        // Size constants
         private const int boxSize = 45;
         private const int spacing = 5;
 
+        // Tracks the current string being built in the current row
         private string currentString = string.Empty;
 
         // Tracks the current position where typed letters will go (next free column)
@@ -24,13 +26,26 @@ namespace WordleClient.views
         // Whether the current row is fully filled (when true, only Enter and Backspace are handled)
         private bool rowCompleted = false;
 
-        public Playground(int m, int n)
+        // Game Instance
+        private GameInstance gameInstance;
+
+        public Playground(WDBRecord TheChosenOne, int MaxGuessCount)
         {
-            rows = m;
-            cols = n;
+            this.rows = MaxGuessCount;
+            this.cols = TheChosenOne.TOKEN.Length;
             this.WindowState = FormWindowState.Maximized;
+            this.gameInstance = new GameInstance(TheChosenOne, MaxGuessCount);
+
             InitializeComponent();
-            InitializeMatrixPanel();
+            this.matrixPanel = new Panel
+            {
+                BackColor = Color.Transparent,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink
+            };
+            this.Controls.Add(matrixPanel);
+            this.MinimumSize = new Size(300, 300);
+
             CreateMatrix();
             CenterMatrix();
 
@@ -39,18 +54,6 @@ namespace WordleClient.views
             this.KeyPress += Playground_KeyPress;
 
             this.Resize += (s, e) => CenterMatrix();
-        }
-
-        private void InitializeMatrixPanel()
-        {
-            matrixPanel = new Panel
-            {
-                BackColor = Color.Transparent,
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink
-            };
-            this.Controls.Add(matrixPanel);
-            this.MinimumSize = new Size(300, 300);
         }
 
         private void CreateMatrix()
@@ -115,10 +118,42 @@ namespace WordleClient.views
             {
                 if (IsRowFilled(currentRow) && currentRow < rows - 1)
                 {
-                    currentRow++;
-                    currentCol = 0;
                     rowCompleted = IsRowFilled(currentRow);
                     currentString = GetRowString(currentRow);
+                    if (gameInstance.isFoundInDictionary(currentString) || true)
+                    {
+                        currentRow++;
+                        currentCol = 0;
+                        Debug.WriteLine($"Submitted word: {currentString}");
+                        var result = gameInstance.EvaluateGuess(currentString);
+
+                        for (int c = 0; c < cols; c++)
+                        {
+                            var box = GetBox(currentRow - 1, c);
+                            if (box != null)
+                            {
+                                switch (result.Get(c))
+                                {
+                                    case TriState.MATCH:
+                                        box.SetBackgroundColor(Color.FromArgb(255, 0x53, 0x8D, 0x4E));
+                                        break;
+                                    case TriState.INVALID_ORDER:
+                                        box.SetBackgroundColor(Color.FromArgb(255, 0xB5, 0x9F, 0x3B));
+                                        break;
+                                    case TriState.NOT_EXIST:
+                                        box.SetBackgroundColor(Color.FromArgb(255, 0x3A, 0x3A, 0x3C));
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            "The entered word is not in the dictionary.",
+                            "Invalid Word", MessageBoxButtons.OK, MessageBoxIcon.Warning
+                        );
+                    }
                     Debug.WriteLine(currentString);
                     e.Handled = true;
                 }
@@ -209,7 +244,6 @@ namespace WordleClient.views
                 }
             }
         }
-
         private bool IsRowFilled(int row)
         {
             if (row < 0 || row >= rows)

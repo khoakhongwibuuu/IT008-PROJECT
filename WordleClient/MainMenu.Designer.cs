@@ -77,7 +77,7 @@ namespace WordleClient
             btn_SinglePlayer.Text = "SinglePlayer";
             btn_SinglePlayer.TextAlign = ContentAlignment.MiddleCenter;
             btn_SinglePlayer.TextColor = Color.Black;
-            btn_SinglePlayer.Click += btn_SinglePlayer_Click_1;
+            btn_SinglePlayer.Click += btn_SinglePlayer_Click;
             // 
             // btn_MultiPlayer
             // 

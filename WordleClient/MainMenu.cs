@@ -1,6 +1,6 @@
-﻿using WordleClient.views;
+﻿using WordleClient.libraries.CustomControls;
 using WordleClient.libraries.StateFrom;
-using WordleClient.libraries.CustomControls;
+using WordleClient.views;
 
 namespace WordleClient
 {
@@ -17,15 +17,28 @@ namespace WordleClient
                 CustomSound.PlayBackgroundLoop();
             }
         }
-        private void btn_SinglePlayer_Click_1(object sender, EventArgs e)
+        private void btn_SinglePlayer_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
             FormOption formOption = new FormOption();
-            formOption.ShowDialog();
+            formOption.FormClosed += FormOption_FormClosed;
+            formOption.Show();
+            this.Hide();
         }
+
+        private void FormOption_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            // Only show MainMenu again when FormOption indicates it should return to main.
+            if (sender is FormOption fo && fo.ReturnToMainOnClose)
+            {
+                this.Show();
+            }
+        }
+
         private void btn_MultiPlayer_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
+            MessageBox.Show("Multiplayer mode is under development.", "Coming Soon", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void btn_Exit_Click(object sender, EventArgs e)
         {

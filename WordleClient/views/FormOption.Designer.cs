@@ -84,7 +84,7 @@ namespace WordleClient.views
             customGroupBox1.Size = new Size(345, 218);
             customGroupBox1.TabIndex = 1;
             customGroupBox1.TabStop = false;
-            customGroupBox1.Text = "Chọn Level";
+            customGroupBox1.Text = "Select word difficulty";
             customGroupBox1.TextColor = Color.Black;
             customGroupBox1.TitleAlign = ContentAlignment.TopLeft;
             customGroupBox1.TitlePadding = 10;
@@ -191,7 +191,7 @@ namespace WordleClient.views
             customGroupBox2.Size = new Size(345, 197);
             customGroupBox2.TabIndex = 3;
             customGroupBox2.TabStop = false;
-            customGroupBox2.Text = "Chọn Topic và số cơ hội đoán";
+            customGroupBox2.Text = "Select topic and maximum number of guesses";
             customGroupBox2.TextColor = Color.Black;
             customGroupBox2.TitleAlign = ContentAlignment.TopLeft;
             customGroupBox2.TitlePadding = 10;

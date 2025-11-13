@@ -11,6 +11,11 @@ namespace WordleClient.views
         private List<string> topics = new List<string>();
         private string? selectedTopic;
         private string? selectedDifficulty;
+
+        // When true MainMenu should be shown when this form closes.
+        // When false (e.g. we opened Playground) MainMenu will be shown by Playground's closed handler.
+        public bool ReturnToMainOnClose { get; set; } = true;
+
         public FormOption()
         {
             InitializeComponent();
@@ -43,6 +48,7 @@ namespace WordleClient.views
 
             WordDatabaseReader wdr = new WordDatabaseReader();
             WDBRecord? TheChosenOne = wdr.ReadRandomWord(selectedTopic, selectedDifficulty);
+            Debug.WriteLine($"START_BTN_OUTPUT: ChosenWord='{TheChosenOne?.TOKEN}', Topic='{TheChosenOne?.GROUP_NAME}'");
             if (TheChosenOne == null)
             {
                 MessageBox.Show(
@@ -52,10 +58,26 @@ namespace WordleClient.views
             }
             else
             {
-                this.Hide();
+                // Create playground and ensure MainMenu will be shown when playground closes.
+                Playground pg = new Playground(TheChosenOne, MaxGuessCount);
+                pg.FormClosed += (s, ev) =>
+                {
+                    var main = Application.OpenForms.OfType<MainMenu>().FirstOrDefault();
+                    if (main != null)
+                    {
+                        main.Show();
+                        CustomSound.PlayBackgroundLoop();
+                    }    
+                };
+
+                // Indicate that closing this FormOption should NOT return to MainMenu
+                this.ReturnToMainOnClose = false;
+
+                // Close this options form and show playground
+                this.Close();
+
                 CustomSound.StopBackground();
-                GameInstance game = new GameInstance(TheChosenOne, MaxGuessCount);
-                game.StartGameForm(MaxGuessCount);
+                pg.Show();
             }
         }
 
