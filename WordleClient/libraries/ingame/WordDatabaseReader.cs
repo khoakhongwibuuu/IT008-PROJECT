@@ -7,7 +7,6 @@ namespace WordleClient.libraries.ingame
     class WordDatabaseReader
     {
         private readonly SQLiteConnection sql_con;
-
         public WordDatabaseReader()
         {
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -16,7 +15,6 @@ namespace WordleClient.libraries.ingame
             sql_con = new SQLiteConnection(ConnectionString);
             sql_con.Open();
         }
-
         public WDBRecord? ReadRandomWord(string? group, string? level)
         {
             Debug.WriteLine($"DB_READER_OUTPUT: Taken group={group} and level={level}");
@@ -67,7 +65,6 @@ namespace WordleClient.libraries.ingame
                 }
                 : null;
         }
-
         public List<string> loadLevels()
         {
             List<string> levels = new List<string>();
@@ -79,7 +76,6 @@ namespace WordleClient.libraries.ingame
             }
             return levels;
         }
-
         public List<string> loadGroups()
         {
             List<string> groups = new List<string>();
@@ -91,7 +87,18 @@ namespace WordleClient.libraries.ingame
             }
             return groups;
         }
-
+        public List<string> loadDistinctTokens(int length)
+        {
+            List<string> tokens = new List<string>();
+            string QUERY = $"SELECT DISTINCT TOKEN FROM SAMPLE_WORD_LIST WHERE (LENGTH(TOKEN) = {length})";
+            using var cmd = new SQLiteCommand(QUERY, sql_con);
+            using var reader = cmd.ExecuteReader();
+            while(reader.Read())
+            {
+                tokens.Add(reader.GetString(0));
+            }
+            return tokens;
+        }   
 
         public void Close() => sql_con.Close();
     }

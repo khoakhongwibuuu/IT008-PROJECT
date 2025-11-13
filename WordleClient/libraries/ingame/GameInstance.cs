@@ -7,19 +7,27 @@ namespace WordleClient.libraries.ingame
     {
         private readonly WDBRecord targetRecord;
         private readonly int maxAttempts;
+        private readonly List<string> dictionary;
         private List<string> previousGuesses;
 
         public GameInstance(WDBRecord targetRecord, int maxAttempts)
         {
+            WordDatabaseReader wdr = new();
             this.targetRecord = targetRecord;
             this.maxAttempts = maxAttempts;
-            previousGuesses = new List<string>();
+            this.dictionary = wdr.loadDistinctTokens(targetRecord.TOKEN.Length);
+            this.previousGuesses = new List<string>();
         }
         public GameInstance(string testWord, int maxAttempts)
         {
             this.targetRecord = new WDBRecord { TOKEN = testWord, DEFINITION = "undefined", GROUP_NAME = "undefined"  };
             this.maxAttempts = maxAttempts;
-            previousGuesses = new List<string>();
+            this.dictionary = new List<string>();
+            this.previousGuesses = new List<string>();
+        }
+        public bool isFoundInDictionary(string guess)
+        {
+            return dictionary.Contains(guess);
         }
         public StateArray EvaluateGuess(string guess)
         {
@@ -60,7 +68,7 @@ namespace WordleClient.libraries.ingame
         }
         public void StartGameForm(int guessCount)
         {
-            var gameForm = new MatrixDemo(guessCount, targetRecord.TOKEN.Length);
+            var gameForm = new Playground(guessCount, targetRecord.TOKEN.Length);
             gameForm.ShowDialog();
         }
         public void Dispose()
