@@ -29,7 +29,12 @@ namespace WordleClient.views
 
             // choose Random topic by default
             cbbTopic.SelectedIndex = topics.Count();
-            
+            int itemHeight = cbbTopic.ItemHeight;
+            int visibleItems = 7;
+            cbbTopic.DropDownHeight = itemHeight * visibleItems;
+            cbbTopic.IntegralHeight = false;
+
+
             customGroupBox1.TabIndex = 0;
             selectedDifficulty = null;
         }
