@@ -357,7 +357,7 @@ namespace WordleClient
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1268, 818);
+            ClientSize = new Size(1260, 945);
             Controls.Add(customLabel7);
             Controls.Add(customLabel5);
             Controls.Add(customLabel4);
