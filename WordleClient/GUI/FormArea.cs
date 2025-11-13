@@ -163,7 +163,7 @@ namespace WordleClient.GUI
             PictureBox picSetting = new PictureBox();
             picSetting.Image = Properties.Resources.user_setting; 
             picSetting.SizeMode = PictureBoxSizeMode.Zoom;
-            picSetting.Size = new Size(60, 60); // bằng Hint
+            picSetting.Size = new Size(60, 60);
             picSetting.Location = new Point(picHint.Right + 100, picHint.Top); 
             picSetting.Cursor = Cursors.Hand;
             picSetting.Click += PicSetting_Click;
@@ -177,7 +177,6 @@ namespace WordleClient.GUI
             this.Controls.Add(TablePlay);
             this.Load += FormArea_Load;
         }
-
         private void PicSetting_Click(object? sender, EventArgs e)
         {
             CustomSound.PlayClick();
