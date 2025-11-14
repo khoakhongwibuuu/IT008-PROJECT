@@ -19,6 +19,10 @@ namespace WordleClient.views
         // Tracks the current string being built in the current row
         private string currentString = string.Empty;
 
+        // 
+        private bool HasCompletedString = false;
+        private bool GameEnded = false;
+
         // Tracks the current position where typed letters will go (next free column)
         private int currentRow = 0;
         private int currentCol = 0;
@@ -77,17 +81,17 @@ namespace WordleClient.views
                     );
 
                     // Allow user to click a box to change the current input position
-                    box.Click += (s, e) =>
-                    {
-                        currentRow = row;
-                        // next free column should be the clicked box index
-                        currentCol = col;
-                        // recompute whether the row is completed
-                        rowCompleted = IsRowFilled(currentRow);
-                        // update currentString to reflect the clicked row
-                        currentString = GetRowString(currentRow);
-                        Debug.WriteLine(currentString);
-                    };
+                    //box.Click += (s, e) =>
+                    //{
+                    //    currentRow = row;
+                    //    // next free column should be the clicked box index
+                    //    currentCol = col;
+                    //    // recompute whether the row is completed
+                    //    rowCompleted = IsRowFilled(currentRow);
+                    //    // update currentString to reflect the clicked row
+                    //    currentString = GetRowString(currentRow);
+                    //    Debug.WriteLine(currentString);
+                    //};
 
                     matrixPanel.Controls.Add(box);
                 }
@@ -113,23 +117,25 @@ namespace WordleClient.views
 
         private void Playground_KeyPress(object? sender, KeyPressEventArgs e)
         {
+            // If game has ended, do not handle
+            if (GameEnded) return;
+
             // ENTER: only handled when current row is filled
             if (e.KeyChar == '\r')
             {
-                if (IsRowFilled(currentRow) && currentRow < rows - 1)
+                if (IsRowFilled(currentRow))
                 {
                     rowCompleted = IsRowFilled(currentRow);
                     currentString = GetRowString(currentRow);
                     if (gameInstance.isFoundInDictionary(currentString) || true)
                     {
-                        currentRow++;
-                        currentCol = 0;
+                        
                         Debug.WriteLine($"Submitted word: {currentString}");
                         var result = gameInstance.EvaluateGuess(currentString);
 
                         for (int c = 0; c < cols; c++)
                         {
-                            var box = GetBox(currentRow - 1, c);
+                            var box = GetBox(currentRow, c);
                             if (box != null)
                             {
                                 switch (result.Get(c))
@@ -144,6 +150,28 @@ namespace WordleClient.views
                                         box.SetBackgroundColor(Color.FromArgb(255, 0x3A, 0x3A, 0x3C));
                                         break;
                                 }
+                            }
+                        }
+
+                        if (result.IsFullValue(TriState.MATCH))
+                        {
+                            HasCompletedString = true;
+                            GameEnded = true;
+                            MessageBox.Show("Congrats. You have found the hidden word");
+
+                        }
+                        if (currentRow < rows - 1)
+                        {
+                            currentRow++;
+                            currentCol = 0;
+                        }
+                        else
+                        {
+                            // The player has used all of their attempts
+                            if (!HasCompletedString)
+                            {
+                                MessageBox.Show($"You have failed. The hidden word is {gameInstance.GetToken()}");
+                                GameEnded = true;
                             }
                         }
                     }

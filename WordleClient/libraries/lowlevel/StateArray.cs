@@ -64,6 +64,19 @@ namespace WordleClient.libraries.lowlevel
         }
 
         /// <summary>
+        /// Checks if all elements are equal to the given value.
+        /// </summary>
+        public bool IsFullValue(TriState value)
+        {
+            for(int i = 0; i < Length; i++)
+            {
+                if (Get(i) != value)
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Returns an enumerator that iterates through the array.
         /// </summary>
         public IEnumerator<TriState> GetEnumerator()

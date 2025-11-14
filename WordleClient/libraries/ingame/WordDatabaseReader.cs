@@ -18,7 +18,7 @@ namespace WordleClient.libraries.ingame
         public WDBRecord? ReadRandomWord(string? group, string? level)
         {
             Debug.WriteLine($"DB_READER_OUTPUT: Taken group={group} and level={level}");
-            string baseQuery = "FROM SAMPLE_WORD_LIST WHERE (LENGTH(TOKEN) >= 4 AND LENGTH(TOKEN) <= 6)";
+            string baseQuery = "FROM SAMPLE_WORD_LIST WHERE (LENGTH(TOKEN) >= 4 AND LENGTH(TOKEN) <= 7)";
             using var countCmd = new SQLiteCommand(sql_con);
 
             if (group != null)

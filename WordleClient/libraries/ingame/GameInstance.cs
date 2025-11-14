@@ -67,6 +67,10 @@ namespace WordleClient.libraries.ingame
             previousGuesses.Add(guess);
             return result;
         }
+        public string GetToken()
+        {
+            return targetRecord.TOKEN;
+        }
         public void Dispose()
         {
             // Destructor
