@@ -1,16 +1,4 @@
-﻿// Pseudocode / Plan:
-// 1. Fix case-sensitivity bug in GetRandomVowel and GetRandomConsonant:
-//    - Compare characters using a normalized form (ToUpperInvariant) against uppercase sets.
-//    - Use HashSet<char> for faster contains checks.
-//    - Preserve the original character case when returning a random match from the input string.
-// 2. Keep the existing behavior: return null for empty input or when no matching letters found.
-// 3. Keep other GameInstance logic unchanged.
-// 4. Make minimal, safe changes to improve correctness and performance.
-
-using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Diagnostics;
 using WordleClient.libraries.lowlevel;
 
 namespace WordleClient.libraries.ingame
