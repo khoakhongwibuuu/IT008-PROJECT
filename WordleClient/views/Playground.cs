@@ -2,6 +2,7 @@
 using System.Text;
 using WordleClient.libraries.ingame;
 using WordleClient.libraries.lowlevel;
+using WordleClient.libraries.StateFrom;
 
 namespace WordleClient.views
 {
@@ -13,15 +14,17 @@ namespace WordleClient.views
         private readonly Panel matrixPanel;
 
         // Size constants
-        private const int boxSize = 45;
-        private const int spacing = 5;
+        private const int boxSize = 60;
+        private const int spacing = 6;
 
         // Tracks the current string being built in the current row
         private string currentString = string.Empty;
 
-        // 
+        // Game flags
         private bool HasCompletedString = false;
         private bool GameEnded = false;
+        private int HintRemaining = 2;
+        private readonly int GameSeed;
 
         // Tracks the current position where typed letters will go (next free column)
         private int currentRow = 0;
@@ -35,11 +38,12 @@ namespace WordleClient.views
 
         public Playground(WDBRecord TheChosenOne, int MaxGuessCount)
         {
+            Random rd = new Random();
             this.rows = MaxGuessCount;
             this.cols = TheChosenOne.TOKEN.Length;
             this.WindowState = FormWindowState.Maximized;
             this.gameInstance = new GameInstance(TheChosenOne, MaxGuessCount);
-
+            this.GameSeed = rd.Next(0, 1);
             InitializeComponent();
             this.matrixPanel = new Panel
             {
@@ -79,20 +83,6 @@ namespace WordleClient.views
                         j * (boxSize + spacing),
                         i * (boxSize + spacing)
                     );
-
-                    // Allow user to click a box to change the current input position
-                    //box.Click += (s, e) =>
-                    //{
-                    //    currentRow = row;
-                    //    // next free column should be the clicked box index
-                    //    currentCol = col;
-                    //    // recompute whether the row is completed
-                    //    rowCompleted = IsRowFilled(currentRow);
-                    //    // update currentString to reflect the clicked row
-                    //    currentString = GetRowString(currentRow);
-                    //    Debug.WriteLine(currentString);
-                    //};
-
                     matrixPanel.Controls.Add(box);
                 }
             }
@@ -129,7 +119,7 @@ namespace WordleClient.views
                     currentString = GetRowString(currentRow);
                     if (gameInstance.isFoundInDictionary(currentString) || true)
                     {
-                        
+
                         Debug.WriteLine($"Submitted word: {currentString}");
                         var result = gameInstance.EvaluateGuess(currentString);
 
@@ -285,7 +275,6 @@ namespace WordleClient.views
             }
             return true;
         }
-
         private bool IsBoxEmpty(CharBox box)
         {
             if (box == null)
@@ -298,7 +287,6 @@ namespace WordleClient.views
                 return true;
             return false;
         }
-
         private string GetRowString(int row)
         {
             if (row < 0 || row >= rows)
@@ -323,7 +311,6 @@ namespace WordleClient.views
 
             return sb.ToString();
         }
-
         private CharBox? GetBox(int r, int c)
         {
             if (r < 0 || c < 0 || r >= rows || c >= cols || matrixPanel == null)
@@ -334,6 +321,39 @@ namespace WordleClient.views
                 return null;
 
             return matrixPanel.Controls[index] as CharBox;
+        }
+        private void GetHintBtn_Click(object sender, EventArgs e)
+        {
+            if (HintRemaining > 0 && !GameEnded)
+            {
+                CustomSound.PlayClick();
+                string hint = gameInstance.GetHint(HintRemaining + GameSeed);
+                MessageBox.Show($"Hint: {hint}", "Get Hint", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                HintRemaining--;
+            }
+            else if (GameEnded)
+            {
+                MessageBox.Show("The game has ended.", "Get Hint", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                MessageBox.Show("No hints remaining.", "Get Hint", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        private void ExitBtn_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            if (!GameEnded)
+            {
+                if (MessageBox.Show("Are you sure you want to exit? This game will not be saved.", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    this.Close();
+                }
+            }
+            else
+            {
+                this.Close();
+            }
         }
     }
 }
