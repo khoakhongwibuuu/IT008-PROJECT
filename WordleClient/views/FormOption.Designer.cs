@@ -44,6 +44,7 @@ namespace WordleClient.views
             trackBarGuess = new TrackBar();
             cbbTopic = new ComboBox();
             btn_Exit = new CustomPictureBox();
+            customLabel4 = new CustomLabel();
             customGroupBox1.SuspendLayout();
             customGroupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarGuess).BeginInit();
@@ -177,6 +178,7 @@ namespace WordleClient.views
             customGroupBox2.BorderColor = Color.Teal;
             customGroupBox2.BorderRadius = 15;
             customGroupBox2.BorderSize = 2;
+            customGroupBox2.Controls.Add(customLabel4);
             customGroupBox2.Controls.Add(customLabel3);
             customGroupBox2.Controls.Add(customLabel2);
             customGroupBox2.Controls.Add(customLabel1);
@@ -203,7 +205,7 @@ namespace WordleClient.views
             customLabel3.EndColor = Color.MediumPurple;
             customLabel3.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             customLabel3.ForeColor = Color.White;
-            customLabel3.Location = new Point(164, 127);
+            customLabel3.Location = new Point(132, 136);
             customLabel3.Margin = new Padding(3, 2, 3, 2);
             customLabel3.Name = "customLabel3";
             customLabel3.ShadowOffset = 4;
@@ -219,7 +221,7 @@ namespace WordleClient.views
             customLabel2.EndColor = Color.MediumPurple;
             customLabel2.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             customLabel2.ForeColor = Color.White;
-            customLabel2.Location = new Point(256, 127);
+            customLabel2.Location = new Point(195, 136);
             customLabel2.Margin = new Padding(3, 2, 3, 2);
             customLabel2.Name = "customLabel2";
             customLabel2.ShadowOffset = 4;
@@ -235,7 +237,7 @@ namespace WordleClient.views
             customLabel1.EndColor = Color.MediumPurple;
             customLabel1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             customLabel1.ForeColor = Color.White;
-            customLabel1.Location = new Point(74, 127);
+            customLabel1.Location = new Point(71, 136);
             customLabel1.Margin = new Padding(3, 2, 3, 2);
             customLabel1.Name = "customLabel1";
             customLabel1.ShadowOffset = 4;
@@ -248,7 +250,7 @@ namespace WordleClient.views
             // 
             trackBarGuess.Location = new Point(71, 108);
             trackBarGuess.Margin = new Padding(3, 2, 3, 2);
-            trackBarGuess.Maximum = 8;
+            trackBarGuess.Maximum = 9;
             trackBarGuess.Minimum = 6;
             trackBarGuess.Name = "trackBarGuess";
             trackBarGuess.Size = new Size(214, 45);
@@ -285,6 +287,22 @@ namespace WordleClient.views
             btn_Exit.TabIndex = 7;
             btn_Exit.TabStop = false;
             btn_Exit.Click += btn_Exit_Click;
+            // 
+            // customLabel4
+            // 
+            customLabel4.BoderRadius = 3F;
+            customLabel4.BorderColor = Color.White;
+            customLabel4.EndColor = Color.MediumPurple;
+            customLabel4.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            customLabel4.ForeColor = Color.White;
+            customLabel4.Location = new Point(256, 136);
+            customLabel4.Margin = new Padding(3, 2, 3, 2);
+            customLabel4.Name = "customLabel4";
+            customLabel4.ShadowOffset = 4;
+            customLabel4.Size = new Size(30, 39);
+            customLabel4.StartColor = Color.MediumSlateBlue;
+            customLabel4.TabIndex = 3;
+            customLabel4.Text = "9";
             // 
             // FormOption
             // 
@@ -324,5 +342,6 @@ namespace WordleClient.views
         private CustomLabel customLabel3;
         private CustomLabel customLabel2;
         private CustomLabel customLabel1;
+        private CustomLabel customLabel4;
     }
 }
