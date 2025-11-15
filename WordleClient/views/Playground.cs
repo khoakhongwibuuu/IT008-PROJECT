@@ -360,17 +360,7 @@ namespace WordleClient.views
         private void ExitBtn_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            if (!GameEnded)
-            {
-                if (MessageBox.Show("Are you sure you want to exit? This game will not be saved.", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    this.Close();
-                }
-            }
-            else
-            {
-                this.Close();
-            }
+            this.Close();
         }
     }
 }
