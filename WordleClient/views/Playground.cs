@@ -41,10 +41,10 @@ namespace WordleClient.views
             Random rd = new Random();
             this.rows = MaxGuessCount;
             this.cols = TheChosenOne.TOKEN.Length;
-            //this.WindowState = FormWindowState.Maximized;
             this.MaximizeBox = false;
             this.gameInstance = new GameInstance(TheChosenOne, MaxGuessCount);
             this.GameSeed = rd.Next(0, 1);
+
             InitializeComponent();
             this.matrixPanel = new Panel
             {
@@ -62,8 +62,23 @@ namespace WordleClient.views
             // Ensure form receives key events before controls
             this.KeyPreview = true;
             this.KeyPress += Playground_KeyPress;
-
             this.Resize += (s, e) => CenterMatrix();
+            this.FormClosing += Playground_FormClosing;
+        }
+
+        private void Playground_FormClosing(object? sender, FormClosingEventArgs e)
+        {
+            if (GameEnded)
+            {
+                return;
+            }
+            else
+            {
+                if (MessageBox.Show("Are you sure you want to exit? This game will not be saved.", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+            }
         }
 
         private void CreateMatrix()
