@@ -41,7 +41,8 @@ namespace WordleClient.views
             Random rd = new Random();
             this.rows = MaxGuessCount;
             this.cols = TheChosenOne.TOKEN.Length;
-            this.WindowState = FormWindowState.Maximized;
+            //this.WindowState = FormWindowState.Maximized;
+            this.MaximizeBox = false;
             this.gameInstance = new GameInstance(TheChosenOne, MaxGuessCount);
             this.GameSeed = rd.Next(0, 1);
             InitializeComponent();
@@ -52,7 +53,8 @@ namespace WordleClient.views
                 AutoSizeMode = AutoSizeMode.GrowAndShrink
             };
             this.Controls.Add(matrixPanel);
-            this.MinimumSize = new Size(300, 300);
+            this.MinimumSize = new Size(860, 680);
+            this.MaximumSize = new Size(860, 680);
 
             CreateMatrix();
             CenterMatrix();

@@ -30,7 +30,7 @@
             customButton1.ButtonImage = null;
             customButton1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             customButton1.ImageSize = 24;
-            customButton1.Location = new Point(827, 750);
+            customButton1.Location = new Point(12, 58);
             customButton1.Name = "customButton1";
             customButton1.Size = new Size(150, 40);
             customButton1.TabIndex = 0;
@@ -48,7 +48,7 @@
             customButton2.ButtonImage = null;
             customButton2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             customButton2.ImageSize = 24;
-            customButton2.Location = new Point(618, 750);
+            customButton2.Location = new Point(12, 12);
             customButton2.Name = "customButton2";
             customButton2.Size = new Size(150, 40);
             customButton2.TabIndex = 1;
@@ -61,7 +61,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1200, 900);
+            ClientSize = new Size(860, 680);
             Controls.Add(customButton2);
             Controls.Add(customButton1);
             Name = "Playground";
