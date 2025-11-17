@@ -31,30 +31,30 @@ namespace WordleClient.views
         private int currentCol = 0;
 
         // Whether the current row is fully filled (when true, only Enter and Backspace are handled)
-        private bool rowCompleted = false;
+        // private bool rowCompleted = false;
 
         // Game Instance
         private GameInstance gameInstance;
 
         public Playground(WDBRecord TheChosenOne, int MaxGuessCount)
         {
-            Random rd = new Random();
+            Random rd = new();
             this.rows = MaxGuessCount;
             this.cols = TheChosenOne.TOKEN.Length;
-            this.MaximizeBox = false;
-            this.gameInstance = new GameInstance(TheChosenOne, MaxGuessCount);
+            this.gameInstance = new GameInstance(TheChosenOne);
             this.GameSeed = rd.Next(0, 1);
 
             InitializeComponent();
+            lbl_Diff.Text = TheChosenOne.LEVEL;
+            lbl_Tpc.Text = TheChosenOne.GROUP_NAME;
             this.matrixPanel = new Panel
             {
                 BackColor = Color.Transparent,
                 AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                TabIndex = 3
             };
-            this.Controls.Add(matrixPanel);
-            this.MinimumSize = new Size(860, 680);
-            this.MaximumSize = new Size(860, 680);
+            this.panel2.Controls.Add(matrixPanel);
 
             CreateMatrix();
             CenterMatrix();
@@ -62,19 +62,24 @@ namespace WordleClient.views
             // Ensure form receives key events before controls
             this.KeyPreview = true;
             this.KeyPress += Playground_KeyPress;
-            this.Resize += (s, e) => CenterMatrix();
+
+            // Resize event to re-center matrix
+            // this.Resize += (s, e) => CenterMatrix();
+            this.panel2.Resize += (s, e) => CenterMatrix();
             this.FormClosing += Playground_FormClosing;
         }
 
         private void Playground_FormClosing(object? sender, FormClosingEventArgs e)
         {
-            if (GameEnded)
-            {
-                return;
-            }
+            if (GameEnded) return;
             else
             {
-                if (MessageBox.Show("Are you sure you want to exit? This game will not be saved.", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                if (
+                    MessageBox.Show(
+                    "Are you sure you want to exit? This game will not be saved.",
+                    "Exit",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No
+                )
                 {
                     e.Cancel = true;
                 }
@@ -89,36 +94,32 @@ namespace WordleClient.views
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    // capture loop variables for the click handler
-                    int row = i;
-                    int col = j;
-
-                    CharBox box = new CharBox();
-                    box.Size = new Size(boxSize, boxSize);
+                    CharBox box = new()
+                    {
+                        Size = new Size(boxSize, boxSize),
+                        Location = new Point(
+                            j * (boxSize + spacing),
+                            i * (boxSize + spacing)
+                        )
+                    };
                     box.SetCharacter('-');
-                    box.Location = new Point(
-                        j * (boxSize + spacing),
-                        i * (boxSize + spacing)
-                    );
                     matrixPanel.Controls.Add(box);
                 }
             }
 
-            // reset cursor state after creating matrix
             currentRow = 0;
             currentCol = 0;
-            rowCompleted = IsRowFilled(0);
             currentString = GetRowString(0);
         }
 
         private void CenterMatrix()
         {
-            int panelWidth = cols * (boxSize + spacing);
-            int panelHeight = rows * (boxSize + spacing);
+            int panelWidth = cols * (boxSize + spacing) - spacing;
+            int panelHeight = rows * (boxSize + spacing) - spacing;
 
             matrixPanel.Location = new Point(
-                (this.ClientSize.Width - panelWidth) / 2,
-                (this.ClientSize.Height - panelHeight) / 2
+                (this.panel2.Width - panelWidth) / 2,
+                (this.panel2.Height - panelHeight) / 2
             );
         }
 
@@ -132,7 +133,6 @@ namespace WordleClient.views
             {
                 if (IsRowFilled(currentRow))
                 {
-                    rowCompleted = IsRowFilled(currentRow);
                     currentString = GetRowString(currentRow);
                     if (gameInstance.isFoundInDictionary(currentString) || true)
                     {
@@ -164,7 +164,7 @@ namespace WordleClient.views
                         {
                             HasCompletedString = true;
                             GameEnded = true;
-                            MessageBox.Show("Congrats. You have found the hidden word");
+                            MessageBox.Show("Congrats. You have found the hidden word.");
 
                         }
                         if (currentRow < rows - 1)
@@ -195,7 +195,6 @@ namespace WordleClient.views
                 return;
             }
 
-            // BACKSPACE: always allowed; if row was completed, backspace should un-complete it
             if (e.KeyChar == '\b')
             {
                 // If the row is completed (cursor effectively at cols), delete last cell
@@ -207,7 +206,6 @@ namespace WordleClient.views
                     {
                         lastBox.SetCharacter('-');
                         currentCol = lastIdx;
-                        rowCompleted = false;
                         currentString = GetRowString(currentRow);
                         Debug.WriteLine(currentString);
                         e.Handled = true;
@@ -223,7 +221,6 @@ namespace WordleClient.views
                     if (box != null)
                     {
                         box.SetCharacter('-');
-                        rowCompleted = IsRowFilled(currentRow);
                         currentString = GetRowString(currentRow);
                         Debug.WriteLine(currentString);
                         e.Handled = true;
@@ -236,7 +233,6 @@ namespace WordleClient.views
                 if (firstBox != null && !IsBoxEmpty(firstBox))
                 {
                     firstBox.SetCharacter('-');
-                    rowCompleted = IsRowFilled(currentRow);
                     currentString = GetRowString(currentRow);
                     Debug.WriteLine(currentString);
                     e.Handled = true;
@@ -246,10 +242,7 @@ namespace WordleClient.views
             }
 
             // If the row is already filled, ignore alphabet input (only Enter/Backspace allowed)
-            if (IsRowFilled(currentRow))
-            {
-                return;
-            }
+            if (IsRowFilled(currentRow)) return;
 
             // Alphabet character handling (only when row not filled)
             if (char.IsLetter(e.KeyChar))
@@ -259,9 +252,8 @@ namespace WordleClient.views
                 // Guard: ensure currentCol is a valid index for the next box
                 if (currentCol >= 0 && currentCol < cols)
                 {
-                    var box = GetBox(currentRow, currentCol);
-                    if (box == null)
-                        return;
+                    CharBox? box = GetBox(currentRow, currentCol);
+                    if (box == null) return;
 
                     box.SetCharacter(ch);
                     currentCol++; // advance to next free column
@@ -269,10 +261,6 @@ namespace WordleClient.views
                     // Rebuild currentString from the row (handles clicks/edits in any position)
                     currentString = GetRowString(currentRow);
                     Debug.WriteLine(currentString);
-
-                    // If we've filled the row, mark it completed
-                    if (IsRowFilled(currentRow))
-                        rowCompleted = true;
 
                     // prevent system beep
                     e.Handled = true;
@@ -292,7 +280,7 @@ namespace WordleClient.views
             }
             return true;
         }
-        private bool IsBoxEmpty(CharBox box)
+        private static bool IsBoxEmpty(CharBox box)
         {
             if (box == null)
                 return true;

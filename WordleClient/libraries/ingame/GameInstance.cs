@@ -5,12 +5,14 @@ namespace WordleClient.libraries.ingame
 {
     public class GameInstance
     {
+        private static readonly Random _rand = new();
+
+        // GI Params
         private readonly WDBRecord targetRecord;
-        private readonly int maxAttempts;
         private readonly List<string> dictionary;
         private List<string> previousGuesses;
 
-        private static readonly Random _rand = new Random();
+        // Character constants
         private static readonly char[] Vowels = {
             'A', 'E', 'I', 'O', 'U'
         };
@@ -35,7 +37,6 @@ namespace WordleClient.libraries.ingame
 
             return vowels[_rand.Next(vowels.Count)];
         }
-
         public static char? GetRandomConsonant(string input)
         {
             if (string.IsNullOrEmpty(input)) return null;
@@ -48,19 +49,16 @@ namespace WordleClient.libraries.ingame
 
             return consonants[_rand.Next(consonants.Count)];
         }
-
-        public GameInstance(WDBRecord targetRecord, int maxAttempts)
+        public GameInstance(WDBRecord targetRecord)
         {
             WordDatabaseReader wdr = new();
             this.targetRecord = targetRecord;
-            this.maxAttempts = maxAttempts;
             this.dictionary = wdr.loadDistinctTokens(targetRecord.TOKEN.Length);
             this.previousGuesses = new List<string>();
         }
-        public GameInstance(string testWord, int maxAttempts)
+        public GameInstance(string testWord)
         {
             this.targetRecord = new WDBRecord { TOKEN = testWord, DEFINITION = "undefined", GROUP_NAME = "undefined" };
-            this.maxAttempts = maxAttempts;
             this.dictionary = new List<string>();
             this.previousGuesses = new List<string>();
         }

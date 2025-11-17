@@ -28,7 +28,7 @@ namespace WordleClient.views
             cbbTopic.Items.Add("(Random)");
 
             // choose Random topic by default
-            cbbTopic.SelectedIndex = topics.Count();
+            cbbTopic.SelectedIndex = topics.Count;
             int itemHeight = cbbTopic.ItemHeight;
             int visibleItems = 7;
             cbbTopic.DropDownHeight = itemHeight * visibleItems;
@@ -51,9 +51,8 @@ namespace WordleClient.views
             int MaxGuessCount = trackBarGuess.Value;
             Debug.WriteLine($"START_BTN_OUTPUT: Param1={selectedTopic}, Param2={selectedDifficulty}");
 
-            WordDatabaseReader wdr = new WordDatabaseReader();
-            WDBRecord? TheChosenOne = wdr.ReadRandomWord(selectedTopic, selectedDifficulty);
-            Debug.WriteLine($"START_BTN_OUTPUT: ChosenWord='{TheChosenOne?.TOKEN}', Topic='{TheChosenOne?.GROUP_NAME}'");
+            WordDatabaseReader wdr = new();
+            WDBRecord? TheChosenOne = wdr.ReadRandomWord(selectedTopic, selectedDifficulty);;
             if (TheChosenOne == null)
             {
                 MessageBox.Show(
@@ -64,7 +63,7 @@ namespace WordleClient.views
             else
             {
                 // Create playground and ensure MainMenu will be shown when playground closes.
-                Playground pg = new Playground(TheChosenOne, MaxGuessCount);
+                Playground pg = new(TheChosenOne, MaxGuessCount);
                 pg.FormClosed += (s, ev) =>
                 {
                     var main = Application.OpenForms.OfType<MainMenu>().FirstOrDefault();
@@ -88,7 +87,7 @@ namespace WordleClient.views
 
         private void cbbTopic_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedTopicIdx = 0;
+            int selectedTopicIdx;
             if (cbbTopic.SelectedIndex != topics.Count)
             {
                 selectedTopicIdx = cbbTopic.SelectedIndex;
@@ -103,7 +102,6 @@ namespace WordleClient.views
         private void rd_Random_CheckedChanged(object sender, EventArgs e)
         {
             selectedDifficulty = null;
-
         }
 
         private void rd_Hard_CheckedChanged(object sender, EventArgs e)

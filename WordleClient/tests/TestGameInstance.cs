@@ -39,7 +39,7 @@ namespace WordleClient.tests
             Debug.WriteLine("\nTest: Guess length mismatch -> expecting ArgumentException");
             try
             {
-                var gi = new GameInstance("SHORT", 6);
+                var gi = new GameInstance("SHORT");
                 gi.EvaluateGuess("TOO_LONG");
                 Debug.WriteLine("  FAIL: no exception thrown for length mismatch");
             }
@@ -60,7 +60,7 @@ namespace WordleClient.tests
             Debug.WriteLine($"Test: {name}");
             Debug.WriteLine($"  Target: \"{target}\", Guess: \"{guess}\"");
 
-            var gi = new GameInstance(target, maxAttempts: 6);
+            var gi = new GameInstance(target);
             StateArray result;
             try
             {
