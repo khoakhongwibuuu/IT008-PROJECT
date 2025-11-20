@@ -38,13 +38,13 @@ namespace WordleClient.views
             rd_Random = new CustomRadioButton();
             btn_StartGame = new CustomButtonAnimation();
             customGroupBox2 = new CustomGroupBox();
+            customLabel4 = new CustomLabel();
             customLabel3 = new CustomLabel();
             customLabel2 = new CustomLabel();
             customLabel1 = new CustomLabel();
             trackBarGuess = new TrackBar();
             cbbTopic = new ComboBox();
             btn_Exit = new CustomPictureBox();
-            customLabel4 = new CustomLabel();
             customGroupBox1.SuspendLayout();
             customGroupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarGuess).BeginInit();
@@ -198,6 +198,22 @@ namespace WordleClient.views
             customGroupBox2.TitleAlign = ContentAlignment.TopLeft;
             customGroupBox2.TitlePadding = 10;
             // 
+            // customLabel4
+            // 
+            customLabel4.BoderRadius = 3F;
+            customLabel4.BorderColor = Color.White;
+            customLabel4.EndColor = Color.MediumPurple;
+            customLabel4.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            customLabel4.ForeColor = Color.White;
+            customLabel4.Location = new Point(256, 136);
+            customLabel4.Margin = new Padding(3, 2, 3, 2);
+            customLabel4.Name = "customLabel4";
+            customLabel4.ShadowOffset = 4;
+            customLabel4.Size = new Size(30, 39);
+            customLabel4.StartColor = Color.MediumSlateBlue;
+            customLabel4.TabIndex = 3;
+            customLabel4.Text = "9";
+            // 
             // customLabel3
             // 
             customLabel3.BoderRadius = 3F;
@@ -288,22 +304,6 @@ namespace WordleClient.views
             btn_Exit.TabStop = false;
             btn_Exit.Click += btn_Exit_Click;
             // 
-            // customLabel4
-            // 
-            customLabel4.BoderRadius = 3F;
-            customLabel4.BorderColor = Color.White;
-            customLabel4.EndColor = Color.MediumPurple;
-            customLabel4.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            customLabel4.ForeColor = Color.White;
-            customLabel4.Location = new Point(256, 136);
-            customLabel4.Margin = new Padding(3, 2, 3, 2);
-            customLabel4.Name = "customLabel4";
-            customLabel4.ShadowOffset = 4;
-            customLabel4.Size = new Size(30, 39);
-            customLabel4.StartColor = Color.MediumSlateBlue;
-            customLabel4.TabIndex = 3;
-            customLabel4.Text = "9";
-            // 
             // FormOption
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -314,6 +314,7 @@ namespace WordleClient.views
             Controls.Add(btn_StartGame);
             Controls.Add(customGroupBox1);
             Controls.Add(customPanel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 2, 3, 2);
             Name = "FormOption";
             StartPosition = FormStartPosition.CenterScreen;

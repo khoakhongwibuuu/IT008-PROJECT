@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace WordleClient.libraries.ingame
+namespace WordleClient.libraries.CustomControls
 {
     // Simple user control that acts as a "box" which can show one character
     // and have its background color changed via the public methods.
@@ -16,7 +16,7 @@ namespace WordleClient.libraries.ingame
 
         public CharBox()
         {
-            this.DoubleBuffered = true;
+            DoubleBuffered = true;
             lbl = new Label
             {
                 Dock = DockStyle.Fill,
@@ -26,11 +26,11 @@ namespace WordleClient.libraries.ingame
                 BackColor = Color.Transparent
             };
 
-            this.BorderStyle = BorderStyle.None;
-            this.BackColor = SystemColors.Window;
-            this.Controls.Add(lbl);
-            this.Size = new Size(45, 45);
-            this.Padding = new Padding(borderSize);
+            BorderStyle = BorderStyle.None;
+            BackColor = SystemColors.Window;
+            Controls.Add(lbl);
+            Size = new Size(45, 45);
+            Padding = new Padding(borderSize);
             UpdateRegion();
         }
         public void SetCharacter(char ch)
@@ -42,13 +42,13 @@ namespace WordleClient.libraries.ingame
         }
         public void SetBackgroundColor(Color color)
         {
-            this.BackColor = color;
-            this.Invalidate();
+            BackColor = color;
+            Invalidate();
         }
         public string Character
         {
             get => lbl.Text;
-            set => lbl.Text = (string.IsNullOrEmpty(value) ? string.Empty : value[0].ToString());
+            set => lbl.Text = string.IsNullOrEmpty(value) ? string.Empty : value[0].ToString();
         }
 
         [Category("Appearance")]
@@ -84,7 +84,7 @@ namespace WordleClient.libraries.ingame
             set
             {
                 borderSize = Math.Max(0, value);
-                this.Padding = new Padding(borderSize);
+                Padding = new Padding(borderSize);
                 UpdateRegion();
                 Invalidate();
             }
@@ -96,11 +96,11 @@ namespace WordleClient.libraries.ingame
             var g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            Rectangle rect = this.ClientRectangle;
+            Rectangle rect = ClientRectangle;
             if (rect.Width <= 0 || rect.Height <= 0) return;
 
             using GraphicsPath path = GetRoundedRectanglePath(rect, borderRadius);
-            using (var brush = new SolidBrush(this.BackColor))
+            using (var brush = new SolidBrush(BackColor))
             {
                 g.FillPath(brush, path);
             }
@@ -119,16 +119,16 @@ namespace WordleClient.libraries.ingame
         }
         private void UpdateRegion()
         {
-            Rectangle rect = this.ClientRectangle;
+            Rectangle rect = ClientRectangle;
             if (rect.Width <= 0 || rect.Height <= 0)
             {
-                this.Region = null;
+                Region = null;
                 return;
             }
 
             using GraphicsPath path = GetRoundedRectanglePath(rect, borderRadius);
-            this.Region?.Dispose();
-            this.Region = new Region(path);
+            Region?.Dispose();
+            Region = new Region(path);
         }
         private static GraphicsPath GetRoundedRectanglePath(Rectangle rect, int radius)
         {

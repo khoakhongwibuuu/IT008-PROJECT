@@ -17,13 +17,16 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Playground));
             customButton1 = new WordleClient.libraries.CustomControls.CustomButton();
             customButton2 = new WordleClient.libraries.CustomControls.CustomButton();
             panel1 = new Panel();
+            lbl_HintRemaining = new Label();
+            label2 = new Label();
             panel2 = new Panel();
             panel3 = new Panel();
             lbl_Tpc = new Label();
-            label4 = new Label();
+            label3 = new Label();
             lbl_Diff = new Label();
             label1 = new Label();
             MasterPanel = new Panel();
@@ -70,12 +73,34 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(lbl_HintRemaining);
             panel1.Controls.Add(customButton2);
+            panel1.Controls.Add(label2);
             panel1.Controls.Add(customButton1);
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(300, 810);
             panel1.TabIndex = 2;
+            // 
+            // lbl_HintRemaining
+            // 
+            lbl_HintRemaining.AutoSize = true;
+            lbl_HintRemaining.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lbl_HintRemaining.Location = new Point(149, 780);
+            lbl_HintRemaining.Name = "lbl_HintRemaining";
+            lbl_HintRemaining.Size = new Size(19, 21);
+            lbl_HintRemaining.TabIndex = 9;
+            lbl_HintRemaining.Text = "0";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label2.Location = new Point(12, 780);
+            label2.Name = "label2";
+            label2.Size = new Size(141, 21);
+            label2.TabIndex = 8;
+            label2.Text = "Hints remaining: ";
             // 
             // panel2
             // 
@@ -87,7 +112,7 @@
             // panel3
             // 
             panel3.Controls.Add(lbl_Tpc);
-            panel3.Controls.Add(label4);
+            panel3.Controls.Add(label3);
             panel3.Controls.Add(lbl_Diff);
             panel3.Controls.Add(label1);
             panel3.Location = new Point(780, 0);
@@ -99,37 +124,41 @@
             // 
             lbl_Tpc.AutoSize = true;
             lbl_Tpc.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lbl_Tpc.Location = new Point(132, 9);
+            lbl_Tpc.Location = new Point(91, 9);
+            lbl_Tpc.Margin = new Padding(1, 0, 1, 0);
             lbl_Tpc.Name = "lbl_Tpc";
-            lbl_Tpc.Size = new Size(62, 21);
+            lbl_Tpc.Size = new Size(84, 21);
             lbl_Tpc.TabIndex = 5;
-            lbl_Tpc.Text = "UNSET";
+            lbl_Tpc.Text = "Unknown";
             // 
-            // label4
+            // label3
             // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label4.Location = new Point(7, 9);
-            label4.Name = "label4";
-            label4.Size = new Size(119, 21);
-            label4.TabIndex = 4;
-            label4.Text = "Chosen Topic: ";
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label3.Location = new Point(40, 9);
+            label3.Margin = new Padding(1, 0, 1, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(59, 21);
+            label3.TabIndex = 4;
+            label3.Text = "Topic: ";
             // 
             // lbl_Diff
             // 
             lbl_Diff.AutoSize = true;
             lbl_Diff.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lbl_Diff.Location = new Point(132, 36);
+            lbl_Diff.Location = new Point(137, 36);
+            lbl_Diff.Margin = new Padding(1, 0, 1, 0);
             lbl_Diff.Name = "lbl_Diff";
-            lbl_Diff.Size = new Size(62, 21);
+            lbl_Diff.Size = new Size(84, 21);
             lbl_Diff.TabIndex = 3;
-            lbl_Diff.Text = "UNSET";
+            lbl_Diff.Text = "Unknown";
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label1.Location = new Point(31, 36);
+            label1.Location = new Point(40, 36);
+            label1.Margin = new Padding(1, 0, 1, 0);
             label1.Name = "label1";
             label1.Size = new Size(95, 21);
             label1.TabIndex = 2;
@@ -151,6 +180,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1080, 810);
             Controls.Add(MasterPanel);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MaximumSize = new Size(1096, 849);
             MinimumSize = new Size(1096, 849);
@@ -158,6 +188,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Playground";
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             MasterPanel.ResumeLayout(false);
@@ -173,8 +204,10 @@
         private Panel panel3;
         private Panel MasterPanel;
         private Label lbl_Tpc;
-        private Label label4;
+        private Label label3;
         private Label lbl_Diff;
         private Label label1;
+        private Label lbl_HintRemaining;
+        private Label label2;
     }
 }

@@ -51,9 +51,10 @@ namespace WordleClient.views
             customPanel1.GradientAngle = 90F;
             customPanel1.GradientBottomColor = Color.SkyBlue;
             customPanel1.GradientTopColor = Color.FromArgb(192, 255, 255);
-            customPanel1.Location = new Point(67, 45);
+            customPanel1.Location = new Point(59, 34);
+            customPanel1.Margin = new Padding(3, 2, 3, 2);
             customPanel1.Name = "customPanel1";
-            customPanel1.Size = new Size(614, 615);
+            customPanel1.Size = new Size(537, 461);
             customPanel1.TabIndex = 1;
             // 
             // btn_Exit
@@ -65,9 +66,10 @@ namespace WordleClient.views
             btn_Exit.Cursor = Cursors.Hand;
             btn_Exit.gradientAngle1 = 90F;
             btn_Exit.Image = (Image)resources.GetObject("btn_Exit.Image");
-            btn_Exit.Location = new Point(713, 0);
+            btn_Exit.Location = new Point(624, 0);
+            btn_Exit.Margin = new Padding(3, 2, 3, 2);
             btn_Exit.Name = "btn_Exit";
-            btn_Exit.Size = new Size(34, 35);
+            btn_Exit.Size = new Size(30, 26);
             btn_Exit.SizeMode = PictureBoxSizeMode.StretchImage;
             btn_Exit.TabIndex = 8;
             btn_Exit.TabStop = false;
@@ -82,9 +84,10 @@ namespace WordleClient.views
             btn_Sound.Cursor = Cursors.Hand;
             btn_Sound.gradientAngle1 = 90F;
             btn_Sound.Image = Properties.Resources.SoundONicon;
-            btn_Sound.Location = new Point(34, 58);
+            btn_Sound.Location = new Point(30, 44);
+            btn_Sound.Margin = new Padding(3, 2, 3, 2);
             btn_Sound.Name = "btn_Sound";
-            btn_Sound.Size = new Size(70, 70);
+            btn_Sound.Size = new Size(61, 52);
             btn_Sound.SizeMode = PictureBoxSizeMode.StretchImage;
             btn_Sound.TabIndex = 9;
             btn_Sound.TabStop = false;
@@ -100,9 +103,10 @@ namespace WordleClient.views
             btn_DarkLight.Cursor = Cursors.Hand;
             btn_DarkLight.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             btn_DarkLight.ForeColor = Color.Red;
-            btn_DarkLight.Location = new Point(34, 165);
+            btn_DarkLight.Location = new Point(30, 124);
+            btn_DarkLight.Margin = new Padding(3, 2, 3, 2);
             btn_DarkLight.Name = "btn_DarkLight";
-            btn_DarkLight.Size = new Size(161, 74);
+            btn_DarkLight.Size = new Size(141, 56);
             btn_DarkLight.TabIndex = 10;
             btn_DarkLight.TextLabel = "Dark";
             btn_DarkLight.Click += btn_DarkLight_Click;
@@ -116,9 +120,11 @@ namespace WordleClient.views
             groupBox1.Controls.Add(btn_DarkLight);
             groupBox1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             groupBox1.ForeColor = Color.Black;
-            groupBox1.Location = new Point(113, 84);
+            groupBox1.Location = new Point(99, 63);
+            groupBox1.Margin = new Padding(3, 2, 3, 2);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(524, 540);
+            groupBox1.Padding = new Padding(3, 2, 3, 2);
+            groupBox1.Size = new Size(458, 405);
             groupBox1.TabIndex = 11;
             groupBox1.TabStop = false;
             groupBox1.Text = "Setting";
@@ -131,11 +137,12 @@ namespace WordleClient.views
             customButtonTwoText2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             customButtonTwoText2.LeftBackColor = Color.MediumSlateBlue;
             customButtonTwoText2.LeftText = "Dark";
-            customButtonTwoText2.Location = new Point(242, 170);
+            customButtonTwoText2.Location = new Point(212, 128);
+            customButtonTwoText2.Margin = new Padding(3, 2, 3, 2);
             customButtonTwoText2.Name = "customButtonTwoText2";
             customButtonTwoText2.RightBackColor = Color.SlateBlue;
             customButtonTwoText2.RightText = "Light";
-            customButtonTwoText2.Size = new Size(194, 69);
+            customButtonTwoText2.Size = new Size(170, 52);
             customButtonTwoText2.TabIndex = 11;
             customButtonTwoText2.Text = "customButtonTwoText1";
             // 
@@ -147,22 +154,25 @@ namespace WordleClient.views
             customButtonTwoText1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             customButtonTwoText1.LeftBackColor = Color.MediumSlateBlue;
             customButtonTwoText1.LeftText = "ON";
-            customButtonTwoText1.Location = new Point(242, 59);
+            customButtonTwoText1.Location = new Point(212, 44);
+            customButtonTwoText1.Margin = new Padding(3, 2, 3, 2);
             customButtonTwoText1.Name = "customButtonTwoText1";
             customButtonTwoText1.RightBackColor = Color.SlateBlue;
             customButtonTwoText1.RightText = "OFF";
-            customButtonTwoText1.Size = new Size(194, 69);
+            customButtonTwoText1.Size = new Size(170, 52);
             customButtonTwoText1.TabIndex = 11;
             customButtonTwoText1.Text = "customButtonTwoText1";
             // 
             // FormSetting
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(747, 710);
+            ClientSize = new Size(654, 532);
             Controls.Add(groupBox1);
             Controls.Add(btn_Exit);
             Controls.Add(customPanel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 2, 3, 2);
             Name = "FormSetting";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FormSetting";

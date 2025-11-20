@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using WordleClient.libraries.CustomControls;
 using WordleClient.libraries.ingame;
 using WordleClient.libraries.lowlevel;
 using WordleClient.libraries.StateFrom;
@@ -23,7 +24,7 @@ namespace WordleClient.views
         // Game flags
         private bool HasCompletedString = false;
         private bool GameEnded = false;
-        private int HintRemaining = 2;
+        private int HintRemaining;
         private readonly int GameSeed;
 
         // Tracks the current position where typed letters will go (next free column)
@@ -43,10 +44,15 @@ namespace WordleClient.views
             this.cols = TheChosenOne.TOKEN.Length;
             this.gameInstance = new GameInstance(TheChosenOne);
             this.GameSeed = rd.Next(0, 1);
-
+            this.HintRemaining = 2;
+            if (TheChosenOne.LEVEL == "B2" || TheChosenOne.LEVEL == "C1" || TheChosenOne.LEVEL == "C2")
+            {
+                if (cols >= 5)
+                    this.HintRemaining++;
+            }
             InitializeComponent();
-            lbl_Diff.Text = TheChosenOne.LEVEL;
-            lbl_Tpc.Text = TheChosenOne.GROUP_NAME;
+
+            // Dynamic matrix panel setup
             this.matrixPanel = new Panel
             {
                 BackColor = Color.Transparent,
@@ -56,6 +62,12 @@ namespace WordleClient.views
             };
             this.panel2.Controls.Add(matrixPanel);
 
+            // Set value to display labels
+            lbl_Diff.Text = TheChosenOne.LEVEL;
+            lbl_Tpc.Text = TheChosenOne.GROUP_NAME.Replace("&", "And");
+            lbl_HintRemaining.Text = HintRemaining.ToString();
+
+            // Matrix setup and centering
             CreateMatrix();
             CenterMatrix();
 
@@ -64,8 +76,10 @@ namespace WordleClient.views
             this.KeyPress += Playground_KeyPress;
 
             // Resize event to re-center matrix
-            // this.Resize += (s, e) => CenterMatrix();
+            this.Resize += (s, e) => CenterMatrix();
             this.panel2.Resize += (s, e) => CenterMatrix();
+
+            // Warning on exit if game not ended
             this.FormClosing += Playground_FormClosing;
         }
 
@@ -122,7 +136,11 @@ namespace WordleClient.views
                 (this.panel2.Height - panelHeight) / 2
             );
         }
-
+        private void KeyIsDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+                this.Close();
+        }
         private void Playground_KeyPress(object? sender, KeyPressEventArgs e)
         {
             // If game has ended, do not handle
@@ -271,13 +289,19 @@ namespace WordleClient.views
         {
             if (row < 0 || row >= rows)
                 return false;
-
+            if (row < currentRow)
+                return true;
+            if (row > currentRow)
+                return false;
+            if (currentCol >= cols)
+                return true;
             for (int c = 0; c < cols; c++)
             {
                 var b = GetBox(row, c);
                 if (b == null || IsBoxEmpty(b))
                     return false;
             }
+
             return true;
         }
         private static bool IsBoxEmpty(CharBox box)
@@ -335,6 +359,7 @@ namespace WordleClient.views
                 string hint = gameInstance.GetHint(HintRemaining + GameSeed);
                 MessageBox.Show($"Hint: {hint}", "Get Hint", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 HintRemaining--;
+                lbl_HintRemaining.Text = HintRemaining.ToString();
             }
             else if (GameEnded)
             {
