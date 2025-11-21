@@ -55,6 +55,7 @@ namespace WordleClient.libraries.ingame
             this.targetRecord = targetRecord;
             this.dictionary = wdr.loadDistinctTokens(targetRecord.TOKEN.Length);
             this.previousGuesses = new List<string>();
+            wdr.Close();
         }
         public GameInstance(string testWord)
         {

@@ -8,7 +8,7 @@ namespace WordleClient.tests
 
         public static void Exec()
         {
-            WordDatabaseReader dbr = new WordDatabaseReader();
+            WordDatabaseReader dbr = new();
             dbr.loadLevels();
             foreach (string level in dbr.loadLevels())
             {
@@ -35,6 +35,7 @@ namespace WordleClient.tests
             //{
             //    Debug.WriteLine($"No word found for group '{groupName}' at level '{level}'.");
             //}
+            dbr.Close();
         }
     }
 }

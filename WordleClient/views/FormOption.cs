@@ -19,8 +19,9 @@ namespace WordleClient.views
         public FormOption()
         {
             InitializeComponent();
-            WordDatabaseReader wdr = new WordDatabaseReader();
+            WordDatabaseReader wdr = new();
             topics = wdr.loadGroups();
+            wdr.Close();
             for (int i = 0; i < topics.Count; i++)
             {
                 cbbTopic.Items.Add(topics[i]);
@@ -52,7 +53,8 @@ namespace WordleClient.views
             Debug.WriteLine($"START_BTN_OUTPUT: Param1={selectedTopic}, Param2={selectedDifficulty}");
 
             WordDatabaseReader wdr = new();
-            WDBRecord? TheChosenOne = wdr.ReadRandomWord(selectedTopic, selectedDifficulty);;
+            WDBRecord? TheChosenOne = wdr.ReadRandomWord(selectedTopic, selectedDifficulty);
+            wdr.Close();
             if (TheChosenOne == null)
             {
                 MessageBox.Show(
