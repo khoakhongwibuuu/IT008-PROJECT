@@ -1,4 +1,4 @@
-﻿using System.Data.SQLite;
+﻿using Microsoft.Data.Sqlite;
 using WordleClient.libraries.lowlevel;
 using System.Diagnostics;
 
@@ -9,54 +9,57 @@ namespace WordleClient.libraries.ingame
         private const int MIN_TOKEN_LENGTH = 4;
         private const int MAX_TOKEN_LENGTH = 7;
 
-        private readonly SQLiteConnection sql_con;
+        private readonly SqliteConnection sql_con;
+
         public WordDatabaseReader()
         {
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             string dbPath = Path.Combine(basePath, "database", "words.db");
-            string ConnectionString = $"Data Source={dbPath};Read Only=True;Version=3;";
-            sql_con = new SQLiteConnection(ConnectionString);
+            string connectionString = $"Data Source={dbPath};Mode=ReadOnly;";
+
+            sql_con = new SqliteConnection(connectionString);
             sql_con.Open();
         }
+
         public WDBRecord? ReadRandomWord(string? group, string? level)
         {
-            string baseQuery = $"FROM SAMPLE_WORD_LIST WHERE (LENGTH(TOKEN) >= {MIN_TOKEN_LENGTH} AND LENGTH(TOKEN) <= {MAX_TOKEN_LENGTH})";
-            using var countCmd = new SQLiteCommand(sql_con);
+            string baseQuery =
+                $"FROM SAMPLE_WORD_LIST WHERE (LENGTH(TOKEN) >= {MIN_TOKEN_LENGTH} AND LENGTH(TOKEN) <= {MAX_TOKEN_LENGTH})";
+
+            using SqliteCommand countCmd = sql_con.CreateCommand();
 
             if (group != null)
             {
                 baseQuery += " AND (GROUP_NAME = @group)";
                 countCmd.Parameters.AddWithValue("@group", group);
             }
+
             if (level != null)
             {
                 if (level == "EASY")
-                {
                     baseQuery += " AND (LEVEL = 'A1' OR LEVEL = 'A2' OR LEVEL = 'B1')";
-                }
                 else if (level == "HARD")
-                {
                     baseQuery += " AND (LEVEL = 'B2' OR LEVEL = 'C1' OR LEVEL = 'C2')";
-                }
             }
 
             countCmd.CommandText = $"SELECT COUNT(*) {baseQuery}";
             int count = Convert.ToInt32(countCmd.ExecuteScalar());
 
-            if (count == 0) return null;
+            if (count == 0)
+                return null;
 
-            var rnd = new Random();
+            Random rnd = new();
             int offset = rnd.Next(count);
 
-            using var cmd = new SQLiteCommand(
-                $"SELECT TOKEN, GROUP_NAME, LEVEL, DEFINITION {baseQuery} LIMIT 1 OFFSET @offset",
-                sql_con);
+            using SqliteCommand cmd = sql_con.CreateCommand();
+            cmd.CommandText =
+                $"SELECT TOKEN, GROUP_NAME, LEVEL, DEFINITION {baseQuery} LIMIT 1 OFFSET @offset";
 
             cmd.Parameters.AddWithValue("@offset", offset);
             if (group != null) cmd.Parameters.AddWithValue("@group", group);
-            if (level != null) cmd.Parameters.AddWithValue("@level", level);
 
-            using var reader = cmd.ExecuteReader();
+            using SqliteDataReader reader = cmd.ExecuteReader();
+
             return reader.Read()
                 ? new WDBRecord
                 {
@@ -67,40 +70,57 @@ namespace WordleClient.libraries.ingame
                 }
                 : null;
         }
+
         public List<string> loadLevels()
         {
-            List<string> levels = new List<string>();
-            using var cmd = new SQLiteCommand("SELECT DISTINCT LEVEL FROM SAMPLE_WORD_LIST", sql_con);
-            using var reader = cmd.ExecuteReader();
-            while (reader.Read())
+            List<string> levels = [];
+            using SqliteCommand cmd = sql_con.CreateCommand();
+
+            cmd.CommandText = "SELECT DISTINCT LEVEL FROM SAMPLE_WORD_LIST";
+
+            using SqliteDataReader reader = cmd.ExecuteReader();
             {
-                levels.Add(reader.GetString(0));
+                while (reader.Read())
+                    levels.Add(reader.GetString(0));
             }
+
             return levels;
         }
+
         public List<string> loadGroups()
         {
-            List<string> groups = new List<string>();
-            using var cmd = new SQLiteCommand("SELECT DISTINCT GROUP_NAME FROM SAMPLE_WORD_LIST", sql_con);
-            using var reader = cmd.ExecuteReader();
-            while (reader.Read())
+            List<string> groups = [];
+            using SqliteCommand cmd = sql_con.CreateCommand();
+
+            cmd.CommandText = "SELECT DISTINCT GROUP_NAME FROM SAMPLE_WORD_LIST";
+
+            using (SqliteDataReader reader = cmd.ExecuteReader())
             {
-                groups.Add(reader.GetString(0));
+                while (reader.Read())
+                    groups.Add(reader.GetString(0));
             }
+
             return groups;
         }
+
         public List<string> loadDistinctTokens(int length)
         {
-            List<string> tokens = new List<string>();
-            using var cmd = new SQLiteCommand("SELECT DISTINCT TOKEN FROM SAMPLE_WORD_LIST WHERE (LENGTH(TOKEN) = @length)", sql_con);
+            List<string> tokens = [];
+            using SqliteCommand cmd = sql_con.CreateCommand();
+
+            cmd.CommandText =
+                "SELECT DISTINCT TOKEN FROM SAMPLE_WORD_LIST WHERE LENGTH(TOKEN) = @length";
+
             cmd.Parameters.AddWithValue("@length", length);
-            using var reader = cmd.ExecuteReader();
-            while(reader.Read())
+
+            using (SqliteDataReader reader = cmd.ExecuteReader())
             {
-                tokens.Add(reader.GetString(0));
+                while (reader.Read())
+                    tokens.Add(reader.GetString(0));
             }
+
             return tokens;
-        }   
+        }
 
         public void Close() => sql_con.Close();
     }
