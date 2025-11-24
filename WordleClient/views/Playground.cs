@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using WordleClient.libraries.CustomControls;
 using WordleClient.libraries.ingame;
 using WordleClient.libraries.lowlevel;
@@ -50,7 +51,7 @@ namespace WordleClient.views
             this.rows = MaxGuessCount;
             this.cols = TheChosenOne.TOKEN.Length;
             this.gameInstance = new GameInstance(TheChosenOne);
-            this.initialTopic = topic;       
+            this.initialTopic = topic;
             this.initialDifficulty = difficulty;
             this.dictionaryChecker = new DictionaryChecker(TheChosenOne.TOKEN.Length);
             this.GameSeed = rd.Next(0, 1);
@@ -99,14 +100,11 @@ namespace WordleClient.views
             if (GameEnded) return;
             else
             {
-                if (
-                    MessageBox.Show(
-                    "Are you sure you want to exit? This game will not be saved.",
-                    "Exit",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No
-                )
+                if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Question) == DialogResult.No)
                 {
-                    e.Cancel = true;
+                    {
+                        e.Cancel = true;
+                    }
                 }
             }
         }
@@ -192,12 +190,13 @@ namespace WordleClient.views
                         {
                             HasCompletedString = true;
                             GameEnded = true;
-                            MessageBox.Show("Congrats. You have found the hidden word.");
                             streak++;
                             lbl_Streak.Text = streak.ToString();
-                           if(MessageBox.Show("Do you want to start a new game?", "New Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                            AlertBox alertBox = new AlertBox();
+                            alertBox.ShowAlert(this, "Configuration", "Congrats. You have found the hidden word.");
+                            if (CustomMessageBoxYesNo.Show(this, "Do you want to start a new game?", MessageBoxIcon.Question) == DialogResult.Yes)
                             {
-                                if(initialDifficulty == "HARD")
+                                if (initialDifficulty == "HARD")
                                 {
                                     ResetHardGame();
                                 }
@@ -209,7 +208,7 @@ namespace WordleClient.views
                             }
                             else
                             {
-                                this.Close(); 
+                                this.Close();
                                 return;
                             }
 
@@ -227,11 +226,11 @@ namespace WordleClient.views
                                 MessageBox.Show($"You have failed. The hidden word is {gameInstance.GetToken()}");
                                 GameEnded = true;
                             }
-                            if(MessageBox.Show("Do you want to start a new game?", "New Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                            if (CustomMessageBoxYesNo.Show(this, "Do you want to start a new game?", MessageBoxIcon.Question) == DialogResult.Yes)
                             {
                                 streak = 0;
                                 lbl_Streak.Text = streak.ToString();
-                                if(initialDifficulty == "HARD")
+                                if (initialDifficulty == "HARD")
                                 {
                                     ResetHardGame();
                                 }
@@ -240,22 +239,20 @@ namespace WordleClient.views
                                     Resetnew_Game();
                                 }
                                 return;
-                              
+
                             }
                             else
                             {
-                                this.Close(); 
+                                this.Close();
                                 return;
                             }
-                           
+
                         }
                     }
                     else
                     {
-                        MessageBox.Show(
-                            "The entered word is not in the dictionary.",
-                            "Invalid Word", MessageBoxButtons.OK, MessageBoxIcon.Warning
-                        );
+                        AlertBox alertBox = new AlertBox();
+                        alertBox.ShowAlert(this, "Invalid Word", "The entered word is not in the dictionary!", MessageBoxIcon.Warning);
                     }
                     Debug.WriteLine(currentString);
                     e.Handled = true;
@@ -408,7 +405,7 @@ namespace WordleClient.views
                 CustomSound.PlayClick();
                 string hint = gameInstance.GetHint(HintRemaining + GameSeed);
                 AlertBox alert = new AlertBox();
-                alert.ShowAlert(this,"Hint", hint);
+                alert.ShowAlert(this, "Hint", hint);
                 HintRemaining--;
                 if (HintRemaining == 1)
                 {
@@ -439,7 +436,7 @@ namespace WordleClient.views
                 newWord = wdr.ReadRandomWord(initialTopic, initialDifficulty);
             } while (newWord != null && newWord.TOKEN == lastToken);
             wdr.Close();
-            if(newWord == null)
+            if (newWord == null)
             {
                 MessageBox.Show(
                     "Failed to load a new word from the database.",
@@ -460,7 +457,7 @@ namespace WordleClient.views
             Random rd = new();
             GameSeed = rd.Next(0, 1);
             HintRemaining = 2;
-            if(newWord.LEVEL == "B2" || newWord.LEVEL == "C1" || newWord.LEVEL == "C2")
+            if (newWord.LEVEL == "B2" || newWord.LEVEL == "C1" || newWord.LEVEL == "C2")
             {
                 if (newWord.TOKEN.Length >= 5)
                     HintRemaining++;

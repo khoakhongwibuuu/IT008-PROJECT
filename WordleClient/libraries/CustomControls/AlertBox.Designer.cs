@@ -53,7 +53,7 @@
             // lbl_Caption
             // 
             lbl_Caption.AutoSize = true;
-            lbl_Caption.BackColor = Color.FromArgb(192, 255, 192);
+            lbl_Caption.BackColor = Color.FromArgb(224, 224, 224);
             lbl_Caption.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lbl_Caption.Location = new Point(128, 9);
             lbl_Caption.Name = "lbl_Caption";

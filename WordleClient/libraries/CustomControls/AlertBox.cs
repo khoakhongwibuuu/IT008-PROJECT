@@ -60,5 +60,35 @@ namespace WordleClient.libraries.CustomControls
             this.Show();
             slideTimer.Start();
         }
+        public void ShowAlert(Form parent, string caption, string content, MessageBoxIcon icon)
+        {
+            lbl_Caption.Text = caption;
+            lbl_Content.Text = content;
+            switch (icon)
+            {
+                case MessageBoxIcon.Information:
+                    customPictureBox1.Image = Properties.Resources.tickSuccess;
+                    break;
+                case MessageBoxIcon.Warning:
+                    customPictureBox1.Image = Properties.Resources.Warnning;
+                    break;
+                case MessageBoxIcon.Error:
+                    customPictureBox1.Image = Properties.Resources.Error;
+                    break;
+                case MessageBoxIcon.Question:
+                    customPictureBox1.Image = Properties.Resources.question;
+                    break;
+                default:
+                    customPictureBox1.Image = null;
+                    break;
+            }
+            // Locate the form off-screen to the right
+            int startX = parent.Right;
+            int startY = parent.Top + 50;
+            targetX = parent.Right - this.Width - 20;
+            this.Location = new Point(startX, startY);
+            this.Show();
+            slideTimer.Start();
+        }
     }
 }
