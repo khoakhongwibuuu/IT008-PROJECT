@@ -17,6 +17,7 @@ namespace WordleClient.views
         private string? initialDifficulty;
         private string? hardTopic = null;
         private string? hardLevel = null;
+
         // Size constants
         private const int boxSize = 60;
         private const int spacing = 6;
@@ -49,8 +50,7 @@ namespace WordleClient.views
             this.rows = MaxGuessCount;
             this.cols = TheChosenOne.TOKEN.Length;
             this.gameInstance = new GameInstance(TheChosenOne);
-            this.initialTopic = topic;
-            
+            this.initialTopic = topic;       
             this.initialDifficulty = difficulty;
             this.dictionaryChecker = new DictionaryChecker(TheChosenOne.TOKEN.Length);
             this.GameSeed = rd.Next(0, 1);
