@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using System.Diagnostics;
 
 namespace WordleClient.libraries.ingame
 {
@@ -24,6 +25,7 @@ namespace WordleClient.libraries.ingame
                 }
             }
 
+            Debug.WriteLine($"Loaded {list.Count} tokens of length {TOKEN_SIZE} from database.");
             _tokens = new HashSet<string>(list, StringComparer.OrdinalIgnoreCase);
         }
         public bool TokenExists(string TOKEN)

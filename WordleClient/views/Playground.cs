@@ -36,6 +36,7 @@ namespace WordleClient.views
 
         // Game Instance
         private GameInstance gameInstance;
+        private DictionaryChecker dictionaryChecker;
 
         public Playground(WDBRecord TheChosenOne, int MaxGuessCount)
         {
@@ -43,6 +44,7 @@ namespace WordleClient.views
             this.rows = MaxGuessCount;
             this.cols = TheChosenOne.TOKEN.Length;
             this.gameInstance = new GameInstance(TheChosenOne);
+            this.dictionaryChecker = new DictionaryChecker(TheChosenOne.TOKEN.Length);
             this.GameSeed = rd.Next(0, 1);
             this.HintRemaining = 2;
             if (TheChosenOne.LEVEL == "B2" || TheChosenOne.LEVEL == "C1" || TheChosenOne.LEVEL == "C2")
@@ -152,7 +154,7 @@ namespace WordleClient.views
                 if (IsRowFilled(currentRow))
                 {
                     currentString = GetRowString(currentRow);
-                    if (gameInstance.isFoundInDictionary(currentString) || true)
+                    if (dictionaryChecker.TokenExists(currentString))
                     {
 
                         Debug.WriteLine($"Submitted word: {currentString}");

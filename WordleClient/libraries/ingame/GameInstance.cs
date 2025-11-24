@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using WordleClient.libraries.lowlevel;
+﻿using WordleClient.libraries.lowlevel;
 
 namespace WordleClient.libraries.ingame
 {
@@ -9,17 +8,16 @@ namespace WordleClient.libraries.ingame
 
         // GI Params
         private readonly WDBRecord targetRecord;
-        private readonly List<string> dictionary;
         private List<string> previousGuesses;
 
         // Character constants
-        private static readonly char[] Vowels = {
+        private static readonly char[] Vowels = [
             'A', 'E', 'I', 'O', 'U'
-        };
-        private static readonly char[] Consonants = {
+        ];
+        private static readonly char[] Consonants = [
             'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M',
             'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'
-        };
+        ];
 
         // HashSets for fast, case-insensitive membership checks (compare using ToUpperInvariant)
         private static readonly HashSet<char> VowelSet = new HashSet<char>(Vowels);
@@ -53,26 +51,19 @@ namespace WordleClient.libraries.ingame
         {
             WordDatabaseReader wdr = new();
             this.targetRecord = targetRecord;
-            this.dictionary = wdr.loadDistinctTokens(targetRecord.TOKEN.Length);
-            this.previousGuesses = new List<string>();
+            this.previousGuesses = [];
             wdr.Close();
         }
         public GameInstance(string testWord)
         {
             this.targetRecord = new WDBRecord { TOKEN = testWord, DEFINITION = "undefined", GROUP_NAME = "undefined" };
-            this.dictionary = new List<string>();
-            this.previousGuesses = new List<string>();
-        }
-        public bool isFoundInDictionary(string guess)
-        {
-            Debug.WriteLine($"Checking if '{guess}' is in dictionary of size {dictionary.Count}");
-            return dictionary.Contains(guess.ToLowerInvariant());
+            this.previousGuesses = [];
         }
         public StateArray EvaluateGuess(string guess)
         {
             if (guess.Length != targetRecord.TOKEN.Length)
                 throw new ArgumentException("Guess length does not match target word length.");
-            StateArray result = new StateArray(guess.Length);
+            StateArray result = new(guess.Length);
             bool[] targetMatched = new bool[targetRecord.TOKEN.Length];
 
             // First pass: check for matches
