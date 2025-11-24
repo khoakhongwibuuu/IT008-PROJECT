@@ -1,4 +1,8 @@
-﻿namespace WordleClient
+﻿using WordleClient.views;
+using WordleClient.libraries.StateFrom;
+using WordleClient.libraries.CustomControls;
+
+namespace WordleClient
 {
     partial class MainMenu
     {
@@ -32,21 +36,21 @@
             btn_SinglePlayer = new CustomButtonAnimation();
             btn_MultiPlayer = new CustomButtonAnimation();
             btn_Exit = new CustomButtonAnimation();
-            cuttomPanel1 = new WordleClient.CuttomControls.CustomPanel();
-            btn_Setting = new WordleClient.CustomControls.CustomPictureBox();
-            maximumsize = new WordleClient.CustomControls.CustomPictureBox();
-            minimunsize = new WordleClient.CustomControls.CustomPictureBox();
-            Exit = new WordleClient.CustomControls.CustomPictureBox();
-            customLabel1 = new WordleClient.CustomControls.CustomLabel();
-            customLabel2 = new WordleClient.CustomControls.CustomLabel();
-            customLabel3 = new WordleClient.CustomControls.CustomLabel();
-            customLabel4 = new WordleClient.CustomControls.CustomLabel();
-            customLabel5 = new WordleClient.CustomControls.CustomLabel();
-            customLabel7 = new WordleClient.CustomControls.CustomLabel();
-            customLabel6 = new WordleClient.CustomControls.CustomLabel();
-            customLabel8 = new WordleClient.CustomControls.CustomLabel();
-            customLabel9 = new WordleClient.CustomControls.CustomLabel();
-            customLabel10 = new WordleClient.CustomControls.CustomLabel();
+            cuttomPanel1 = new CustomPanel();
+            btn_Setting = new CustomPictureBox();
+            maximumsize = new CustomPictureBox();
+            minimunsize = new CustomPictureBox();
+            Exit = new CustomPictureBox();
+            customLabel1 = new CustomLabel();
+            customLabel2 = new CustomLabel();
+            customLabel3 = new CustomLabel();
+            customLabel4 = new CustomLabel();
+            customLabel5 = new CustomLabel();
+            customLabel7 = new CustomLabel();
+            customLabel6 = new CustomLabel();
+            customLabel8 = new CustomLabel();
+            customLabel9 = new CustomLabel();
+            customLabel10 = new CustomLabel();
             ((System.ComponentModel.ISupportInitialize)btn_Setting).BeginInit();
             ((System.ComponentModel.ISupportInitialize)maximumsize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)minimunsize).BeginInit();
@@ -73,7 +77,7 @@
             btn_SinglePlayer.Text = "SinglePlayer";
             btn_SinglePlayer.TextAlign = ContentAlignment.MiddleCenter;
             btn_SinglePlayer.TextColor = Color.Black;
-            btn_SinglePlayer.Click += btn_SinglePlayer_Click_1;
+            btn_SinglePlayer.Click += btn_SinglePlayer_Click;
             // 
             // btn_MultiPlayer
             // 
@@ -108,7 +112,7 @@
             btn_Exit.EnableStripe = true;
             btn_Exit.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             btn_Exit.ImageSize = 24;
-            btn_Exit.Location = new Point(483, 714);
+            btn_Exit.Location = new Point(483, 715);
             btn_Exit.Name = "btn_Exit";
             btn_Exit.Size = new Size(317, 69);
             btn_Exit.StripeSpeed = 4;
@@ -128,7 +132,7 @@
             cuttomPanel1.GradientAngle = 90F;
             cuttomPanel1.GradientBottomColor = Color.Cyan;
             cuttomPanel1.GradientTopColor = Color.MediumBlue;
-            cuttomPanel1.Location = new Point(274, 498);
+            cuttomPanel1.Location = new Point(274, 499);
             cuttomPanel1.Name = "cuttomPanel1";
             cuttomPanel1.Size = new Size(726, 308);
             cuttomPanel1.TabIndex = 3;
@@ -140,8 +144,8 @@
             btn_Setting.boderRadius1 = 40;
             btn_Setting.boderSize1 = 0;
             btn_Setting.gradientAngle1 = 90F;
-            btn_Setting.Image = (Image)resources.GetObject("btn_Setting.Image");
-            btn_Setting.Location = new Point(12, 12);
+            btn_Setting.Image = Properties.Resources.iconSetting;
+            btn_Setting.Location = new Point(11, 0);
             btn_Setting.Name = "btn_Setting";
             btn_Setting.Size = new Size(57, 52);
             btn_Setting.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -156,8 +160,8 @@
             maximumsize.boderRadius1 = 40;
             maximumsize.boderSize1 = 0;
             maximumsize.gradientAngle1 = 90F;
-            maximumsize.Image = Properties.Resources.maximize;
-            maximumsize.Location = new Point(1184, 0);
+            maximumsize.Image = (Image)resources.GetObject("maximumsize.Image");
+            maximumsize.Location = new Point(1194, 0);
             maximumsize.Name = "maximumsize";
             maximumsize.Size = new Size(34, 35);
             maximumsize.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -171,10 +175,10 @@
             minimunsize.boderRadius1 = 40;
             minimunsize.boderSize1 = 0;
             minimunsize.gradientAngle1 = 90F;
-            minimunsize.Image = Properties.Resources.minisize;
-            minimunsize.Location = new Point(1132, 0);
+            minimunsize.Image = (Image)resources.GetObject("minimunsize.Image");
+            minimunsize.Location = new Point(1154, 0);
             minimunsize.Name = "minimunsize";
-            minimunsize.Size = new Size(33, 35);
+            minimunsize.Size = new Size(31, 35);
             minimunsize.SizeMode = PictureBoxSizeMode.StretchImage;
             minimunsize.TabIndex = 5;
             minimunsize.TabStop = false;
@@ -188,7 +192,7 @@
             Exit.boderSize1 = 0;
             Exit.Cursor = Cursors.Hand;
             Exit.gradientAngle1 = 90F;
-            Exit.Image = Properties.Resources.exit;
+            Exit.Image = (Image)resources.GetObject("Exit.Image");
             Exit.Location = new Point(1234, 0);
             Exit.Name = "Exit";
             Exit.Size = new Size(34, 35);
@@ -219,7 +223,7 @@
             customLabel2.EndColor = Color.Red;
             customLabel2.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
             customLabel2.ForeColor = Color.White;
-            customLabel2.Location = new Point(372, 167);
+            customLabel2.Location = new Point(373, 167);
             customLabel2.Name = "customLabel2";
             customLabel2.ShadowOffset = 4;
             customLabel2.Size = new Size(119, 104);
@@ -353,7 +357,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1275, 818);
+            ClientSize = new Size(1269, 945);
             Controls.Add(customLabel7);
             Controls.Add(customLabel5);
             Controls.Add(customLabel4);
@@ -373,6 +377,7 @@
             Controls.Add(btn_SinglePlayer);
             Controls.Add(cuttomPanel1);
             Cursor = Cursors.Hand;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainMenu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MainMenu";
@@ -388,20 +393,20 @@
         private CustomButtonAnimation btn_SinglePlayer;
         private CustomButtonAnimation btn_MultiPlayer;
         private CustomButtonAnimation btn_Exit;
-        private CuttomControls.CustomPanel cuttomPanel1;
-        private CustomControls.CustomPictureBox btn_Setting;
-        private CustomControls.CustomPictureBox maximumsize;
-        private CustomControls.CustomPictureBox minimunsize;
-        private CustomControls.CustomPictureBox Exit;
-        private CustomControls.CustomLabel customLabel1;
-        private CustomControls.CustomLabel customLabel2;
-        private CustomControls.CustomLabel customLabel3;
-        private CustomControls.CustomLabel customLabel4;
-        private CustomControls.CustomLabel customLabel5;
-        private CustomControls.CustomLabel customLabel7;
-        private CustomControls.CustomLabel customLabel6;
-        private CustomControls.CustomLabel customLabel8;
-        private CustomControls.CustomLabel customLabel9;
-        private CustomControls.CustomLabel customLabel10;
+        private CustomPanel cuttomPanel1;
+        private CustomPictureBox btn_Setting;
+        private CustomPictureBox maximumsize;
+        private CustomPictureBox minimunsize;
+        private CustomPictureBox Exit;
+        private CustomLabel customLabel1;
+        private CustomLabel customLabel2;
+        private CustomLabel customLabel3;
+        private CustomLabel customLabel4;
+        private CustomLabel customLabel5;
+        private CustomLabel customLabel7;
+        private CustomLabel customLabel6;
+        private CustomLabel customLabel8;
+        private CustomLabel customLabel9;
+        private CustomLabel customLabel10;
     }
 }
