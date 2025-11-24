@@ -523,8 +523,6 @@ namespace WordleClient.views
             currentRow = 0;
             currentCol = 0;
             currentString = string.Empty;
-            streak = 0;
-            lbl_Streak.Text = streak.ToString();
 
             // Reset hints
             Random rd = new();
@@ -536,8 +534,8 @@ namespace WordleClient.views
                     HintRemaining++;
             }
             lbl_HintRemaining.Text = HintRemaining.ToString();
-            lbl_Hint1_Placeholder.Text = "UNKNOW";
-            lbl_Hint2_Placeholder.Text = "UNKNOW";
+            lbl_Hint1_Placeholder.Text = "Unknown";
+            lbl_Hint2_Placeholder.Text = "Unknown";
             customButton1.Visible = true;
 
             // Update labels
