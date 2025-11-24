@@ -361,6 +361,15 @@ namespace WordleClient.views
                 string hint = gameInstance.GetHint(HintRemaining + GameSeed);
                 MessageBox.Show($"Hint: {hint}", "Get Hint", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 HintRemaining--;
+                if (HintRemaining == 1)
+                {
+                    lbl_Hint1_Placeholder.Text = hint;
+                }
+                else
+                {
+                    lbl_Hint2_Placeholder.Text = hint;
+                    customButton1.Visible = false;
+                }
                 lbl_HintRemaining.Text = HintRemaining.ToString();
             }
             else if (GameEnded)
