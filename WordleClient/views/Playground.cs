@@ -407,7 +407,8 @@ namespace WordleClient.views
             {
                 CustomSound.PlayClick();
                 string hint = gameInstance.GetHint(HintRemaining + GameSeed);
-                MessageBox.Show($"Hint: {hint}", "Get Hint", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                AlertBox alert = new AlertBox();
+                alert.ShowAlert(this,"Hint", hint);
                 HintRemaining--;
                 if (HintRemaining == 1)
                 {
