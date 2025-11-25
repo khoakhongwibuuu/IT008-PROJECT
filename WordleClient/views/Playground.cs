@@ -56,11 +56,7 @@ namespace WordleClient.views
             this.dictionaryChecker = new DictionaryChecker(TheChosenOne.TOKEN.Length);
             this.GameSeed = rd.Next(0, 1);
             this.HintRemaining = 2;
-            if (TheChosenOne.LEVEL == "B2" || TheChosenOne.LEVEL == "C1" || TheChosenOne.LEVEL == "C2")
-            {
-                if (cols >= 5)
-                    this.HintRemaining++;
-            }
+          
             this.lastToken = TheChosenOne.TOKEN;
             InitializeComponent();
 
@@ -457,11 +453,7 @@ namespace WordleClient.views
             Random rd = new();
             GameSeed = rd.Next(0, 1);
             HintRemaining = 2;
-            if (newWord.LEVEL == "B2" || newWord.LEVEL == "C1" || newWord.LEVEL == "C2")
-            {
-                if (newWord.TOKEN.Length >= 5)
-                    HintRemaining++;
-            }
+          
             lbl_HintRemaining.Text = HintRemaining.ToString();
             lbl_Hint1_Placeholder.Text = "UNKNOW";
             lbl_Hint2_Placeholder.Text = "UNKNOW";
@@ -526,11 +518,7 @@ namespace WordleClient.views
             Random rd = new();
             GameSeed = rd.Next(0, 1);
             HintRemaining = 2;
-            if (newWord.LEVEL == "B2" || newWord.LEVEL == "C1" || newWord.LEVEL == "C2")
-            {
-                if (newWord.TOKEN.Length >= 5)
-                    HintRemaining++;
-            }
+          
             lbl_HintRemaining.Text = HintRemaining.ToString();
             lbl_Hint1_Placeholder.Text = "Unknown";
             lbl_Hint2_Placeholder.Text = "Unknown";
