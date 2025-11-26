@@ -51,10 +51,13 @@ namespace WordleClient
             customLabel8 = new CustomLabel();
             customLabel9 = new CustomLabel();
             customLabel10 = new CustomLabel();
+            customPanel1 = new CustomPanel();
+            pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)btn_Setting).BeginInit();
             ((System.ComponentModel.ISupportInitialize)maximumsize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)minimunsize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Exit).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // btn_SinglePlayer
@@ -69,9 +72,9 @@ namespace WordleClient
             btn_SinglePlayer.EnableStripe = true;
             btn_SinglePlayer.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             btn_SinglePlayer.ImageSize = 24;
-            btn_SinglePlayer.Location = new Point(483, 525);
+            btn_SinglePlayer.Location = new Point(482, 578);
             btn_SinglePlayer.Name = "btn_SinglePlayer";
-            btn_SinglePlayer.Size = new Size(317, 69);
+            btn_SinglePlayer.Size = new Size(227, 69);
             btn_SinglePlayer.StripeSpeed = 3;
             btn_SinglePlayer.TabIndex = 2;
             btn_SinglePlayer.Text = "SinglePlayer";
@@ -91,9 +94,9 @@ namespace WordleClient
             btn_MultiPlayer.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_MultiPlayer.ForeColor = Color.Yellow;
             btn_MultiPlayer.ImageSize = 24;
-            btn_MultiPlayer.Location = new Point(483, 620);
+            btn_MultiPlayer.Location = new Point(458, 681);
             btn_MultiPlayer.Name = "btn_MultiPlayer";
-            btn_MultiPlayer.Size = new Size(317, 69);
+            btn_MultiPlayer.Size = new Size(362, 69);
             btn_MultiPlayer.StripeSpeed = 4;
             btn_MultiPlayer.TabIndex = 2;
             btn_MultiPlayer.Text = "MultiPlayer";
@@ -112,9 +115,9 @@ namespace WordleClient
             btn_Exit.EnableStripe = true;
             btn_Exit.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             btn_Exit.ImageSize = 24;
-            btn_Exit.Location = new Point(483, 715);
+            btn_Exit.Location = new Point(458, 768);
             btn_Exit.Name = "btn_Exit";
-            btn_Exit.Size = new Size(317, 69);
+            btn_Exit.Size = new Size(362, 69);
             btn_Exit.StripeSpeed = 4;
             btn_Exit.TabIndex = 2;
             btn_Exit.Text = "Exit";
@@ -132,7 +135,7 @@ namespace WordleClient
             cuttomPanel1.GradientAngle = 90F;
             cuttomPanel1.GradientBottomColor = Color.Cyan;
             cuttomPanel1.GradientTopColor = Color.MediumBlue;
-            cuttomPanel1.Location = new Point(274, 499);
+            cuttomPanel1.Location = new Point(274, 547);
             cuttomPanel1.Name = "cuttomPanel1";
             cuttomPanel1.Size = new Size(726, 308);
             cuttomPanel1.TabIndex = 3;
@@ -351,6 +354,33 @@ namespace WordleClient
             customLabel10.TabIndex = 7;
             customLabel10.Text = "Y";
             // 
+            // customPanel1
+            // 
+            customPanel1.BackColor = Color.White;
+            customPanel1.BorderRadius = 30;
+            customPanel1.ForeColor = Color.Black;
+            customPanel1.GradientAngle = 90F;
+            customPanel1.GradientBottomColor = Color.FromArgb(0, 192, 192);
+            customPanel1.GradientTopColor = Color.FromArgb(128, 255, 255);
+            customPanel1.Location = new Point(458, 568);
+            customPanel1.Name = "customPanel1";
+            customPanel1.Size = new Size(362, 90);
+            customPanel1.TabIndex = 8;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackColor = Color.Turquoise;
+            pictureBox1.BorderStyle = BorderStyle.Fixed3D;
+            pictureBox1.Image = Properties.Resources.spreadsheet_app;
+            pictureBox1.Location = new Point(726, 578);
+            pictureBox1.Margin = new Padding(5);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(84, 69);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 9;
+            pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox1_Click;
+            // 
             // MainMenu
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -358,6 +388,7 @@ namespace WordleClient
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1269, 945);
+            Controls.Add(pictureBox1);
             Controls.Add(customLabel7);
             Controls.Add(customLabel5);
             Controls.Add(customLabel4);
@@ -375,6 +406,7 @@ namespace WordleClient
             Controls.Add(btn_Exit);
             Controls.Add(btn_MultiPlayer);
             Controls.Add(btn_SinglePlayer);
+            Controls.Add(customPanel1);
             Controls.Add(cuttomPanel1);
             Cursor = Cursors.Hand;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -386,6 +418,7 @@ namespace WordleClient
             ((System.ComponentModel.ISupportInitialize)maximumsize).EndInit();
             ((System.ComponentModel.ISupportInitialize)minimunsize).EndInit();
             ((System.ComponentModel.ISupportInitialize)Exit).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
@@ -408,5 +441,7 @@ namespace WordleClient
         private CustomLabel customLabel8;
         private CustomLabel customLabel9;
         private CustomLabel customLabel10;
+        private CustomPanel customPanel1;
+        private PictureBox pictureBox1;
     }
 }
