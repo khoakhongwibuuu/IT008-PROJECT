@@ -145,7 +145,7 @@ namespace WordleClient.views
             if (e.KeyCode == Keys.Escape)
                 this.Close();
         }
-        private void Playground_KeyPress(object? sender, KeyPressEventArgs e)
+        private async void Playground_KeyPress(object? sender, KeyPressEventArgs e)
         {
             // If game has ended, do not handle
             if (GameEnded) return;
@@ -158,10 +158,9 @@ namespace WordleClient.views
                     currentString = GetRowString(currentRow);
                     if (dictionaryChecker.TokenExists(currentString))
                     {
-
+                        
                         Debug.WriteLine($"Submitted word: {currentString}");
                         var result = gameInstance.EvaluateGuess(currentString);
-
                         for (int c = 0; c < cols; c++)
                         {
                             var box = GetBox(currentRow, c);
@@ -181,33 +180,25 @@ namespace WordleClient.views
                                 }
                             }
                         }
-
+                        await FlipRow(currentRow);
                         if (result.IsFullValue(TriState.MATCH))
                         {
                             HasCompletedString = true;
                             GameEnded = true;
                             streak++;
                             lbl_Streak.Text = streak.ToString();
+                            CustomSound.PlayClickAlert();
                             AlertBox alertBox = new AlertBox();
-                            alertBox.ShowAlert(this, "Configuration", "Congrats. You have found the hidden word.");
-                            if (CustomMessageBoxYesNo.Show(this, "Do you want to start a new game?", MessageBoxIcon.Question) == DialogResult.Yes)
-                            {
-                                if (initialDifficulty == "HARD")
+                            alertBox.ShowAlert(this, "Configuration", "Congrats. You have found the hidden word.");                         
+                            if (initialDifficulty == "HARD")
                                 {
                                     ResetHardGame();
-                                }
-                                else
-                                {
-                                    Resetnew_Game();
-                                }
-                                return;
                             }
                             else
-                            {
-                                this.Close();
-                                return;
-                            }
-
+                               {
+                                    Resetnew_Game();
+                               }
+                                return;                                                  
                         }
                         if (currentRow < rows - 1)
                         {
@@ -247,6 +238,8 @@ namespace WordleClient.views
                     }
                     else
                     {
+                        ShakeRow(currentRow);
+                        CustomSound.PlayClickAlertError();
                         AlertBox alertBox = new AlertBox();
                         alertBox.ShowAlert(this, "Invalid Word", "The entered word is not in the dictionary!", MessageBoxIcon.Warning);
                     }
@@ -400,6 +393,7 @@ namespace WordleClient.views
             {
                 CustomSound.PlayClick();
                 string hint = gameInstance.GetHint(HintRemaining + GameSeed);
+                CustomSound.PlayClickAlert();
                 AlertBox alert = new AlertBox();
                 alert.ShowAlert(this, "Hint", hint);
                 HintRemaining--;
@@ -535,6 +529,70 @@ namespace WordleClient.views
             matrixPanel.Refresh();
             this.Refresh();
         }
+        private async Task ShakeRow(int row)
+        {
+            
+            int offset = 4;   // shake distance in pixels 
+            int times = 5;    // number of shake cycles    
+
+            for (int i = 0; i < times; i++)
+            {
+                // move right
+                for (int c = 0; c < cols; c++)
+                {
+                    var box = GetBox(row, c);
+                    box.Left += offset;
+                }
+                await Task.Delay(40);
+
+                // move left past original
+                for (int c = 0; c < cols; c++)
+                {
+                    var box = GetBox(row, c);
+                    box.Left -= offset * 2;
+                }
+                await Task.Delay(40);
+
+                // back to original
+                for (int c = 0; c < cols; c++)
+                {
+                    var box = GetBox(row, c);
+                    box.Left += offset;
+                }
+            }
+        }
+        private async Task FlipBox(CharBox box)
+        {
+            int steps = 7;
+            // Shrink
+            for (int i = 0; i < steps; i++)
+            {
+                box.Height -= 5;
+                box.Top += 2;   
+                await Task.Delay(13);
+            }
+            // Expand
+            for (int i = 0; i < steps; i++)
+            {
+                box.Height += 5;
+                box.Top -= 2;
+                await Task.Delay(13);
+            }
+        }
+        // Flip a whole row sequentially
+        private async Task FlipRow(int row)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                var box = GetBox(row, col);
+                if (box != null)
+                {
+                    await FlipBox(box);
+                }
+            }
+        }
+
+
         private void ExitBtn_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();

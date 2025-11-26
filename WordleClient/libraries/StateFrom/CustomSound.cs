@@ -76,6 +76,20 @@ namespace WordleClient.libraries.StateFrom
             string musicPath = Path.Combine(basePath, "Assets", "sound", "ButtonSound.wav");
             PlayEffect(musicPath);
         }
+        public static void PlayClickAlert()
+        {
+            string basePath1 = AppDomain.CurrentDomain.BaseDirectory;
+            //string basePath = Environment.CurrentDirectory;
+            string musicPath1 = Path.Combine(basePath1, "Assets", "sound", "success-340660.wav");
+            PlayEffect(musicPath1);
+        }
+        public static void PlayClickAlertError()
+        {
+            string basePath1 = AppDomain.CurrentDomain.BaseDirectory;
+            //string basePath = Environment.CurrentDirectory;
+            string musicPath1 = Path.Combine(basePath1, "Assets", "sound", "invalid-selection-39351.wav");
+            PlayEffect(musicPath1);
+        }
         // Bật/tắt âm thanh
         public static void ToggleMute()
         {
