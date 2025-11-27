@@ -36,7 +36,12 @@ namespace WordleClient.views
 
         // Game Instance
         private GameInstance gameInstance;
+        
+        // Dictionary Checker
         private DictionaryChecker dictionaryChecker;
+
+        // Game logger
+        //private SingleplayerLogger gameLogger;
 
         public Playground(WDBRecord TheChosenOne, int MaxGuessCount)
         {
@@ -45,13 +50,9 @@ namespace WordleClient.views
             this.cols = TheChosenOne.TOKEN.Length;
             this.gameInstance = new GameInstance(TheChosenOne);
             this.dictionaryChecker = new DictionaryChecker(TheChosenOne.TOKEN.Length);
+            //this.gameLogger = new SingleplayerLogger();
             this.GameSeed = rd.Next(0, 1);
             this.HintRemaining = 2;
-            if (TheChosenOne.LEVEL == "B2" || TheChosenOne.LEVEL == "C1" || TheChosenOne.LEVEL == "C2")
-            {
-                if (cols >= 5)
-                    this.HintRemaining++;
-            }
             InitializeComponent();
 
             // Dynamic matrix panel setup
@@ -368,9 +369,12 @@ namespace WordleClient.views
                 else
                 {
                     lbl_Hint2_Placeholder.Text = hint;
-                    customButton1.Visible = false;
                 }
+
                 lbl_HintRemaining.Text = HintRemaining.ToString();
+
+                if (HintRemaining == 0)
+                    customButton1.Visible = false;
             }
             else if (GameEnded)
             {
