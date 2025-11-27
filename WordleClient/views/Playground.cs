@@ -14,8 +14,12 @@ namespace WordleClient.views
         private int cols;
         private int streak = 0;
         private readonly Panel matrixPanel;
-        private string? initialTopic;
-        private string? initialDifficulty;
+
+        // Does nothing when Difficulty is set to HARD in FormSetting
+        private readonly string? initialTopic;
+        private readonly string? initialDifficulty;
+
+        // For Hard reset
         private string? hardTopic = null;
         private string? hardLevel = null;
 
@@ -54,9 +58,9 @@ namespace WordleClient.views
             this.initialTopic = topic;
             this.initialDifficulty = difficulty;
             this.dictionaryChecker = new DictionaryChecker(TheChosenOne.TOKEN.Length);
-            this.GameSeed = rd.Next(0, 1);
+            this.GameSeed = rd.Next(0, 2);
             this.HintRemaining = 2;
-          
+
             this.lastToken = TheChosenOne.TOKEN;
             InitializeComponent();
 
@@ -158,29 +162,10 @@ namespace WordleClient.views
                     currentString = GetRowString(currentRow);
                     if (dictionaryChecker.TokenExists(currentString))
                     {
-                        
+
                         Debug.WriteLine($"Submitted word: {currentString}");
                         var result = gameInstance.EvaluateGuess(currentString);
-                        for (int c = 0; c < cols; c++)
-                        {
-                            var box = GetBox(currentRow, c);
-                            if (box != null)
-                            {
-                                switch (result.Get(c))
-                                {
-                                    case TriState.MATCH:
-                                        box.SetBackgroundColor(Color.FromArgb(255, 0x53, 0x8D, 0x4E));
-                                        break;
-                                    case TriState.INVALID_ORDER:
-                                        box.SetBackgroundColor(Color.FromArgb(255, 0xB5, 0x9F, 0x3B));
-                                        break;
-                                    case TriState.NOT_EXIST:
-                                        box.SetBackgroundColor(Color.FromArgb(255, 0x3A, 0x3A, 0x3C));
-                                        break;
-                                }
-                            }
-                        }
-                        await FlipRow(currentRow);
+                        await FlipRow(currentRow, result);
                         if (result.IsFullValue(TriState.MATCH))
                         {
                             HasCompletedString = true;
@@ -188,17 +173,19 @@ namespace WordleClient.views
                             streak++;
                             lbl_Streak.Text = streak.ToString();
                             CustomSound.PlayClickAlert();
-                            AlertBox alertBox = new AlertBox();
-                            alertBox.ShowAlert(this, "Configuration", "Congrats. You have found the hidden word.");                         
+                            AlertBox alertBox = new();
+                            alertBox.ShowAlert(this, "Configuration", "Congrats. You have found the hidden word.");
+
+                            await Task.Delay(2000);
                             if (initialDifficulty == "HARD")
-                                {
-                                    ResetHardGame();
+                            {
+                                ResetHardGame();
                             }
                             else
-                               {
-                                    Resetnew_Game();
-                               }
-                                return;                                                  
+                            {
+                                Resetnew_Game();
+                            }
+                            return;
                         }
                         if (currentRow < rows - 1)
                         {
@@ -238,9 +225,9 @@ namespace WordleClient.views
                     }
                     else
                     {
-                        ShakeRow(currentRow);
+                        await ShakeRow(currentRow);
                         CustomSound.PlayClickAlertError();
-                        AlertBox alertBox = new AlertBox();
+                        AlertBox alertBox = new();
                         alertBox.ShowAlert(this, "Invalid Word", "The entered word is not in the dictionary!", MessageBoxIcon.Warning);
                     }
                     Debug.WriteLine(currentString);
@@ -394,7 +381,7 @@ namespace WordleClient.views
                 CustomSound.PlayClick();
                 string hint = gameInstance.GetHint(HintRemaining + GameSeed);
                 CustomSound.PlayClickAlert();
-                AlertBox alert = new AlertBox();
+                AlertBox alert = new();
                 alert.ShowAlert(this, "Hint", hint);
                 HintRemaining--;
                 if (HintRemaining == 1)
@@ -420,7 +407,7 @@ namespace WordleClient.views
         private void Resetnew_Game()
         {
             WordDatabaseReader wdr = new();
-            WDBRecord? newWord = null;
+            WDBRecord? newWord;
             do
             {
                 newWord = wdr.ReadRandomWord(initialTopic, initialDifficulty);
@@ -445,12 +432,12 @@ namespace WordleClient.views
             currentString = string.Empty;
             // Reset hints
             Random rd = new();
-            GameSeed = rd.Next(0, 1);
+            GameSeed = rd.Next(0, 2);
             HintRemaining = 2;
-          
+
             lbl_HintRemaining.Text = HintRemaining.ToString();
-            lbl_Hint1_Placeholder.Text = "UNKNOW";
-            lbl_Hint2_Placeholder.Text = "UNKNOW";
+            lbl_Hint1_Placeholder.Text = "Unknown";
+            lbl_Hint2_Placeholder.Text = "Unknown";
             customButton1.Visible = true;
             // Update labels
             lbl_Diff.Text = newWord.LEVEL;
@@ -466,7 +453,7 @@ namespace WordleClient.views
         {
             // Random new word different from last
             WordDatabaseReader wdr = new();
-            WDBRecord? newWord = null;
+            WDBRecord? newWord;
             if (hardTopic == null || hardLevel == null)
             {
                 do
@@ -510,9 +497,9 @@ namespace WordleClient.views
 
             // Reset hints
             Random rd = new();
-            GameSeed = rd.Next(0, 1);
+            GameSeed = rd.Next(0, 2);
             HintRemaining = 2;
-          
+
             lbl_HintRemaining.Text = HintRemaining.ToString();
             lbl_Hint1_Placeholder.Text = "Unknown";
             lbl_Hint2_Placeholder.Text = "Unknown";
@@ -531,7 +518,7 @@ namespace WordleClient.views
         }
         private async Task ShakeRow(int row)
         {
-            
+
             int offset = 4;   // shake distance in pixels 
             int times = 5;    // number of shake cycles    
 
@@ -540,47 +527,51 @@ namespace WordleClient.views
                 // move right
                 for (int c = 0; c < cols; c++)
                 {
-                    var box = GetBox(row, c);
-                    box.Left += offset;
+                    CharBox? box = GetBox(row, c);
+                    if (box != null)
+                        box.Left += offset;
                 }
                 await Task.Delay(40);
 
                 // move left past original
                 for (int c = 0; c < cols; c++)
                 {
-                    var box = GetBox(row, c);
-                    box.Left -= offset * 2;
+                    CharBox? box = GetBox(row, c);
+                    if (box != null)
+                        box.Left -= offset * 2;
                 }
                 await Task.Delay(40);
 
                 // back to original
                 for (int c = 0; c < cols; c++)
                 {
-                    var box = GetBox(row, c);
-                    box.Left += offset;
+                    CharBox? box = GetBox(row, c);
+                    if (box != null)
+                        box.Left += offset;
                 }
             }
         }
-        private async Task FlipBox(CharBox box)
+        static private async Task FlipBox(CharBox box)
         {
-            int steps = 7;
+            int steps = 5;
+            int delay = 10;
             // Shrink
             for (int i = 0; i < steps; i++)
             {
                 box.Height -= 5;
-                box.Top += 2;   
-                await Task.Delay(13);
+                box.Top += 2;
+                await Task.Delay(delay);
             }
             // Expand
             for (int i = 0; i < steps; i++)
             {
                 box.Height += 5;
                 box.Top -= 2;
-                await Task.Delay(13);
+                await Task.Delay(delay);
             }
         }
         // Flip a whole row sequentially
-        private async Task FlipRow(int row)
+        private async Task FlipRow(int row, StateArray result)
         {
             for (int col = 0; col < cols; col++)
             {
@@ -588,6 +579,18 @@ namespace WordleClient.views
                 if (box != null)
                 {
                     await FlipBox(box);
+                    switch (result.Get(col))
+                    {
+                        case TriState.MATCH:
+                            box.SetBackgroundColor(Color.FromArgb(255, 0x53, 0x8D, 0x4E));
+                            break;
+                        case TriState.INVALID_ORDER:
+                            box.SetBackgroundColor(Color.FromArgb(255, 0xB5, 0x9F, 0x3B));
+                            break;
+                        case TriState.NOT_EXIST:
+                            box.SetBackgroundColor(Color.FromArgb(255, 0x3A, 0x3A, 0x3C));
+                            break;
+                    }
                 }
             }
         }

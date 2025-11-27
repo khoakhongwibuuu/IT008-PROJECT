@@ -110,6 +110,5 @@
         private Label lbl_Caption;
         private Label lbl_Content;
         private CustomPanel customPanel1;
-        private CustomPictureBox customPictureBox2;
     }
 }

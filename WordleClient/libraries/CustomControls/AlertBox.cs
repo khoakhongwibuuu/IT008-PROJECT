@@ -31,7 +31,7 @@ namespace WordleClient.libraries.CustomControls
             autoCloseTimer.Interval = 2500; 
             autoCloseTimer.Tick += AutoCloseTimer_Tick;
         }
-        private void SlideTimer_Tick(object sender, EventArgs e)
+        private void SlideTimer_Tick(object? sender, EventArgs e)
         {
             if (this.Left > targetX)
             {
@@ -43,7 +43,7 @@ namespace WordleClient.libraries.CustomControls
                 autoCloseTimer.Start();
             }
         }
-        private void AutoCloseTimer_Tick(object sender, EventArgs e)
+        private void AutoCloseTimer_Tick(object? sender, EventArgs e)
         {
             autoCloseTimer.Stop();
             this.Close();
