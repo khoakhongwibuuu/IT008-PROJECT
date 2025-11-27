@@ -225,10 +225,10 @@ namespace WordleClient.views
                     }
                     else
                     {
-                        await ShakeRow(currentRow);
-                        CustomSound.PlayClickAlertError();
+                        CustomSound.PlayClickAlertError();                      
                         AlertBox alertBox = new();
                         alertBox.ShowAlert(this, "Invalid Word", "The entered word is not in the dictionary!", MessageBoxIcon.Warning);
+                        await ShakeRow(currentRow);
                     }
                     Debug.WriteLine(currentString);
                     e.Handled = true;
