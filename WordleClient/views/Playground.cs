@@ -391,9 +391,12 @@ namespace WordleClient.views
                 else
                 {
                     lbl_Hint2_Placeholder.Text = hint;
-                    customButton1.Visible = false;
                 }
+
                 lbl_HintRemaining.Text = HintRemaining.ToString();
+
+                if (HintRemaining == 0) 
+                    customButton1.Visible = false;
             }
             else if (GameEnded)
             {
