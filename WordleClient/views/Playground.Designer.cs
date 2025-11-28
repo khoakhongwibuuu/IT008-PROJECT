@@ -31,6 +31,8 @@
             label3 = new Label();
             label1 = new Label();
             lbl_Diff = new Label();
+            lbl_Streak = new Label();
+            label6 = new Label();
             panel2 = new Panel();
             panel3 = new Panel();
             MasterPanel = new Panel();
@@ -87,6 +89,8 @@
             panel1.Controls.Add(label3);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(lbl_Diff);
+            panel1.Controls.Add(lbl_Streak);
+            panel1.Controls.Add(label6);
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(300, 810);
@@ -196,6 +200,27 @@
             lbl_Diff.TabIndex = 3;
             lbl_Diff.Text = "Unknown";
             // 
+            // lbl_Streak
+            // 
+            lbl_Streak.AutoSize = true;
+            lbl_Streak.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lbl_Streak.Location = new Point(81, 633);
+            lbl_Streak.Margin = new Padding(1, 0, 1, 0);
+            lbl_Streak.Name = "lbl_Streak";
+            lbl_Streak.Size = new Size(19, 21);
+            lbl_Streak.TabIndex = 15;
+            lbl_Streak.Text = "0";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label6.Location = new Point(14, 633);
+            label6.Name = "label6";
+            label6.Size = new Size(63, 21);
+            label6.TabIndex = 14;
+            label6.Text = "Streak:";
+            // 
             // panel2
             // 
             panel2.Location = new Point(300, 0);
@@ -239,7 +264,6 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel3.ResumeLayout(false);
-            panel3.PerformLayout();
             MasterPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -262,5 +286,7 @@
         private Label label5;
         private Label lbl_Hint2_Placeholder;
         private Label label7;
+        private Label lbl_Streak;
+        private Label label6;
     }
 }

@@ -65,7 +65,7 @@ namespace WordleClient.views
             else
             {
                 // Create playground and ensure MainMenu will be shown when playground closes.
-                Playground pg = new(TheChosenOne, MaxGuessCount);
+                Playground pg = new(TheChosenOne, MaxGuessCount, selectedTopic, selectedDifficulty);
                 pg.FormClosed += (s, ev) =>
                 {
                     var main = Application.OpenForms.OfType<MainMenu>().FirstOrDefault();

@@ -43,26 +43,40 @@ namespace WordleClient
         private void btn_Exit_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            if (MessageBox.Show("Are you sure you want to exit?", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                Application.Exit();
+                {
+                    Application.Exit();
+                }
             }
         }
         private void Exit_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            Application.Exit();
+            if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                {
+                    Application.Exit();
+                }
+            }
         }
         private void btn_Setting_Click_1(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            FormSetting setting = new FormSetting();
+            FormSetting setting = new();
             setting.ShowDialog();
         }
         private void minimunsize_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
             this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            CustomDgv customDgv = new();
+            customDgv.ShowDialog();
         }
     }
 }
