@@ -60,7 +60,7 @@ namespace WordleClient.views
             this.dictionaryChecker = new DictionaryChecker(TheChosenOne.TOKEN.Length);
             this.GameSeed = rd.Next(0, 2);
             this.HintRemaining = 2;
-
+            this.Load += Playground_Load;
             this.lastToken = TheChosenOne.TOKEN;
             InitializeComponent();
 
@@ -93,6 +93,11 @@ namespace WordleClient.views
 
             // Warning on exit if game not ended
             this.FormClosing += Playground_FormClosing;
+        }
+
+        private void Playground_Load(object? sender, EventArgs e)
+        {
+            ThemeManager.ApplyTheme(this);
         }
 
         private void Playground_FormClosing(object? sender, FormClosingEventArgs e)
@@ -412,6 +417,7 @@ namespace WordleClient.views
         }
         private void Resetnew_Game()
         {
+            ThemeManager.ApplyTheme(this);
             WordDatabaseReader wdr = new();
             WDBRecord? newWord;
             do
@@ -452,6 +458,8 @@ namespace WordleClient.views
             cols = newWord.TOKEN.Length;
             CreateMatrix();
             CenterMatrix();
+            ThemeManager.ApplyTheme(this);
+
             matrixPanel.Refresh();
             this.Refresh();
         }
@@ -519,6 +527,7 @@ namespace WordleClient.views
             cols = newWord.TOKEN.Length;
             CreateMatrix();
             CenterMatrix();
+            ThemeManager.ApplyTheme(this);
             matrixPanel.Refresh();
             this.Refresh();
         }

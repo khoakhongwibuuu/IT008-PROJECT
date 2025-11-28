@@ -21,7 +21,7 @@ namespace WordleClient.libraries.CustomControls
             {
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Segoe UI", 14F, FontStyle.Bold),
+                Font = new Font("Segoe UI", 18F, FontStyle.Bold),
                 AutoSize = false,
                 BackColor = Color.Transparent
             };

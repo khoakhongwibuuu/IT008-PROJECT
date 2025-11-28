@@ -51,6 +51,7 @@
             customButtonAnimation1.Text = "Host my own game room";
             customButtonAnimation1.TextAlign = ContentAlignment.MiddleCenter;
             customButtonAnimation1.TextColor = Color.White;
+            customButtonAnimation1.Click += customButtonAnimation1_Click;
             // 
             // customButtonAnimation2
             // 
@@ -70,6 +71,7 @@
             customButtonAnimation2.Text = "Join other game room";
             customButtonAnimation2.TextAlign = ContentAlignment.MiddleCenter;
             customButtonAnimation2.TextColor = Color.White;
+            customButtonAnimation2.Click += customButtonAnimation2_Click;
             // 
             // customButton1
             // 

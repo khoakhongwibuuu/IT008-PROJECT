@@ -55,5 +55,15 @@ namespace WordleClient.views
             CustomSound.PlayClick();
             this.Close();
         }
+
+        private void customButtonAnimation1_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+        }
+
+        private void customButtonAnimation2_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+        }
     }
 }
