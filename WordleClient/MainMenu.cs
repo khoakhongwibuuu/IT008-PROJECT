@@ -38,7 +38,8 @@ namespace WordleClient
         private void btn_MultiPlayer_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            MessageBox.Show("Multiplayer mode is under development.", "Coming Soon", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Multiplayer multiplayer = new Multiplayer();
+            multiplayer.ShowDialog();
         }
         private void btn_Exit_Click(object sender, EventArgs e)
         {

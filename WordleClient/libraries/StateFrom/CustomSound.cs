@@ -90,6 +90,13 @@ namespace WordleClient.libraries.StateFrom
             string musicPath1 = Path.Combine(basePath1, "Assets", "sound", "invalid-selection-39351.wav");
             PlayEffect(musicPath1);
         }
+        public static void PlayClickGameOver()
+        {
+            string basePath1 = AppDomain.CurrentDomain.BaseDirectory;
+            //string basePath = Environment.CurrentDirectory;
+            string musicPath1 = Path.Combine(basePath1, "Assets", "sound", "game-over-arcade-6435.wav");
+            PlayEffect(musicPath1);
+        }
         // Bật/tắt âm thanh
         public static void ToggleMute()
         {

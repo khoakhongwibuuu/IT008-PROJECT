@@ -197,12 +197,12 @@ namespace WordleClient.views
                             // The player has used all of their attempts
                             if (!HasCompletedString)
                             {
-                                CustomSound.PlayClickAlert();
+                                CustomSound.PlayClickGameOver();
                                 AlertBox alertBox = new();
                                 alertBox.ShowAlert(this,"Information", $"You have failed. The hidden word is {gameInstance.GetToken()}", MessageBoxIcon.Information);
                                 GameEnded = true;
                             }
-                            await Task.Delay(1600);
+                            await Task.Delay(2600);
                             if (CustomMessageBoxYesNo.Show(this, "Do you want to start a new game?", MessageBoxIcon.Question) == DialogResult.Yes)
                             {
                                 streak = 0;

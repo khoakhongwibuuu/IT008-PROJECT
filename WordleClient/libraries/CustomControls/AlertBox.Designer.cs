@@ -43,9 +43,10 @@
             customPictureBox1.boderSize1 = 2;
             customPictureBox1.gradientAngle1 = 90F;
             customPictureBox1.Image = Properties.Resources.tickSuccess;
-            customPictureBox1.Location = new Point(31, 7);
+            customPictureBox1.Location = new Point(27, -1);
+            customPictureBox1.Margin = new Padding(3, 2, 3, 2);
             customPictureBox1.Name = "customPictureBox1";
-            customPictureBox1.Size = new Size(63, 59);
+            customPictureBox1.Size = new Size(55, 56);
             customPictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             customPictureBox1.TabIndex = 0;
             customPictureBox1.TabStop = false;
@@ -55,9 +56,9 @@
             lbl_Caption.AutoSize = true;
             lbl_Caption.BackColor = Color.FromArgb(224, 224, 224);
             lbl_Caption.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbl_Caption.Location = new Point(128, 9);
+            lbl_Caption.Location = new Point(112, 7);
             lbl_Caption.Name = "lbl_Caption";
-            lbl_Caption.Size = new Size(124, 25);
+            lbl_Caption.Size = new Size(100, 20);
             lbl_Caption.TabIndex = 1;
             lbl_Caption.Text = "Caption Here";
             // 
@@ -67,9 +68,9 @@
             lbl_Content.BackColor = Color.White;
             lbl_Content.Font = new Font("Segoe UI", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             lbl_Content.ForeColor = Color.Black;
-            lbl_Content.Location = new Point(128, 41);
+            lbl_Content.Location = new Point(112, 31);
             lbl_Content.Name = "lbl_Content";
-            lbl_Content.Size = new Size(136, 28);
+            lbl_Content.Size = new Size(107, 21);
             lbl_Content.TabIndex = 1;
             lbl_Content.Text = "Content Here";
             // 
@@ -83,20 +84,22 @@
             customPanel1.GradientBottomColor = Color.FromArgb(192, 255, 192);
             customPanel1.GradientTopColor = Color.FromArgb(128, 255, 255);
             customPanel1.Location = new Point(0, 0);
+            customPanel1.Margin = new Padding(3, 2, 3, 2);
             customPanel1.Name = "customPanel1";
-            customPanel1.Size = new Size(675, 75);
+            customPanel1.Size = new Size(591, 56);
             customPanel1.TabIndex = 2;
             // 
             // AlertBox
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BorderRadius = 30;
-            ClientSize = new Size(675, 75);
+            ClientSize = new Size(591, 56);
             Controls.Add(lbl_Content);
             Controls.Add(lbl_Caption);
             Controls.Add(customPictureBox1);
             Controls.Add(customPanel1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "AlertBox";
             Text = "AlertBox";
             ((System.ComponentModel.ISupportInitialize)customPictureBox1).EndInit();
