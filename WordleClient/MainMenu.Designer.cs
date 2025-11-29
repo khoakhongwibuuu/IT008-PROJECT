@@ -72,9 +72,10 @@ namespace WordleClient
             btn_SinglePlayer.EnableStripe = true;
             btn_SinglePlayer.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             btn_SinglePlayer.ImageSize = 24;
-            btn_SinglePlayer.Location = new Point(482, 578);
+            btn_SinglePlayer.Location = new Point(422, 434);
+            btn_SinglePlayer.Margin = new Padding(3, 2, 3, 2);
             btn_SinglePlayer.Name = "btn_SinglePlayer";
-            btn_SinglePlayer.Size = new Size(227, 69);
+            btn_SinglePlayer.Size = new Size(199, 52);
             btn_SinglePlayer.StripeSpeed = 3;
             btn_SinglePlayer.TabIndex = 2;
             btn_SinglePlayer.Text = "SinglePlayer";
@@ -94,9 +95,10 @@ namespace WordleClient
             btn_MultiPlayer.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_MultiPlayer.ForeColor = Color.Yellow;
             btn_MultiPlayer.ImageSize = 24;
-            btn_MultiPlayer.Location = new Point(458, 681);
+            btn_MultiPlayer.Location = new Point(401, 511);
+            btn_MultiPlayer.Margin = new Padding(3, 2, 3, 2);
             btn_MultiPlayer.Name = "btn_MultiPlayer";
-            btn_MultiPlayer.Size = new Size(362, 69);
+            btn_MultiPlayer.Size = new Size(317, 52);
             btn_MultiPlayer.StripeSpeed = 4;
             btn_MultiPlayer.TabIndex = 2;
             btn_MultiPlayer.Text = "MultiPlayer";
@@ -115,9 +117,10 @@ namespace WordleClient
             btn_Exit.EnableStripe = true;
             btn_Exit.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             btn_Exit.ImageSize = 24;
-            btn_Exit.Location = new Point(458, 768);
+            btn_Exit.Location = new Point(401, 576);
+            btn_Exit.Margin = new Padding(3, 2, 3, 2);
             btn_Exit.Name = "btn_Exit";
-            btn_Exit.Size = new Size(362, 69);
+            btn_Exit.Size = new Size(317, 52);
             btn_Exit.StripeSpeed = 4;
             btn_Exit.TabIndex = 2;
             btn_Exit.Text = "Exit";
@@ -135,9 +138,10 @@ namespace WordleClient
             cuttomPanel1.GradientAngle = 90F;
             cuttomPanel1.GradientBottomColor = Color.Cyan;
             cuttomPanel1.GradientTopColor = Color.MediumBlue;
-            cuttomPanel1.Location = new Point(274, 547);
+            cuttomPanel1.Location = new Point(240, 410);
+            cuttomPanel1.Margin = new Padding(3, 2, 3, 2);
             cuttomPanel1.Name = "cuttomPanel1";
-            cuttomPanel1.Size = new Size(726, 308);
+            cuttomPanel1.Size = new Size(635, 231);
             cuttomPanel1.TabIndex = 3;
             // 
             // btn_Setting
@@ -148,9 +152,10 @@ namespace WordleClient
             btn_Setting.boderSize1 = 0;
             btn_Setting.gradientAngle1 = 90F;
             btn_Setting.Image = Properties.Resources.iconSetting;
-            btn_Setting.Location = new Point(11, 0);
+            btn_Setting.Location = new Point(10, 0);
+            btn_Setting.Margin = new Padding(3, 2, 3, 2);
             btn_Setting.Name = "btn_Setting";
-            btn_Setting.Size = new Size(57, 52);
+            btn_Setting.Size = new Size(50, 39);
             btn_Setting.SizeMode = PictureBoxSizeMode.StretchImage;
             btn_Setting.TabIndex = 4;
             btn_Setting.TabStop = false;
@@ -164,9 +169,10 @@ namespace WordleClient
             maximumsize.boderSize1 = 0;
             maximumsize.gradientAngle1 = 90F;
             maximumsize.Image = (Image)resources.GetObject("maximumsize.Image");
-            maximumsize.Location = new Point(1194, 0);
+            maximumsize.Location = new Point(1045, 0);
+            maximumsize.Margin = new Padding(3, 2, 3, 2);
             maximumsize.Name = "maximumsize";
-            maximumsize.Size = new Size(34, 35);
+            maximumsize.Size = new Size(30, 26);
             maximumsize.SizeMode = PictureBoxSizeMode.StretchImage;
             maximumsize.TabIndex = 5;
             maximumsize.TabStop = false;
@@ -179,9 +185,10 @@ namespace WordleClient
             minimunsize.boderSize1 = 0;
             minimunsize.gradientAngle1 = 90F;
             minimunsize.Image = (Image)resources.GetObject("minimunsize.Image");
-            minimunsize.Location = new Point(1154, 0);
+            minimunsize.Location = new Point(1010, 0);
+            minimunsize.Margin = new Padding(3, 2, 3, 2);
             minimunsize.Name = "minimunsize";
-            minimunsize.Size = new Size(31, 35);
+            minimunsize.Size = new Size(27, 26);
             minimunsize.SizeMode = PictureBoxSizeMode.StretchImage;
             minimunsize.TabIndex = 5;
             minimunsize.TabStop = false;
@@ -196,9 +203,10 @@ namespace WordleClient
             Exit.Cursor = Cursors.Hand;
             Exit.gradientAngle1 = 90F;
             Exit.Image = (Image)resources.GetObject("Exit.Image");
-            Exit.Location = new Point(1234, 0);
+            Exit.Location = new Point(1080, 0);
+            Exit.Margin = new Padding(3, 2, 3, 2);
             Exit.Name = "Exit";
-            Exit.Size = new Size(34, 35);
+            Exit.Size = new Size(30, 26);
             Exit.SizeMode = PictureBoxSizeMode.StretchImage;
             Exit.TabIndex = 6;
             Exit.TabStop = false;
@@ -211,10 +219,11 @@ namespace WordleClient
             customLabel1.EndColor = Color.Blue;
             customLabel1.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
             customLabel1.ForeColor = Color.White;
-            customLabel1.Location = new Point(231, 115);
+            customLabel1.Location = new Point(202, 86);
+            customLabel1.Margin = new Padding(3, 2, 3, 2);
             customLabel1.Name = "customLabel1";
             customLabel1.ShadowOffset = 4;
-            customLabel1.Size = new Size(147, 113);
+            customLabel1.Size = new Size(129, 85);
             customLabel1.StartColor = Color.FromArgb(128, 255, 255);
             customLabel1.TabIndex = 7;
             customLabel1.Text = "W";
@@ -226,10 +235,11 @@ namespace WordleClient
             customLabel2.EndColor = Color.Red;
             customLabel2.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
             customLabel2.ForeColor = Color.White;
-            customLabel2.Location = new Point(373, 167);
+            customLabel2.Location = new Point(326, 125);
+            customLabel2.Margin = new Padding(3, 2, 3, 2);
             customLabel2.Name = "customLabel2";
             customLabel2.ShadowOffset = 4;
-            customLabel2.Size = new Size(119, 104);
+            customLabel2.Size = new Size(104, 78);
             customLabel2.StartColor = Color.MediumSlateBlue;
             customLabel2.TabIndex = 7;
             customLabel2.Text = "O";
@@ -241,10 +251,11 @@ namespace WordleClient
             customLabel3.EndColor = Color.Yellow;
             customLabel3.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
             customLabel3.ForeColor = Color.White;
-            customLabel3.Location = new Point(509, 119);
+            customLabel3.Location = new Point(445, 89);
+            customLabel3.Margin = new Padding(3, 2, 3, 2);
             customLabel3.Name = "customLabel3";
             customLabel3.ShadowOffset = 4;
-            customLabel3.Size = new Size(117, 109);
+            customLabel3.Size = new Size(102, 82);
             customLabel3.StartColor = Color.FromArgb(255, 128, 0);
             customLabel3.TabIndex = 7;
             customLabel3.Text = "R";
@@ -256,10 +267,11 @@ namespace WordleClient
             customLabel4.EndColor = Color.Lime;
             customLabel4.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
             customLabel4.ForeColor = Color.White;
-            customLabel4.Location = new Point(758, 120);
+            customLabel4.Location = new Point(663, 90);
+            customLabel4.Margin = new Padding(3, 2, 3, 2);
             customLabel4.Name = "customLabel4";
             customLabel4.ShadowOffset = 4;
-            customLabel4.Size = new Size(115, 108);
+            customLabel4.Size = new Size(101, 81);
             customLabel4.StartColor = Color.White;
             customLabel4.TabIndex = 7;
             customLabel4.Text = "L";
@@ -271,10 +283,11 @@ namespace WordleClient
             customLabel5.EndColor = Color.FromArgb(255, 128, 0);
             customLabel5.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
             customLabel5.ForeColor = Color.White;
-            customLabel5.Location = new Point(888, 163);
+            customLabel5.Location = new Point(777, 122);
+            customLabel5.Margin = new Padding(3, 2, 3, 2);
             customLabel5.Name = "customLabel5";
             customLabel5.ShadowOffset = 4;
-            customLabel5.Size = new Size(112, 108);
+            customLabel5.Size = new Size(98, 81);
             customLabel5.StartColor = Color.Red;
             customLabel5.TabIndex = 7;
             customLabel5.Text = "E";
@@ -286,10 +299,11 @@ namespace WordleClient
             customLabel7.EndColor = Color.Blue;
             customLabel7.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
             customLabel7.ForeColor = Color.White;
-            customLabel7.Location = new Point(632, 163);
+            customLabel7.Location = new Point(553, 122);
+            customLabel7.Margin = new Padding(3, 2, 3, 2);
             customLabel7.Name = "customLabel7";
             customLabel7.ShadowOffset = 4;
-            customLabel7.Size = new Size(120, 108);
+            customLabel7.Size = new Size(105, 81);
             customLabel7.StartColor = Color.MediumSlateBlue;
             customLabel7.TabIndex = 7;
             customLabel7.Text = "D";
@@ -301,10 +315,11 @@ namespace WordleClient
             customLabel6.EndColor = Color.Blue;
             customLabel6.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
             customLabel6.ForeColor = Color.White;
-            customLabel6.Location = new Point(262, 288);
+            customLabel6.Location = new Point(229, 216);
+            customLabel6.Margin = new Padding(3, 2, 3, 2);
             customLabel6.Name = "customLabel6";
             customLabel6.ShadowOffset = 5;
-            customLabel6.Size = new Size(147, 113);
+            customLabel6.Size = new Size(129, 85);
             customLabel6.StartColor = Color.MediumSlateBlue;
             customLabel6.TabIndex = 7;
             customLabel6.Text = "P";
@@ -316,10 +331,11 @@ namespace WordleClient
             customLabel8.EndColor = Color.Blue;
             customLabel8.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
             customLabel8.ForeColor = Color.White;
-            customLabel8.Location = new Point(447, 288);
+            customLabel8.Location = new Point(391, 216);
+            customLabel8.Margin = new Padding(3, 2, 3, 2);
             customLabel8.Name = "customLabel8";
             customLabel8.ShadowOffset = 4;
-            customLabel8.Size = new Size(147, 113);
+            customLabel8.Size = new Size(129, 85);
             customLabel8.StartColor = Color.MediumSlateBlue;
             customLabel8.TabIndex = 7;
             customLabel8.Text = "L";
@@ -331,10 +347,11 @@ namespace WordleClient
             customLabel9.EndColor = Color.Blue;
             customLabel9.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
             customLabel9.ForeColor = Color.White;
-            customLabel9.Location = new Point(632, 288);
+            customLabel9.Location = new Point(553, 216);
+            customLabel9.Margin = new Padding(3, 2, 3, 2);
             customLabel9.Name = "customLabel9";
             customLabel9.ShadowOffset = 4;
-            customLabel9.Size = new Size(147, 113);
+            customLabel9.Size = new Size(129, 85);
             customLabel9.StartColor = Color.MediumSlateBlue;
             customLabel9.TabIndex = 7;
             customLabel9.Text = "A";
@@ -346,10 +363,11 @@ namespace WordleClient
             customLabel10.EndColor = Color.Blue;
             customLabel10.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
             customLabel10.ForeColor = Color.White;
-            customLabel10.Location = new Point(819, 288);
+            customLabel10.Location = new Point(717, 216);
+            customLabel10.Margin = new Padding(3, 2, 3, 2);
             customLabel10.Name = "customLabel10";
             customLabel10.ShadowOffset = 4;
-            customLabel10.Size = new Size(147, 113);
+            customLabel10.Size = new Size(129, 85);
             customLabel10.StartColor = Color.MediumSlateBlue;
             customLabel10.TabIndex = 7;
             customLabel10.Text = "Y";
@@ -362,9 +380,10 @@ namespace WordleClient
             customPanel1.GradientAngle = 90F;
             customPanel1.GradientBottomColor = Color.FromArgb(0, 192, 192);
             customPanel1.GradientTopColor = Color.FromArgb(128, 255, 255);
-            customPanel1.Location = new Point(458, 568);
+            customPanel1.Location = new Point(401, 426);
+            customPanel1.Margin = new Padding(3, 2, 3, 2);
             customPanel1.Name = "customPanel1";
-            customPanel1.Size = new Size(362, 90);
+            customPanel1.Size = new Size(317, 68);
             customPanel1.TabIndex = 8;
             // 
             // pictureBox1
@@ -372,10 +391,10 @@ namespace WordleClient
             pictureBox1.BackColor = Color.Turquoise;
             pictureBox1.BorderStyle = BorderStyle.Fixed3D;
             pictureBox1.Image = Properties.Resources.spreadsheet_app;
-            pictureBox1.Location = new Point(726, 578);
-            pictureBox1.Margin = new Padding(5);
+            pictureBox1.Location = new Point(635, 434);
+            pictureBox1.Margin = new Padding(4, 4, 4, 4);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(84, 69);
+            pictureBox1.Size = new Size(74, 53);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 9;
             pictureBox1.TabStop = false;
@@ -383,11 +402,11 @@ namespace WordleClient
             // 
             // MainMenu
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1269, 945);
+            ClientSize = new Size(1110, 709);
             Controls.Add(pictureBox1);
             Controls.Add(customLabel7);
             Controls.Add(customLabel5);
@@ -410,6 +429,7 @@ namespace WordleClient
             Controls.Add(cuttomPanel1);
             Cursor = Cursors.Hand;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 2, 3, 2);
             Name = "MainMenu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MainMenu";

@@ -38,7 +38,8 @@ namespace WordleClient
         private void btn_MultiPlayer_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            MessageBox.Show("Multiplayer mode is under development.", "Coming Soon", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Multiplayer multiplayer = new Multiplayer();
+            multiplayer.ShowDialog();
         }
         private void btn_Exit_Click(object sender, EventArgs e)
         {
@@ -46,7 +47,7 @@ namespace WordleClient
             if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 {
-                    Application.Exit();
+                   Application.Exit();
                 }
             }
         }
@@ -63,7 +64,7 @@ namespace WordleClient
         private void btn_Setting_Click_1(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            FormSetting setting = new();
+            FormSetting setting = new FormSetting();
             setting.ShowDialog();
         }
         private void minimunsize_Click(object sender, EventArgs e)
@@ -71,11 +72,10 @@ namespace WordleClient
             CustomSound.PlayClick();
             this.WindowState = FormWindowState.Minimized;
         }
-
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            CustomDgv customDgv = new();
+            CustomDgv customDgv = new CustomDgv();
             customDgv.ShowDialog();
         }
     }

@@ -54,6 +54,9 @@
     <None Update="Assets\sound\ButtonSound.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Assets\sound\game-over-arcade-6435.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Assets\sound\GameSoundBackground.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

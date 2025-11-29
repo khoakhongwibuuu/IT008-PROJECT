@@ -295,10 +295,10 @@ namespace WordleClient.views
             btn_Exit.Cursor = Cursors.Hand;
             btn_Exit.gradientAngle1 = 90F;
             btn_Exit.Image = (Image)resources.GetObject("btn_Exit.Image");
-            btn_Exit.Location = new Point(635, 0);
+            btn_Exit.Location = new Point(623, 11);
             btn_Exit.Margin = new Padding(3, 2, 3, 2);
             btn_Exit.Name = "btn_Exit";
-            btn_Exit.Size = new Size(30, 26);
+            btn_Exit.Size = new Size(30, 30);
             btn_Exit.SizeMode = PictureBoxSizeMode.StretchImage;
             btn_Exit.TabIndex = 7;
             btn_Exit.TabStop = false;

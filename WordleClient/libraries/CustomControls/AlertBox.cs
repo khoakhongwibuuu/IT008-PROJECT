@@ -67,7 +67,7 @@ namespace WordleClient.libraries.CustomControls
             switch (icon)
             {
                 case MessageBoxIcon.Information:
-                    customPictureBox1.Image = Properties.Resources.tickSuccess;
+                    customPictureBox1.Image = Properties.Resources.information;
                     break;
                 case MessageBoxIcon.Warning:
                     customPictureBox1.Image = Properties.Resources.Warnning;
