@@ -235,7 +235,6 @@ namespace WordleClient.views
                     {
                         CustomSound.PlayClickAlertError();                      
                         AlertBox alertBox = new();
-                        alertBox.ShowAlert(this, "Invalid Word", "The entered word is not in the dictionary!", MessageBoxIcon.Warning);
                         await ShakeRow(currentRow);
                     }
                     Debug.WriteLine(currentString);
