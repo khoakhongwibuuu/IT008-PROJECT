@@ -24,8 +24,10 @@ namespace WordleClient.views
         private string? hardLevel = null;
 
         // Size constants
-        private const int boxSize = 60;
-        private const int spacing = 6;
+        private
+        const int boxSize = 60;
+        private
+        const int spacing = 6;
 
         // Tracks the current string being built in the current row
         private string currentString = string.Empty;
@@ -105,7 +107,6 @@ namespace WordleClient.views
         {
             ThemeManager.ApplyTheme(this);
         }
-
         private void Playground_FormClosing(object? sender, FormClosingEventArgs e)
         {
             if (GameEnded) return;
@@ -113,9 +114,20 @@ namespace WordleClient.views
             {
                 if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Question) == DialogResult.No)
                 {
-                    {
-                        e.Cancel = true;
-                    }
+                    e.Cancel = true;
+                } else
+                {
+                    dictionaryChecker.Dispose();
+
+                    logger.SaveToDatabase(new SingleplayerPlayLog(
+                        DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                        gameInstance.GetToken(),
+                        gameInstance.GetGroupName(),
+                        gameInstance.GetDifficulty(),
+                        false, rows, currentRow
+                    ));
+                    gameInstance.Dispose();
+                    logger.Close();
                 }
             }
         }
@@ -132,9 +144,9 @@ namespace WordleClient.views
                     {
                         Size = new Size(boxSize, boxSize),
                         Location = new Point(
-                            j * (boxSize + spacing),
-                            i * (boxSize + spacing)
-                        )
+                                j * (boxSize + spacing),
+                                i * (boxSize + spacing)
+                            )
                     };
                     box.SetCharacter('-');
                     matrixPanel.Controls.Add(box);
@@ -186,7 +198,13 @@ namespace WordleClient.views
                             CustomSound.PlayClickAlert();
                             AlertBox alertBox = new();
                             alertBox.ShowAlert(this, "Configuration", "Congrats. You have found the hidden word.");
-
+                            logger.SaveToDatabase(new SingleplayerPlayLog(
+                                DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                                gameInstance.GetToken(),
+                                gameInstance.GetGroupName(),
+                                gameInstance.GetDifficulty(),
+                                true, rows, currentRow + 1
+                            ));
                             await Task.Delay(2000);
                             if (initialDifficulty == "HARD")
                             {
@@ -209,9 +227,18 @@ namespace WordleClient.views
                             if (!HasCompletedString)
                             {
                                 CustomSound.PlayClickGameOver();
-                                AlertBox alertBox = new();
-                                alertBox.ShowAlert(this,"Information", $"You have failed. The hidden word is {gameInstance.GetToken()}", MessageBoxIcon.Information);
                                 GameEnded = true;
+
+                                AlertBox alertBox = new();
+                                alertBox.ShowAlert(this, "Information", $"You have failed. The hidden word is {gameInstance.GetToken()}", MessageBoxIcon.Information);
+
+                                logger.SaveToDatabase(new SingleplayerPlayLog(
+                                    DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                                    gameInstance.GetToken(),
+                                    gameInstance.GetGroupName(),
+                                    gameInstance.GetDifficulty(),
+                                    false, rows, currentRow + 1
+                                ));
                             }
                             await Task.Delay(2600);
                             if (CustomMessageBoxYesNo.Show(this, "Do you want to start a new game?", MessageBoxIcon.Question) == DialogResult.Yes)
@@ -227,7 +254,6 @@ namespace WordleClient.views
                                     Resetnew_Game();
                                 }
                                 return;
-
                             }
                             else
                             {
@@ -239,7 +265,7 @@ namespace WordleClient.views
                     }
                     else
                     {
-                        CustomSound.PlayClickAlertError();                      
+                        CustomSound.PlayClickAlertError();
                         AlertBox alertBox = new();
                         alertBox.ShowAlert(this, "Invalid Word", "The entered word is not in the dictionary!", MessageBoxIcon.Warning);
                         await ShakeRow(currentRow);
@@ -409,7 +435,7 @@ namespace WordleClient.views
 
                 lbl_HintRemaining.Text = HintRemaining.ToString();
 
-                if (HintRemaining == 0) 
+                if (HintRemaining == 0)
                     customButton1.Visible = false;
             }
             else if (GameEnded)
@@ -540,8 +566,8 @@ namespace WordleClient.views
         private async Task ShakeRow(int row)
         {
 
-            int offset = 4;   // shake distance in pixels 
-            int times = 5;    // number of shake cycles    
+            int offset = 4; // shake distance in pixels 
+            int times = 5; // number of shake cycles    
 
             for (int i = 0; i < times; i++)
             {
@@ -615,7 +641,6 @@ namespace WordleClient.views
                 }
             }
         }
-
 
         private void ExitBtn_Click(object sender, EventArgs e)
         {

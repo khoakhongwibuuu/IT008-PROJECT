@@ -30,9 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomDgv));
             customPanel1 = new CustomPanel();
-            dataGridView1 = new DataGridView();
             Exit_1 = new CustomPictureBox();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Exit_1).BeginInit();
             SuspendLayout();
             // 
@@ -51,18 +49,6 @@
             customPanel1.Padding = new Padding(4, 0, 4, 40);
             customPanel1.Size = new Size(1111, 693);
             customPanel1.TabIndex = 0;
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.BackgroundColor = Color.White;
-            dataGridView1.BorderStyle = BorderStyle.None;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.GridColor = Color.LightGray;
-            dataGridView1.Location = new Point(51, 33);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(1071, 675);
-            dataGridView1.TabIndex = 1;
             // 
             // Exit_1
             // 
@@ -83,12 +69,11 @@
             // 
             // CustomDgv
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(235, 230, 255);
             ClientSize = new Size(1171, 743);
             Controls.Add(Exit_1);
-            Controls.Add(dataGridView1);
             Controls.Add(customPanel1);
             Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.None;
@@ -97,7 +82,6 @@
             Padding = new Padding(30, 30, 30, 20);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CustomDgv";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)Exit_1).EndInit();
             ResumeLayout(false);
         }
@@ -105,7 +89,6 @@
         #endregion
 
         private CustomPanel customPanel1;
-        private DataGridView dataGridView1;
         private CustomPictureBox Exit_1;
     }
 }

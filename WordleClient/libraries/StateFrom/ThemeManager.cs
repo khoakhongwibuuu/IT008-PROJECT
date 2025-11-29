@@ -29,17 +29,18 @@ namespace WordleClient.libraries.StateFrom
                     {
                         ApplyTheme(c);
                     }
-                    return; 
+                    return;
                 }
                 // Handle CharBox children 
                 if (parent.Parent is CharBox)
                 {
-                    if (CustomDarkLight.IsDark) {
+                    if (CustomDarkLight.IsDark)
+                    {
                         parent.ForeColor = Color.White;
                     }
                     else
                     {
-                        parent.ForeColor = Color.Black; 
+                        parent.ForeColor = Color.Black;
                     }
                     return;
                 }

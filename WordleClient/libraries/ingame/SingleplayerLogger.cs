@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using WordleClient.libraries.lowlevel;
 
+using System.Diagnostics;
 namespace WordleClient.libraries.ingame
 {
     public class SingleplayerLogger
@@ -9,6 +10,7 @@ namespace WordleClient.libraries.ingame
 
         public SingleplayerLogger()
         {
+            Debug.WriteLine("[SingleplayerLogger] Initialing.");
             string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string basePath = Path.Combine(localAppData, "WordleClient");
             string userDataDir = Path.Combine(basePath, "userdata");
@@ -17,36 +19,44 @@ namespace WordleClient.libraries.ingame
             // Ensure the directory exists
             if (!Directory.Exists(userDataDir))
             {
+                Debug.WriteLine($"[SingleplayerLogger] Creating directory at {userDataDir}");
                 Directory.CreateDirectory(userDataDir);
             }
 
             // Create the database file with the TABLE if it doesn't exist
             if (!File.Exists(dbPath))
             {
-                string tempConnectionString = $"Data Source={dbPath}";
-                using (SqliteConnection tempConnection = new(tempConnectionString))
+                Debug.WriteLine($"[SingleplayerLogger] Creating database at {dbPath}");
+                string tempConnectionString = $"Data Source={dbPath};";
+
+                try
                 {
+                    using var tempConnection = new SqliteConnection(tempConnectionString);
                     tempConnection.Open();
-                    string createTableSql =
-                    @"
-                        CREATE TABLE SINGLEPLAYER_PLAYLOG (
-	                        TIMESTAMP	INTEGER NOT NULL,
-	                        TOKEN	    TEXT NOT NULL,
-	                        TOPIC	    TEXT NOT NULL,
-	                        IS_SOLVED	INTEGER NOT NULL,
-	                        MAX_ATTEMPTS_ALLOWED	INTEGER NOT NULL,
-	                        USED_ATTEMPTS	INTEGER NOT NULL,
-	                        PRIMARY KEY(TIMESTAMP,TOKEN,TOPIC)
-                        );
-                    ";
-                    using (SqliteCommand command = tempConnection.CreateCommand())
-                    {
-                        command.CommandText = createTableSql;
-                        command.ExecuteNonQuery();
-                    }
-                    tempConnection.Close();
+
+                    string createTableSql = @"
+            CREATE TABLE IF NOT EXISTS SINGLEPLAYER_PLAYLOG (
+                TIMESTAMP  INTEGER NOT NULL,
+                TOKEN      TEXT NOT NULL,
+                TOPIC      TEXT NOT NULL,
+                DIFFICULTY TEXT NOT NULL,
+                IS_SOLVED  INTEGER NOT NULL,
+                MAX_ATTEMPTS_ALLOWED INTEGER NOT NULL,
+                USED_ATTEMPTS INTEGER NOT NULL,
+                PRIMARY KEY (TIMESTAMP, TOKEN, TOPIC)
+            );
+            ";
+
+                    using var command = tempConnection.CreateCommand();
+                    command.CommandText = createTableSql;
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("[SingleplayerLogger] DB creation error: " + ex);
                 }
             }
+
 
             // Database connection initialise
             string connectionString = $"Data Source={dbPath};Mode=ReadWriteCreate;";
@@ -59,13 +69,14 @@ namespace WordleClient.libraries.ingame
             {
                 cmd.CommandText = @"
                 INSERT INTO SINGLEPLAYER_PLAYLOG 
-                (TIMESTAMP, TOKEN, TOPIC, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS) 
+                (TIMESTAMP, TOKEN, TOPIC, DIFFICULTY, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS) 
                 VALUES 
-                (@timestamp, @token, @topic, @is_solved, @max_attempts_allowed, @used_attempts);";
+                (@timestamp, @token, @topic, @difficulty, @is_solved, @max_attempts_allowed, @used_attempts);";
 
                 cmd.Parameters.AddWithValue("@timestamp", SPL.Timestamp);
                 cmd.Parameters.AddWithValue("@token", SPL.Token);
                 cmd.Parameters.AddWithValue("@topic", SPL.Group);
+                cmd.Parameters.AddWithValue("@difficulty", SPL.Difficulty); 
                 cmd.Parameters.AddWithValue("@is_solved", SPL.IsSolved ? 1 : 0);
                 cmd.Parameters.AddWithValue("@max_attempts_allowed", SPL.MaxAttempts);
                 cmd.Parameters.AddWithValue("@used_attempts", SPL.UsedAttempts);
@@ -79,7 +90,7 @@ namespace WordleClient.libraries.ingame
 
             using (SqliteCommand cmd = sql_con.CreateCommand())
             {
-                cmd.CommandText = "SELECT TIMESTAMP, TOKEN, TOPIC, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS FROM SINGLEPLAYER_PLAYLOG;";
+                cmd.CommandText = "SELECT TIMESTAMP, TOKEN, TOPIC, DIFFICULTY, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS FROM SINGLEPLAYER_PLAYLOG;";
                 using (SqliteDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -87,10 +98,11 @@ namespace WordleClient.libraries.ingame
                         long timestamp = reader.GetInt64(0);
                         string token = reader.GetString(1);
                         string group = reader.GetString(2);
-                        bool isSolved = reader.GetInt32(3) != 0;
-                        int maxAttempts = reader.GetInt32(4);
-                        int usedAttempts = reader.GetInt32(5);
-                        SingleplayerPlayLog playLog = new(timestamp, token, group, isSolved, maxAttempts, usedAttempts);
+                        string diff = reader.GetString(3);
+                        bool isSolved = reader.GetInt32(4) != 0;
+                        int maxAttempts = reader.GetInt32(5);
+                        int usedAttempts = reader.GetInt32(6);
+                        SingleplayerPlayLog playLog = new(timestamp, token, group, diff, isSolved, maxAttempts, usedAttempts);
                         playLogs.Add(playLog);
                     }
                 }

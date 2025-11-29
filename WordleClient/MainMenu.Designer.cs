@@ -33,149 +33,32 @@ namespace WordleClient
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenu));
-            btn_SinglePlayer = new CustomButtonAnimation();
-            btn_MultiPlayer = new CustomButtonAnimation();
-            btn_Exit = new CustomButtonAnimation();
-            cuttomPanel1 = new CustomPanel();
-            btn_Setting = new CustomPictureBox();
-            maximumsize = new CustomPictureBox();
             minimunsize = new CustomPictureBox();
-            Exit = new CustomPictureBox();
+            btn_DarkLight = new CustomPictureBox();
             customLabel1 = new CustomLabel();
+            customLabel6 = new CustomLabel();
+            customLabel8 = new CustomLabel();
+            customLabel9 = new CustomLabel();
+            customLabel7 = new CustomLabel();
             customLabel2 = new CustomLabel();
             customLabel3 = new CustomLabel();
             customLabel4 = new CustomLabel();
             customLabel5 = new CustomLabel();
-            customLabel7 = new CustomLabel();
-            customLabel6 = new CustomLabel();
-            customLabel8 = new CustomLabel();
-            customLabel9 = new CustomLabel();
             customLabel10 = new CustomLabel();
+            btn_Sound = new CustomPictureBox();
             customPanel1 = new CustomPanel();
-            pictureBox1 = new PictureBox();
-            ((System.ComponentModel.ISupportInitialize)btn_Setting).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)maximumsize).BeginInit();
+            btn_SinglePlayer = new CustomButtonAnimation();
+            btn_MultiPlayer = new CustomButtonAnimation();
+            btn_SingleStats = new CustomButtonAnimation();
+            btn_MultiStats = new CustomButtonAnimation();
+            btn_Exit = new CustomButtonAnimation();
+            exit = new CustomPictureBox();
             ((System.ComponentModel.ISupportInitialize)minimunsize).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)Exit).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)btn_DarkLight).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)btn_Sound).BeginInit();
+            customPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)exit).BeginInit();
             SuspendLayout();
-            // 
-            // btn_SinglePlayer
-            // 
-            btn_SinglePlayer.BackColor = Color.White;
-            btn_SinglePlayer.BackgroundColor = Color.FromArgb(153, 214, 214);
-            btn_SinglePlayer.BorderColor = Color.FromArgb(153, 214, 214);
-            btn_SinglePlayer.BorderRadius = 20;
-            btn_SinglePlayer.BorderSize = 2;
-            btn_SinglePlayer.ButtonImage = null;
-            btn_SinglePlayer.Cursor = Cursors.Hand;
-            btn_SinglePlayer.EnableStripe = true;
-            btn_SinglePlayer.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            btn_SinglePlayer.ImageSize = 24;
-            btn_SinglePlayer.Location = new Point(422, 434);
-            btn_SinglePlayer.Margin = new Padding(3, 2, 3, 2);
-            btn_SinglePlayer.Name = "btn_SinglePlayer";
-            btn_SinglePlayer.Size = new Size(199, 52);
-            btn_SinglePlayer.StripeSpeed = 3;
-            btn_SinglePlayer.TabIndex = 2;
-            btn_SinglePlayer.Text = "SinglePlayer";
-            btn_SinglePlayer.TextAlign = ContentAlignment.MiddleCenter;
-            btn_SinglePlayer.TextColor = Color.Black;
-            btn_SinglePlayer.Click += btn_SinglePlayer_Click;
-            // 
-            // btn_MultiPlayer
-            // 
-            btn_MultiPlayer.BackgroundColor = Color.FromArgb(224, 224, 224);
-            btn_MultiPlayer.BorderColor = Color.SkyBlue;
-            btn_MultiPlayer.BorderRadius = 20;
-            btn_MultiPlayer.BorderSize = 2;
-            btn_MultiPlayer.ButtonImage = null;
-            btn_MultiPlayer.Cursor = Cursors.Hand;
-            btn_MultiPlayer.EnableStripe = true;
-            btn_MultiPlayer.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btn_MultiPlayer.ForeColor = Color.Yellow;
-            btn_MultiPlayer.ImageSize = 24;
-            btn_MultiPlayer.Location = new Point(401, 511);
-            btn_MultiPlayer.Margin = new Padding(3, 2, 3, 2);
-            btn_MultiPlayer.Name = "btn_MultiPlayer";
-            btn_MultiPlayer.Size = new Size(317, 52);
-            btn_MultiPlayer.StripeSpeed = 4;
-            btn_MultiPlayer.TabIndex = 2;
-            btn_MultiPlayer.Text = "MultiPlayer";
-            btn_MultiPlayer.TextAlign = ContentAlignment.MiddleCenter;
-            btn_MultiPlayer.TextColor = Color.Black;
-            btn_MultiPlayer.Click += btn_MultiPlayer_Click;
-            // 
-            // btn_Exit
-            // 
-            btn_Exit.BackgroundColor = Color.FromArgb(153, 214, 214);
-            btn_Exit.BorderColor = Color.FromArgb(153, 214, 214);
-            btn_Exit.BorderRadius = 20;
-            btn_Exit.BorderSize = 2;
-            btn_Exit.ButtonImage = null;
-            btn_Exit.Cursor = Cursors.Hand;
-            btn_Exit.EnableStripe = true;
-            btn_Exit.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            btn_Exit.ImageSize = 24;
-            btn_Exit.Location = new Point(401, 576);
-            btn_Exit.Margin = new Padding(3, 2, 3, 2);
-            btn_Exit.Name = "btn_Exit";
-            btn_Exit.Size = new Size(317, 52);
-            btn_Exit.StripeSpeed = 4;
-            btn_Exit.TabIndex = 2;
-            btn_Exit.Text = "Exit";
-            btn_Exit.TextAlign = ContentAlignment.MiddleCenter;
-            btn_Exit.TextColor = Color.Black;
-            btn_Exit.Click += btn_Exit_Click;
-            // 
-            // cuttomPanel1
-            // 
-            cuttomPanel1.BackColor = Color.White;
-            cuttomPanel1.BackgroundImage = (Image)resources.GetObject("cuttomPanel1.BackgroundImage");
-            cuttomPanel1.BackgroundImageLayout = ImageLayout.Stretch;
-            cuttomPanel1.BorderRadius = 35;
-            cuttomPanel1.ForeColor = Color.Black;
-            cuttomPanel1.GradientAngle = 90F;
-            cuttomPanel1.GradientBottomColor = Color.Cyan;
-            cuttomPanel1.GradientTopColor = Color.MediumBlue;
-            cuttomPanel1.Location = new Point(240, 410);
-            cuttomPanel1.Margin = new Padding(3, 2, 3, 2);
-            cuttomPanel1.Name = "cuttomPanel1";
-            cuttomPanel1.Size = new Size(635, 231);
-            cuttomPanel1.TabIndex = 3;
-            // 
-            // btn_Setting
-            // 
-            btn_Setting.boderGradientBottom1 = Color.White;
-            btn_Setting.boderGradientTop1 = Color.White;
-            btn_Setting.boderRadius1 = 40;
-            btn_Setting.boderSize1 = 0;
-            btn_Setting.gradientAngle1 = 90F;
-            btn_Setting.Image = Properties.Resources.iconSetting;
-            btn_Setting.Location = new Point(10, 0);
-            btn_Setting.Margin = new Padding(3, 2, 3, 2);
-            btn_Setting.Name = "btn_Setting";
-            btn_Setting.Size = new Size(50, 39);
-            btn_Setting.SizeMode = PictureBoxSizeMode.StretchImage;
-            btn_Setting.TabIndex = 4;
-            btn_Setting.TabStop = false;
-            btn_Setting.Click += btn_Setting_Click_1;
-            // 
-            // maximumsize
-            // 
-            maximumsize.boderGradientBottom1 = Color.White;
-            maximumsize.boderGradientTop1 = Color.White;
-            maximumsize.boderRadius1 = 40;
-            maximumsize.boderSize1 = 0;
-            maximumsize.gradientAngle1 = 90F;
-            maximumsize.Image = (Image)resources.GetObject("maximumsize.Image");
-            maximumsize.Location = new Point(1045, 0);
-            maximumsize.Margin = new Padding(3, 2, 3, 2);
-            maximumsize.Name = "maximumsize";
-            maximumsize.Size = new Size(30, 26);
-            maximumsize.SizeMode = PictureBoxSizeMode.StretchImage;
-            maximumsize.TabIndex = 5;
-            maximumsize.TabStop = false;
             // 
             // minimunsize
             // 
@@ -185,7 +68,7 @@ namespace WordleClient
             minimunsize.boderSize1 = 0;
             minimunsize.gradientAngle1 = 90F;
             minimunsize.Image = (Image)resources.GetObject("minimunsize.Image");
-            minimunsize.Location = new Point(1010, 0);
+            minimunsize.Location = new Point(1038, 11);
             minimunsize.Margin = new Padding(3, 2, 3, 2);
             minimunsize.Name = "minimunsize";
             minimunsize.Size = new Size(27, 26);
@@ -194,23 +77,23 @@ namespace WordleClient
             minimunsize.TabStop = false;
             minimunsize.Click += minimunsize_Click;
             // 
-            // Exit
+            // btn_DarkLight
             // 
-            Exit.boderGradientBottom1 = Color.White;
-            Exit.boderGradientTop1 = Color.White;
-            Exit.boderRadius1 = 40;
-            Exit.boderSize1 = 0;
-            Exit.Cursor = Cursors.Hand;
-            Exit.gradientAngle1 = 90F;
-            Exit.Image = (Image)resources.GetObject("Exit.Image");
-            Exit.Location = new Point(1080, 0);
-            Exit.Margin = new Padding(3, 2, 3, 2);
-            Exit.Name = "Exit";
-            Exit.Size = new Size(30, 26);
-            Exit.SizeMode = PictureBoxSizeMode.StretchImage;
-            Exit.TabIndex = 6;
-            Exit.TabStop = false;
-            Exit.Click += Exit_Click;
+            btn_DarkLight.boderGradientBottom1 = Color.White;
+            btn_DarkLight.boderGradientTop1 = Color.White;
+            btn_DarkLight.boderRadius1 = 40;
+            btn_DarkLight.boderSize1 = 2;
+            btn_DarkLight.Cursor = Cursors.Hand;
+            btn_DarkLight.gradientAngle1 = 90F;
+            btn_DarkLight.Image = Properties.Resources.Light;
+            btn_DarkLight.Location = new Point(1045, 574);
+            btn_DarkLight.Margin = new Padding(3, 2, 3, 2);
+            btn_DarkLight.Name = "btn_DarkLight";
+            btn_DarkLight.Size = new Size(60, 60);
+            btn_DarkLight.SizeMode = PictureBoxSizeMode.StretchImage;
+            btn_DarkLight.TabIndex = 11;
+            btn_DarkLight.TabStop = false;
+            btn_DarkLight.Click += btn_DarkLight_Click;
             // 
             // customLabel1
             // 
@@ -227,6 +110,70 @@ namespace WordleClient
             customLabel1.StartColor = Color.FromArgb(128, 255, 255);
             customLabel1.TabIndex = 7;
             customLabel1.Text = "W";
+            // 
+            // customLabel6
+            // 
+            customLabel6.BoderRadius = 3F;
+            customLabel6.BorderColor = Color.White;
+            customLabel6.EndColor = Color.Blue;
+            customLabel6.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
+            customLabel6.ForeColor = Color.White;
+            customLabel6.Location = new Point(229, 216);
+            customLabel6.Margin = new Padding(3, 2, 3, 2);
+            customLabel6.Name = "customLabel6";
+            customLabel6.ShadowOffset = 5;
+            customLabel6.Size = new Size(129, 85);
+            customLabel6.StartColor = Color.MediumSlateBlue;
+            customLabel6.TabIndex = 7;
+            customLabel6.Text = "P";
+            // 
+            // customLabel8
+            // 
+            customLabel8.BoderRadius = 3F;
+            customLabel8.BorderColor = Color.White;
+            customLabel8.EndColor = Color.Blue;
+            customLabel8.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
+            customLabel8.ForeColor = Color.White;
+            customLabel8.Location = new Point(391, 216);
+            customLabel8.Margin = new Padding(3, 2, 3, 2);
+            customLabel8.Name = "customLabel8";
+            customLabel8.ShadowOffset = 4;
+            customLabel8.Size = new Size(129, 85);
+            customLabel8.StartColor = Color.MediumSlateBlue;
+            customLabel8.TabIndex = 7;
+            customLabel8.Text = "L";
+            // 
+            // customLabel9
+            // 
+            customLabel9.BoderRadius = 3F;
+            customLabel9.BorderColor = Color.White;
+            customLabel9.EndColor = Color.Blue;
+            customLabel9.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
+            customLabel9.ForeColor = Color.White;
+            customLabel9.Location = new Point(553, 216);
+            customLabel9.Margin = new Padding(3, 2, 3, 2);
+            customLabel9.Name = "customLabel9";
+            customLabel9.ShadowOffset = 4;
+            customLabel9.Size = new Size(129, 85);
+            customLabel9.StartColor = Color.MediumSlateBlue;
+            customLabel9.TabIndex = 7;
+            customLabel9.Text = "A";
+            // 
+            // customLabel7
+            // 
+            customLabel7.BoderRadius = 3F;
+            customLabel7.BorderColor = Color.White;
+            customLabel7.EndColor = Color.Blue;
+            customLabel7.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
+            customLabel7.ForeColor = Color.White;
+            customLabel7.Location = new Point(553, 122);
+            customLabel7.Margin = new Padding(3, 2, 3, 2);
+            customLabel7.Name = "customLabel7";
+            customLabel7.ShadowOffset = 4;
+            customLabel7.Size = new Size(105, 81);
+            customLabel7.StartColor = Color.MediumSlateBlue;
+            customLabel7.TabIndex = 7;
+            customLabel7.Text = "D";
             // 
             // customLabel2
             // 
@@ -292,70 +239,6 @@ namespace WordleClient
             customLabel5.TabIndex = 7;
             customLabel5.Text = "E";
             // 
-            // customLabel7
-            // 
-            customLabel7.BoderRadius = 3F;
-            customLabel7.BorderColor = Color.White;
-            customLabel7.EndColor = Color.Blue;
-            customLabel7.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
-            customLabel7.ForeColor = Color.White;
-            customLabel7.Location = new Point(553, 122);
-            customLabel7.Margin = new Padding(3, 2, 3, 2);
-            customLabel7.Name = "customLabel7";
-            customLabel7.ShadowOffset = 4;
-            customLabel7.Size = new Size(105, 81);
-            customLabel7.StartColor = Color.MediumSlateBlue;
-            customLabel7.TabIndex = 7;
-            customLabel7.Text = "D";
-            // 
-            // customLabel6
-            // 
-            customLabel6.BoderRadius = 3F;
-            customLabel6.BorderColor = Color.White;
-            customLabel6.EndColor = Color.Blue;
-            customLabel6.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
-            customLabel6.ForeColor = Color.White;
-            customLabel6.Location = new Point(229, 216);
-            customLabel6.Margin = new Padding(3, 2, 3, 2);
-            customLabel6.Name = "customLabel6";
-            customLabel6.ShadowOffset = 5;
-            customLabel6.Size = new Size(129, 85);
-            customLabel6.StartColor = Color.MediumSlateBlue;
-            customLabel6.TabIndex = 7;
-            customLabel6.Text = "P";
-            // 
-            // customLabel8
-            // 
-            customLabel8.BoderRadius = 3F;
-            customLabel8.BorderColor = Color.White;
-            customLabel8.EndColor = Color.Blue;
-            customLabel8.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
-            customLabel8.ForeColor = Color.White;
-            customLabel8.Location = new Point(391, 216);
-            customLabel8.Margin = new Padding(3, 2, 3, 2);
-            customLabel8.Name = "customLabel8";
-            customLabel8.ShadowOffset = 4;
-            customLabel8.Size = new Size(129, 85);
-            customLabel8.StartColor = Color.MediumSlateBlue;
-            customLabel8.TabIndex = 7;
-            customLabel8.Text = "L";
-            // 
-            // customLabel9
-            // 
-            customLabel9.BoderRadius = 3F;
-            customLabel9.BorderColor = Color.White;
-            customLabel9.EndColor = Color.Blue;
-            customLabel9.Font = new Font("Segoe UI", 48F, FontStyle.Bold | FontStyle.Italic);
-            customLabel9.ForeColor = Color.White;
-            customLabel9.Location = new Point(553, 216);
-            customLabel9.Margin = new Padding(3, 2, 3, 2);
-            customLabel9.Name = "customLabel9";
-            customLabel9.ShadowOffset = 4;
-            customLabel9.Size = new Size(129, 85);
-            customLabel9.StartColor = Color.MediumSlateBlue;
-            customLabel9.TabIndex = 7;
-            customLabel9.Text = "A";
-            // 
             // customLabel10
             // 
             customLabel10.BoderRadius = 3F;
@@ -372,33 +255,172 @@ namespace WordleClient
             customLabel10.TabIndex = 7;
             customLabel10.Text = "Y";
             // 
+            // btn_Sound
+            // 
+            btn_Sound.boderGradientBottom1 = Color.White;
+            btn_Sound.boderGradientTop1 = Color.White;
+            btn_Sound.boderRadius1 = 40;
+            btn_Sound.boderSize1 = 2;
+            btn_Sound.Cursor = Cursors.Hand;
+            btn_Sound.gradientAngle1 = 90F;
+            btn_Sound.Image = Properties.Resources.MusicOnLight;
+            btn_Sound.Location = new Point(1045, 640);
+            btn_Sound.Margin = new Padding(3, 2, 3, 2);
+            btn_Sound.Name = "btn_Sound";
+            btn_Sound.Size = new Size(60, 60);
+            btn_Sound.SizeMode = PictureBoxSizeMode.StretchImage;
+            btn_Sound.TabIndex = 10;
+            btn_Sound.TabStop = false;
+            btn_Sound.Click += btn_Sound_Click;
+            // 
             // customPanel1
             // 
             customPanel1.BackColor = Color.White;
             customPanel1.BorderRadius = 30;
+            customPanel1.Controls.Add(btn_SinglePlayer);
+            customPanel1.Controls.Add(btn_MultiPlayer);
+            customPanel1.Controls.Add(btn_SingleStats);
+            customPanel1.Controls.Add(btn_MultiStats);
+            customPanel1.Controls.Add(btn_Exit);
             customPanel1.ForeColor = Color.Black;
             customPanel1.GradientAngle = 90F;
-            customPanel1.GradientBottomColor = Color.FromArgb(0, 192, 192);
-            customPanel1.GradientTopColor = Color.FromArgb(128, 255, 255);
-            customPanel1.Location = new Point(401, 426);
-            customPanel1.Margin = new Padding(3, 2, 3, 2);
+            customPanel1.GradientBottomColor = Color.CadetBlue;
+            customPanel1.GradientTopColor = Color.DodgerBlue;
+            customPanel1.Location = new Point(200, 373);
             customPanel1.Name = "customPanel1";
-            customPanel1.Size = new Size(317, 68);
-            customPanel1.TabIndex = 8;
+            customPanel1.Size = new Size(700, 300);
+            customPanel1.TabIndex = 14;
             // 
-            // pictureBox1
+            // btn_SinglePlayer
             // 
-            pictureBox1.BackColor = Color.Turquoise;
-            pictureBox1.BorderStyle = BorderStyle.Fixed3D;
-            pictureBox1.Image = Properties.Resources.spreadsheet_app;
-            pictureBox1.Location = new Point(635, 434);
-            pictureBox1.Margin = new Padding(4, 4, 4, 4);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(74, 53);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.TabIndex = 9;
-            pictureBox1.TabStop = false;
-            pictureBox1.Click += pictureBox1_Click;
+            btn_SinglePlayer.BackColor = Color.White;
+            btn_SinglePlayer.BackgroundColor = Color.FromArgb(153, 214, 214);
+            btn_SinglePlayer.BorderColor = Color.FromArgb(153, 214, 214);
+            btn_SinglePlayer.BorderRadius = 20;
+            btn_SinglePlayer.BorderSize = 2;
+            btn_SinglePlayer.ButtonImage = null;
+            btn_SinglePlayer.Cursor = Cursors.Hand;
+            btn_SinglePlayer.EnableStripe = true;
+            btn_SinglePlayer.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            btn_SinglePlayer.ImageSize = 24;
+            btn_SinglePlayer.Location = new Point(80, 35);
+            btn_SinglePlayer.Margin = new Padding(3, 2, 3, 2);
+            btn_SinglePlayer.Name = "btn_SinglePlayer";
+            btn_SinglePlayer.Size = new Size(250, 50);
+            btn_SinglePlayer.StripeSpeed = 3;
+            btn_SinglePlayer.TabIndex = 17;
+            btn_SinglePlayer.Text = "Offline mode";
+            btn_SinglePlayer.TextAlign = ContentAlignment.MiddleCenter;
+            btn_SinglePlayer.TextColor = Color.Black;
+            btn_SinglePlayer.Click += btn_SinglePlayer_Click;
+            // 
+            // btn_MultiPlayer
+            // 
+            btn_MultiPlayer.BackgroundColor = Color.FromArgb(224, 224, 224);
+            btn_MultiPlayer.BorderColor = Color.SkyBlue;
+            btn_MultiPlayer.BorderRadius = 20;
+            btn_MultiPlayer.BorderSize = 2;
+            btn_MultiPlayer.ButtonImage = null;
+            btn_MultiPlayer.Cursor = Cursors.Hand;
+            btn_MultiPlayer.EnableStripe = true;
+            btn_MultiPlayer.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_MultiPlayer.ForeColor = Color.Yellow;
+            btn_MultiPlayer.ImageSize = 24;
+            btn_MultiPlayer.Location = new Point(370, 35);
+            btn_MultiPlayer.Margin = new Padding(3, 2, 3, 2);
+            btn_MultiPlayer.Name = "btn_MultiPlayer";
+            btn_MultiPlayer.Size = new Size(250, 50);
+            btn_MultiPlayer.StripeSpeed = 4;
+            btn_MultiPlayer.TabIndex = 16;
+            btn_MultiPlayer.Text = "Online mode";
+            btn_MultiPlayer.TextAlign = ContentAlignment.MiddleCenter;
+            btn_MultiPlayer.TextColor = Color.Black;
+            btn_MultiPlayer.Click += btn_MultiPlayer_Click;
+            // 
+            // btn_SingleStats
+            // 
+            btn_SingleStats.BackColor = Color.White;
+            btn_SingleStats.BackgroundColor = Color.FromArgb(153, 214, 214);
+            btn_SingleStats.BorderColor = Color.FromArgb(153, 214, 214);
+            btn_SingleStats.BorderRadius = 20;
+            btn_SingleStats.BorderSize = 2;
+            btn_SingleStats.ButtonImage = null;
+            btn_SingleStats.Cursor = Cursors.Hand;
+            btn_SingleStats.EnableStripe = true;
+            btn_SingleStats.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            btn_SingleStats.ImageSize = 24;
+            btn_SingleStats.Location = new Point(80, 105);
+            btn_SingleStats.Margin = new Padding(3, 2, 3, 2);
+            btn_SingleStats.Name = "btn_SingleStats";
+            btn_SingleStats.Size = new Size(250, 50);
+            btn_SingleStats.StripeSpeed = 3;
+            btn_SingleStats.TabIndex = 19;
+            btn_SingleStats.Text = "Offline Statistics";
+            btn_SingleStats.TextAlign = ContentAlignment.MiddleCenter;
+            btn_SingleStats.TextColor = Color.Black;
+            btn_SingleStats.Click += btn_SingleStats_Click;
+            // 
+            // btn_MultiStats
+            // 
+            btn_MultiStats.BackgroundColor = Color.FromArgb(224, 224, 224);
+            btn_MultiStats.BorderColor = Color.SkyBlue;
+            btn_MultiStats.BorderRadius = 20;
+            btn_MultiStats.BorderSize = 2;
+            btn_MultiStats.ButtonImage = null;
+            btn_MultiStats.Cursor = Cursors.Hand;
+            btn_MultiStats.EnableStripe = true;
+            btn_MultiStats.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_MultiStats.ForeColor = Color.Yellow;
+            btn_MultiStats.ImageSize = 24;
+            btn_MultiStats.Location = new Point(370, 105);
+            btn_MultiStats.Margin = new Padding(3, 2, 3, 2);
+            btn_MultiStats.Name = "btn_MultiStats";
+            btn_MultiStats.Size = new Size(250, 50);
+            btn_MultiStats.StripeSpeed = 4;
+            btn_MultiStats.TabIndex = 18;
+            btn_MultiStats.Text = "Online Statistics";
+            btn_MultiStats.TextAlign = ContentAlignment.MiddleCenter;
+            btn_MultiStats.TextColor = Color.Black;
+            btn_MultiStats.Click += btn_MultiStats_Click;
+            // 
+            // btn_Exit
+            // 
+            btn_Exit.BackgroundColor = Color.FromArgb(255, 116, 108);
+            btn_Exit.BorderColor = Color.FromArgb(255, 116, 108);
+            btn_Exit.BorderRadius = 20;
+            btn_Exit.BorderSize = 2;
+            btn_Exit.ButtonImage = null;
+            btn_Exit.Cursor = Cursors.Hand;
+            btn_Exit.EnableStripe = true;
+            btn_Exit.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            btn_Exit.ImageSize = 24;
+            btn_Exit.Location = new Point(75, 190);
+            btn_Exit.Margin = new Padding(3, 2, 3, 2);
+            btn_Exit.Name = "btn_Exit";
+            btn_Exit.Size = new Size(549, 50);
+            btn_Exit.StripeSpeed = 4;
+            btn_Exit.TabIndex = 15;
+            btn_Exit.Text = "Exit";
+            btn_Exit.TextAlign = ContentAlignment.MiddleCenter;
+            btn_Exit.TextColor = Color.Black;
+            btn_Exit.Click += Exit_Click;
+            // 
+            // exit
+            // 
+            exit.boderGradientBottom1 = Color.White;
+            exit.boderGradientTop1 = Color.White;
+            exit.boderRadius1 = 40;
+            exit.boderSize1 = 0;
+            exit.gradientAngle1 = 90F;
+            exit.Image = Properties.Resources.Exit;
+            exit.Location = new Point(1071, 11);
+            exit.Margin = new Padding(3, 2, 3, 2);
+            exit.Name = "exit";
+            exit.Size = new Size(27, 26);
+            exit.SizeMode = PictureBoxSizeMode.StretchImage;
+            exit.TabIndex = 15;
+            exit.TabStop = false;
+            exit.Click += Exit_Click;
             // 
             // MainMenu
             // 
@@ -407,7 +429,10 @@ namespace WordleClient
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1110, 709);
-            Controls.Add(pictureBox1);
+            Controls.Add(exit);
+            Controls.Add(customPanel1);
+            Controls.Add(btn_DarkLight);
+            Controls.Add(btn_Sound);
             Controls.Add(customLabel7);
             Controls.Add(customLabel5);
             Controls.Add(customLabel4);
@@ -418,15 +443,7 @@ namespace WordleClient
             Controls.Add(customLabel8);
             Controls.Add(customLabel6);
             Controls.Add(customLabel1);
-            Controls.Add(Exit);
             Controls.Add(minimunsize);
-            Controls.Add(maximumsize);
-            Controls.Add(btn_Setting);
-            Controls.Add(btn_Exit);
-            Controls.Add(btn_MultiPlayer);
-            Controls.Add(btn_SinglePlayer);
-            Controls.Add(customPanel1);
-            Controls.Add(cuttomPanel1);
             Cursor = Cursors.Hand;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 2, 3, 2);
@@ -434,34 +451,34 @@ namespace WordleClient
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MainMenu";
             Load += MainMenu_Load;
-            ((System.ComponentModel.ISupportInitialize)btn_Setting).EndInit();
-            ((System.ComponentModel.ISupportInitialize)maximumsize).EndInit();
             ((System.ComponentModel.ISupportInitialize)minimunsize).EndInit();
-            ((System.ComponentModel.ISupportInitialize)Exit).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)btn_DarkLight).EndInit();
+            ((System.ComponentModel.ISupportInitialize)btn_Sound).EndInit();
+            customPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)exit).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-        private CustomButtonAnimation btn_SinglePlayer;
-        private CustomButtonAnimation btn_MultiPlayer;
-        private CustomButtonAnimation btn_Exit;
-        private CustomPanel cuttomPanel1;
-        private CustomPictureBox btn_Setting;
-        private CustomPictureBox maximumsize;
         private CustomPictureBox minimunsize;
-        private CustomPictureBox Exit;
+        private CustomPictureBox btn_DarkLight;
         private CustomLabel customLabel1;
+        private CustomLabel customLabel6;
+        private CustomLabel customLabel8;
+        private CustomLabel customLabel9;
+        private CustomLabel customLabel7;
         private CustomLabel customLabel2;
         private CustomLabel customLabel3;
         private CustomLabel customLabel4;
         private CustomLabel customLabel5;
-        private CustomLabel customLabel7;
-        private CustomLabel customLabel6;
-        private CustomLabel customLabel8;
-        private CustomLabel customLabel9;
         private CustomLabel customLabel10;
+        private CustomPictureBox btn_Sound;
         private CustomPanel customPanel1;
-        private PictureBox pictureBox1;
+        private CustomButtonAnimation btn_MultiStats;
+        private CustomButtonAnimation btn_SingleStats;
+        private CustomButtonAnimation btn_Exit;
+        private CustomButtonAnimation btn_MultiPlayer;
+        private CustomButtonAnimation btn_SinglePlayer;
+        private CustomPictureBox exit;
     }
 }

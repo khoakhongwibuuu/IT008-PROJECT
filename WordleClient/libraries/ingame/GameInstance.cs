@@ -104,9 +104,13 @@ namespace WordleClient.libraries.ingame
         {
             return targetRecord.DEFINITION;
         }
-        public string getGroupName()
+        public string GetGroupName()
         {
             return targetRecord.GROUP_NAME;
+        }
+        public string GetDifficulty()
+        {
+            return targetRecord.LEVEL;
         }
         public string GetHint(int mode)
         {

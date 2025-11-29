@@ -38,14 +38,13 @@ namespace WordleClient.views
 
             customGroupBox1.TabIndex = 0;
             selectedDifficulty = null;
+            //ThemeManager.ApplyTheme(this);
         }
-
         private void btn_Exit_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
             this.Close();
         }
-
         private void btn_StartGame_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
@@ -73,7 +72,7 @@ namespace WordleClient.views
                     {
                         main.Show();
                         CustomSound.PlayBackgroundLoop();
-                    }    
+                    }
                 };
 
                 // Indicate that closing this FormOption should NOT return to MainMenu
@@ -86,7 +85,6 @@ namespace WordleClient.views
                 pg.Show();
             }
         }
-
         private void cbbTopic_SelectedIndexChanged(object sender, EventArgs e)
         {
             int selectedTopicIdx;
@@ -100,17 +98,14 @@ namespace WordleClient.views
                 selectedTopic = null;
             }
         }
-
         private void rd_Random_CheckedChanged(object sender, EventArgs e)
         {
             selectedDifficulty = null;
         }
-
         private void rd_Hard_CheckedChanged(object sender, EventArgs e)
         {
             selectedDifficulty = "HARD";
         }
-
         private void rd_Easy_CheckedChanged(object sender, EventArgs e)
         {
             selectedDifficulty = "EASY";
