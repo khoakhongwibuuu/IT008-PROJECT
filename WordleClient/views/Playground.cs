@@ -177,18 +177,20 @@ namespace WordleClient.views
             // If game has ended, do not handle
             if (GameEnded) return;
 
-            // ENTER: only handled when current row is filled
+            // ENTER key event
             if (e.KeyChar == '\r')
             {
+                // only handled when current row is filled
                 if (IsRowFilled(currentRow))
                 {
+                    // Check if currentString is a valid word
                     currentString = GetRowString(currentRow);
                     if (dictionaryChecker.TokenExists(currentString))
                     {
-
                         Debug.WriteLine($"Submitted word: {currentString}");
                         var result = gameInstance.EvaluateGuess(currentString);
                         await FlipRow(currentRow, result);
+                        // Check for win condition
                         if (result.IsFullValue(TriState.MATCH))
                         {
                             HasCompletedString = true;
@@ -216,6 +218,7 @@ namespace WordleClient.views
                             }
                             return;
                         }
+                        // Move to next row or end game if out of attempts
                         if (currentRow < rows - 1)
                         {
                             currentRow++;
@@ -260,7 +263,6 @@ namespace WordleClient.views
                                 this.Close();
                                 return;
                             }
-
                         }
                     }
                     else
@@ -276,9 +278,10 @@ namespace WordleClient.views
                 return;
             }
 
+            // BACKSPACE key event
             if (e.KeyChar == '\b')
             {
-                // If the row is completed (cursor effectively at cols), delete last cell
+                // Case 1: If the row is already filled, clear the last box
                 if (IsRowFilled(currentRow))
                 {
                     int lastIdx = cols - 1;
@@ -294,7 +297,7 @@ namespace WordleClient.views
                     return;
                 }
 
-                // If there are typed chars, move back and clear
+                // Case 2: If not filled, move back one column and clear that box
                 if (currentCol > 0)
                 {
                     currentCol--;
@@ -318,14 +321,13 @@ namespace WordleClient.views
                     Debug.WriteLine(currentString);
                     e.Handled = true;
                 }
-
                 return;
             }
 
             // If the row is already filled, ignore alphabet input (only Enter/Backspace allowed)
             if (IsRowFilled(currentRow)) return;
 
-            // Alphabet character handling (only when row not filled)
+            // Alphabet key event
             if (char.IsLetter(e.KeyChar))
             {
                 char ch = char.ToUpperInvariant(e.KeyChar);
@@ -466,6 +468,7 @@ namespace WordleClient.views
                 return;
             }
             lastToken = newWord.TOKEN;
+
             // Reset logic
             gameInstance = new GameInstance(newWord);
             dictionaryChecker = new DictionaryChecker(newWord.TOKEN.Length);
@@ -474,6 +477,7 @@ namespace WordleClient.views
             currentRow = 0;
             currentCol = 0;
             currentString = string.Empty;
+
             // Reset hints
             Random rd = new();
             GameSeed = rd.Next(0, 2);
@@ -483,9 +487,11 @@ namespace WordleClient.views
             lbl_Hint1_Placeholder.Text = "Unknown";
             lbl_Hint2_Placeholder.Text = "Unknown";
             customButton1.Visible = true;
+
             // Update labels
             lbl_Diff.Text = newWord.LEVEL;
             lbl_Tpc.Text = newWord.GROUP_NAME.Replace("&", "And");
+
             // Update board
             cols = newWord.TOKEN.Length;
             CreateMatrix();
@@ -617,6 +623,7 @@ namespace WordleClient.views
                 await Task.Delay(delay);
             }
         }
+
         // Flip a whole row sequentially
         private async Task FlipRow(int row, StateArray result)
         {
@@ -641,7 +648,6 @@ namespace WordleClient.views
                 }
             }
         }
-
         private void ExitBtn_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();

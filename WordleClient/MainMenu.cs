@@ -11,7 +11,7 @@ namespace WordleClient
         }
         private void MainMenu_Load(object sender, EventArgs e)
         {
-            CustomSound.ToggleMute();
+            //CustomSound.ToggleMute();
             if (!CustomSound.IsMuted()) CustomSound.PlayBackgroundLoop();
             btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
             btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
