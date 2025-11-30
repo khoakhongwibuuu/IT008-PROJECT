@@ -58,8 +58,8 @@ namespace WordleClient.views
             customPanel1.Dock = DockStyle.Fill;
             customPanel1.ForeColor = Color.Black;
             customPanel1.GradientAngle = 90F;
-            customPanel1.GradientBottomColor = Color.SkyBlue;
-            customPanel1.GradientTopColor = Color.FromArgb(192, 255, 255);
+            customPanel1.GradientBottomColor = Color.FromArgb(253, 205, 159);
+            customPanel1.GradientTopColor = Color.FromArgb(248, 232, 212);
             customPanel1.Location = new Point(0, 0);
             customPanel1.Margin = new Padding(3, 2, 3, 2);
             customPanel1.Name = "customPanel1";
@@ -285,12 +285,12 @@ namespace WordleClient.views
             // 
             // btn_StartGame
             // 
-            btn_StartGame.BackgroundColor = Color.FromArgb(150, 211, 178);
-            btn_StartGame.BorderColor = Color.FromArgb(150, 211, 178);
+            btn_StartGame.BackgroundColor = Color.FromArgb(87, 162, 62);
+            btn_StartGame.BorderColor = Color.FromArgb(87, 162, 62);
             btn_StartGame.BorderRadius = 20;
             btn_StartGame.BorderSize = 2;
             btn_StartGame.ButtonImage = null;
-            btn_StartGame.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_StartGame.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
             btn_StartGame.ImageSize = 24;
             btn_StartGame.Location = new Point(164, 499);
             btn_StartGame.Name = "btn_StartGame";
