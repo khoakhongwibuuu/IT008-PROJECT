@@ -196,7 +196,7 @@ namespace WordleClient.views
                             streak++;
                             lbl_Streak.Text = streak.ToString();
                             CustomSound.PlayClickAlert();
-                            AlertBox alertBox = new();
+                            AlertBox alertBox = new(1500);
                             alertBox.ShowAlert(this, "Configuration", "Congrats. You have found the hidden word.");
                             logger.SaveToDatabase(new SingleplayerPlayLog(
                                 DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
@@ -229,7 +229,7 @@ namespace WordleClient.views
                                 CustomSound.PlayClickGameOver();
                                 GameEnded = true;
 
-                                AlertBox alertBox = new();
+                                AlertBox alertBox = new(1500);
                                 alertBox.ShowAlert(this, "Information", $"You have failed. The hidden word is {gameInstance.GetToken()}", MessageBoxIcon.Information);
 
                                 logger.SaveToDatabase(new SingleplayerPlayLog(
@@ -266,7 +266,7 @@ namespace WordleClient.views
                     else
                     {
                         CustomSound.PlayClickAlertError();
-                        AlertBox alertBox = new();
+                        AlertBox alertBox = new(750);
                         alertBox.ShowAlert(this, "Invalid Word", "The entered word is not in the dictionary!", MessageBoxIcon.Warning);
                         await ShakeRow(currentRow);
                     }
@@ -421,7 +421,7 @@ namespace WordleClient.views
                 CustomSound.PlayClick();
                 string hint = gameInstance.GetHint(HintRemaining + GameSeed);
                 CustomSound.PlayClickAlert();
-                AlertBox alert = new();
+                AlertBox alert = new(1500);
                 alert.ShowAlert(this, "Hint", hint);
                 HintRemaining--;
                 if (HintRemaining == 1)
