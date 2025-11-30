@@ -1,7 +1,6 @@
 ﻿using WordleClient.libraries.CustomControls;
 using WordleClient.libraries.StateFrom;
 using WordleClient.views;
-
 namespace WordleClient
 {
     public partial class MainMenu : CustomForm
@@ -13,12 +12,8 @@ namespace WordleClient
         private void MainMenu_Load(object sender, EventArgs e)
         {
             CustomSound.ToggleMute();
-            if (!CustomSound.IsMuted())
-                CustomSound.PlayBackgroundLoop();
-
-            btn_Sound.Image = CustomSound.IsMuted()
-                ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight)
-                : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
+            if (!CustomSound.IsMuted()) CustomSound.PlayBackgroundLoop();
+            btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
             btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
             //ThemeManager.ApplyTheme(this);
         }
@@ -53,24 +48,18 @@ namespace WordleClient
         {
             CustomSound.PlayClick();
             CustomSound.ToggleMute();
-            btn_Sound.Image = CustomSound.IsMuted()
-                ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight)
-                : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
+            btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
         }
         private void btn_DarkLight_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
             CustomDarkLight.IsDark = !CustomDarkLight.IsDark;
             btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
-            btn_Sound.boderGradientBottom1 = CustomDarkLight.IsDark
-                ? Color.FromArgb(40, 40, 40)
-                : Color.FromArgb(220, 220, 220);
-            btn_Sound.boderGradientTop1 = CustomDarkLight.IsDark
-                ? Color.FromArgb(40, 40, 40)
-                : Color.FromArgb(240, 240, 240);
-            btn_Sound.Image = CustomSound.IsMuted()
-                ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight)
-                : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
+            btn_DarkLight.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
+            btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
+            btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
+            btn_Sound.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
+            btn_Sound.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
         }
         private void FormOption_FormClosed(object? sender, FormClosedEventArgs e)
         {
@@ -80,7 +69,6 @@ namespace WordleClient
                 this.Show();
             }
         }
-
         private void btn_SingleStats_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
