@@ -11,8 +11,6 @@ namespace WordleClient.libraries.CustomControls
         private Color leftBackColor = Color.MediumSlateBlue;
         private Color rightBackColor = Color.SlateBlue;
         private Color borderColor = Color.DarkSlateBlue;
-        private Color leftTextColor = Color.White;
-        private Color rightTextColor = Color.White;
         private int borderSize = 2;
         private int borderRadius = 20;
         // Properties
@@ -27,11 +25,7 @@ namespace WordleClient.libraries.CustomControls
 
         [Category("Custom")]
         public Color RightBackColor { get => rightBackColor; set { rightBackColor = value; Invalidate(); } }
-        [Category("Custom")]
-        public Color LeftTextColor { get => leftTextColor; set { leftTextColor = value; Invalidate(); } }
 
-        [Category("Custom")]
-        public Color RightTextColor { get => rightTextColor; set { rightTextColor = value; Invalidate(); } }
         [Category("Custom")]
         public Color BorderColor { get => borderColor; set { borderColor = value; Invalidate(); } }
 
@@ -100,8 +94,8 @@ namespace WordleClient.libraries.CustomControls
                 e.Graphics.DrawLine(linePen, lineX, 4, lineX, rectSurface.Height - 4);
             }
             //Paint texts
-            TextRenderer.DrawText(e.Graphics, leftText, this.Font, leftRect, leftTextColor,TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-            TextRenderer.DrawText(e.Graphics, rightText, this.Font, rightRect, rightTextColor,TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+            TextRenderer.DrawText(e.Graphics, leftText, this.Font, leftRect, Color.White,TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+            TextRenderer.DrawText(e.Graphics, rightText, this.Font, rightRect, Color.White,TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
         }
         //Animate on mouse down
         private Color originalLeft, originalRight;

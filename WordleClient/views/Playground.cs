@@ -24,8 +24,10 @@ namespace WordleClient.views
         private string? hardLevel = null;
 
         // Size constants
-        private const int boxSize = 60;
-        private const int spacing = 6;
+        private
+        const int boxSize = 60;
+        private
+        const int spacing = 6;
 
         // Tracks the current string being built in the current row
         private string currentString = string.Empty;
@@ -45,7 +47,13 @@ namespace WordleClient.views
 
         // Game Instance
         private GameInstance gameInstance;
+
+        // Dictionary checker
         private DictionaryChecker dictionaryChecker;
+
+        // Logger
+        private readonly SingleplayerLogger logger = new();
+
         // Store last token to prevent duplicates
         private string? lastToken = null;
 
@@ -99,7 +107,6 @@ namespace WordleClient.views
         {
             ThemeManager.ApplyTheme(this);
         }
-
         private void Playground_FormClosing(object? sender, FormClosingEventArgs e)
         {
             if (GameEnded) return;
@@ -107,9 +114,20 @@ namespace WordleClient.views
             {
                 if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Question) == DialogResult.No)
                 {
-                    {
-                        e.Cancel = true;
-                    }
+                    e.Cancel = true;
+                } else
+                {
+                    dictionaryChecker.Dispose();
+
+                    logger.SaveToDatabase(new SingleplayerPlayLog(
+                        DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                        gameInstance.GetToken(),
+                        gameInstance.GetGroupName(),
+                        gameInstance.GetDifficulty(),
+                        false, rows, currentRow
+                    ));
+                    gameInstance.Dispose();
+                    logger.Close();
                 }
             }
         }
@@ -126,9 +144,9 @@ namespace WordleClient.views
                     {
                         Size = new Size(boxSize, boxSize),
                         Location = new Point(
-                            j * (boxSize + spacing),
-                            i * (boxSize + spacing)
-                        )
+                                j * (boxSize + spacing),
+                                i * (boxSize + spacing)
+                            )
                     };
                     box.SetCharacter('-');
                     matrixPanel.Controls.Add(box);
@@ -159,18 +177,20 @@ namespace WordleClient.views
             // If game has ended, do not handle
             if (GameEnded) return;
 
-            // ENTER: only handled when current row is filled
+            // ENTER key event
             if (e.KeyChar == '\r')
             {
+                // only handled when current row is filled
                 if (IsRowFilled(currentRow))
                 {
+                    // Check if currentString is a valid word
                     currentString = GetRowString(currentRow);
                     if (dictionaryChecker.TokenExists(currentString))
                     {
-
                         Debug.WriteLine($"Submitted word: {currentString}");
                         var result = gameInstance.EvaluateGuess(currentString);
                         await FlipRow(currentRow, result);
+                        // Check for win condition
                         if (result.IsFullValue(TriState.MATCH))
                         {
                             HasCompletedString = true;
@@ -178,9 +198,15 @@ namespace WordleClient.views
                             streak++;
                             lbl_Streak.Text = streak.ToString();
                             CustomSound.PlayClickAlert();
-                            AlertBox alertBox = new();
+                            AlertBox alertBox = new(1500);
                             alertBox.ShowAlert(this, "Configuration", "Congrats. You have found the hidden word.");
-
+                            logger.SaveToDatabase(new SingleplayerPlayLog(
+                                DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                                gameInstance.GetToken(),
+                                gameInstance.GetGroupName(),
+                                gameInstance.GetDifficulty(),
+                                true, rows, currentRow + 1
+                            ));
                             await Task.Delay(2000);
                             if (initialDifficulty == "HARD")
                             {
@@ -192,6 +218,7 @@ namespace WordleClient.views
                             }
                             return;
                         }
+                        // Move to next row or end game if out of attempts
                         if (currentRow < rows - 1)
                         {
                             currentRow++;
@@ -203,9 +230,18 @@ namespace WordleClient.views
                             if (!HasCompletedString)
                             {
                                 CustomSound.PlayClickGameOver();
-                                AlertBox alertBox = new();
-                                alertBox.ShowAlert(this,"Information", $"You have failed. The hidden word is {gameInstance.GetToken()}", MessageBoxIcon.Information);
                                 GameEnded = true;
+
+                                AlertBox alertBox = new(1500);
+                                alertBox.ShowAlert(this, "Information", $"You have failed. The hidden word is {gameInstance.GetToken()}", MessageBoxIcon.Information);
+
+                                logger.SaveToDatabase(new SingleplayerPlayLog(
+                                    DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                                    gameInstance.GetToken(),
+                                    gameInstance.GetGroupName(),
+                                    gameInstance.GetDifficulty(),
+                                    false, rows, currentRow + 1
+                                ));
                             }
                             await Task.Delay(2600);
                             if (CustomMessageBoxYesNo.Show(this, "Do you want to start a new game?", MessageBoxIcon.Question) == DialogResult.Yes)
@@ -221,20 +257,19 @@ namespace WordleClient.views
                                     Resetnew_Game();
                                 }
                                 return;
-
                             }
                             else
                             {
                                 this.Close();
                                 return;
                             }
-
                         }
                     }
                     else
                     {
-                        CustomSound.PlayClickAlertError();                      
-                        AlertBox alertBox = new();
+                        CustomSound.PlayClickAlertError();
+                        AlertBox alertBox = new(750);
+                        alertBox.ShowAlert(this, "Invalid Word", "The entered word is not in the dictionary!", MessageBoxIcon.Warning);
                         await ShakeRow(currentRow);
                     }
                     Debug.WriteLine(currentString);
@@ -243,9 +278,10 @@ namespace WordleClient.views
                 return;
             }
 
+            // BACKSPACE key event
             if (e.KeyChar == '\b')
             {
-                // If the row is completed (cursor effectively at cols), delete last cell
+                // Case 1: If the row is already filled, clear the last box
                 if (IsRowFilled(currentRow))
                 {
                     int lastIdx = cols - 1;
@@ -261,7 +297,7 @@ namespace WordleClient.views
                     return;
                 }
 
-                // If there are typed chars, move back and clear
+                // Case 2: If not filled, move back one column and clear that box
                 if (currentCol > 0)
                 {
                     currentCol--;
@@ -285,14 +321,13 @@ namespace WordleClient.views
                     Debug.WriteLine(currentString);
                     e.Handled = true;
                 }
-
                 return;
             }
 
             // If the row is already filled, ignore alphabet input (only Enter/Backspace allowed)
             if (IsRowFilled(currentRow)) return;
 
-            // Alphabet character handling (only when row not filled)
+            // Alphabet key event
             if (char.IsLetter(e.KeyChar))
             {
                 char ch = char.ToUpperInvariant(e.KeyChar);
@@ -388,7 +423,7 @@ namespace WordleClient.views
                 CustomSound.PlayClick();
                 string hint = gameInstance.GetHint(HintRemaining + GameSeed);
                 CustomSound.PlayClickAlert();
-                AlertBox alert = new();
+                AlertBox alert = new(1500);
                 alert.ShowAlert(this, "Hint", hint);
                 HintRemaining--;
                 if (HintRemaining == 1)
@@ -402,7 +437,7 @@ namespace WordleClient.views
 
                 lbl_HintRemaining.Text = HintRemaining.ToString();
 
-                if (HintRemaining == 0) 
+                if (HintRemaining == 0)
                     customButton1.Visible = false;
             }
             else if (GameEnded)
@@ -433,6 +468,7 @@ namespace WordleClient.views
                 return;
             }
             lastToken = newWord.TOKEN;
+
             // Reset logic
             gameInstance = new GameInstance(newWord);
             dictionaryChecker = new DictionaryChecker(newWord.TOKEN.Length);
@@ -441,6 +477,7 @@ namespace WordleClient.views
             currentRow = 0;
             currentCol = 0;
             currentString = string.Empty;
+
             // Reset hints
             Random rd = new();
             GameSeed = rd.Next(0, 2);
@@ -450,9 +487,11 @@ namespace WordleClient.views
             lbl_Hint1_Placeholder.Text = "Unknown";
             lbl_Hint2_Placeholder.Text = "Unknown";
             customButton1.Visible = true;
+
             // Update labels
             lbl_Diff.Text = newWord.LEVEL;
             lbl_Tpc.Text = newWord.GROUP_NAME.Replace("&", "And");
+
             // Update board
             cols = newWord.TOKEN.Length;
             CreateMatrix();
@@ -533,8 +572,8 @@ namespace WordleClient.views
         private async Task ShakeRow(int row)
         {
 
-            int offset = 4;   // shake distance in pixels 
-            int times = 5;    // number of shake cycles    
+            int offset = 4; // shake distance in pixels 
+            int times = 5; // number of shake cycles    
 
             for (int i = 0; i < times; i++)
             {
@@ -545,7 +584,7 @@ namespace WordleClient.views
                     if (box != null)
                         box.Left += offset;
                 }
-                await Task.Delay(40);
+                await Task.Delay(30);
 
                 // move left past original
                 for (int c = 0; c < cols; c++)
@@ -554,7 +593,7 @@ namespace WordleClient.views
                     if (box != null)
                         box.Left -= offset * 2;
                 }
-                await Task.Delay(40);
+                await Task.Delay(30);
 
                 // back to original
                 for (int c = 0; c < cols; c++)
@@ -584,6 +623,7 @@ namespace WordleClient.views
                 await Task.Delay(delay);
             }
         }
+
         // Flip a whole row sequentially
         private async Task FlipRow(int row, StateArray result)
         {
@@ -608,8 +648,6 @@ namespace WordleClient.views
                 }
             }
         }
-
-
         private void ExitBtn_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();

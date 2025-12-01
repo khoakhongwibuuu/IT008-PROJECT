@@ -5,7 +5,7 @@ namespace WordleClient.libraries.StateFrom
     public static class CustomSound
     {
         // Trạng thái tắt/bật âm thanh
-        private static bool isMuted = false;
+        private static bool isMuted = true;
         // Phát nhạc nền
         private static WaveOutEvent? outputDevice;
         // Nhạc nền lặp

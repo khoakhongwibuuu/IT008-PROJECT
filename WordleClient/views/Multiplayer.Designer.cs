@@ -28,89 +28,101 @@
         /// </summary>
         private void InitializeComponent()
         {
-            customButtonAnimation1 = new WordleClient.libraries.CustomControls.CustomButtonAnimation();
-            customButtonAnimation2 = new WordleClient.libraries.CustomControls.CustomButtonAnimation();
-            customButton1 = new WordleClient.libraries.CustomControls.CustomButton();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Multiplayer));
+            HostMyOwnBtn = new WordleClient.libraries.CustomControls.CustomButton();
+            JoinOtherBtn = new WordleClient.libraries.CustomControls.CustomButton();
+            btn_Exit = new WordleClient.libraries.CustomControls.CustomPictureBox();
+            label1 = new Label();
+            ((System.ComponentModel.ISupportInitialize)btn_Exit).BeginInit();
             SuspendLayout();
             // 
-            // customButtonAnimation1
+            // HostMyOwnBtn
             // 
-            customButtonAnimation1.BackgroundColor = Color.Blue;
-            customButtonAnimation1.BorderColor = Color.FromArgb(153, 214, 214);
-            customButtonAnimation1.BorderRadius = 20;
-            customButtonAnimation1.BorderSize = 2;
-            customButtonAnimation1.ButtonImage = null;
-            customButtonAnimation1.EnableStripe = true;
-            customButtonAnimation1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
-            customButtonAnimation1.ImageSize = 24;
-            customButtonAnimation1.Location = new Point(74, 68);
-            customButtonAnimation1.Name = "customButtonAnimation1";
-            customButtonAnimation1.Size = new Size(270, 71);
-            customButtonAnimation1.StripeSpeed = 4;
-            customButtonAnimation1.TabIndex = 0;
-            customButtonAnimation1.Text = "Host my own game room";
-            customButtonAnimation1.TextAlign = ContentAlignment.MiddleCenter;
-            customButtonAnimation1.TextColor = Color.White;
-            customButtonAnimation1.Click += customButtonAnimation1_Click;
+            HostMyOwnBtn.BackgroundColor = Color.FromArgb(122, 178, 211);
+            HostMyOwnBtn.BorderColor = Color.FromArgb(122, 178, 211);
+            HostMyOwnBtn.BorderRadius = 20;
+            HostMyOwnBtn.BorderSize = 2;
+            HostMyOwnBtn.ButtonImage = null;
+            HostMyOwnBtn.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            HostMyOwnBtn.ImageSize = 24;
+            HostMyOwnBtn.Location = new Point(60, 71);
+            HostMyOwnBtn.Name = "HostMyOwnBtn";
+            HostMyOwnBtn.Size = new Size(300, 45);
+            HostMyOwnBtn.TabIndex = 2;
+            HostMyOwnBtn.Text = "\U0001f9d1‍💻 Host my own server";
+            HostMyOwnBtn.TextAlign = ContentAlignment.MiddleCenter;
+            HostMyOwnBtn.TextColor = Color.White;
+            HostMyOwnBtn.Click += HostMyOwnBtn_Click;
             // 
-            // customButtonAnimation2
+            // JoinOtherBtn
             // 
-            customButtonAnimation2.BackgroundColor = Color.Blue;
-            customButtonAnimation2.BorderColor = Color.FromArgb(153, 214, 214);
-            customButtonAnimation2.BorderRadius = 20;
-            customButtonAnimation2.BorderSize = 2;
-            customButtonAnimation2.ButtonImage = null;
-            customButtonAnimation2.EnableStripe = true;
-            customButtonAnimation2.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
-            customButtonAnimation2.ImageSize = 24;
-            customButtonAnimation2.Location = new Point(73, 162);
-            customButtonAnimation2.Name = "customButtonAnimation2";
-            customButtonAnimation2.Size = new Size(270, 71);
-            customButtonAnimation2.StripeSpeed = 4;
-            customButtonAnimation2.TabIndex = 0;
-            customButtonAnimation2.Text = "Join other game room";
-            customButtonAnimation2.TextAlign = ContentAlignment.MiddleCenter;
-            customButtonAnimation2.TextColor = Color.White;
-            customButtonAnimation2.Click += customButtonAnimation2_Click;
+            JoinOtherBtn.BackgroundColor = Color.FromArgb(255, 116, 108);
+            JoinOtherBtn.BorderColor = Color.FromArgb(255, 116, 108);
+            JoinOtherBtn.BorderRadius = 20;
+            JoinOtherBtn.BorderSize = 2;
+            JoinOtherBtn.ButtonImage = null;
+            JoinOtherBtn.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            JoinOtherBtn.ImageSize = 24;
+            JoinOtherBtn.Location = new Point(60, 124);
+            JoinOtherBtn.Name = "JoinOtherBtn";
+            JoinOtherBtn.Size = new Size(300, 45);
+            JoinOtherBtn.TabIndex = 3;
+            JoinOtherBtn.Text = "💻 Join other's server";
+            JoinOtherBtn.TextAlign = ContentAlignment.MiddleCenter;
+            JoinOtherBtn.TextColor = Color.White;
+            JoinOtherBtn.Click += JoinOtherBtn_Click;
             // 
-            // customButton1
+            // btn_Exit
             // 
-            customButton1.BackgroundColor = Color.Blue;
-            customButton1.BorderColor = Color.White;
-            customButton1.BorderRadius = 20;
-            customButton1.BorderSize = 2;
-            customButton1.ButtonImage = null;
-            customButton1.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            customButton1.ImageSize = 24;
-            customButton1.Location = new Point(95, 338);
-            customButton1.Name = "customButton1";
-            customButton1.Size = new Size(204, 56);
-            customButton1.TabIndex = 1;
-            customButton1.Text = "THOÁT";
-            customButton1.TextAlign = ContentAlignment.MiddleCenter;
-            customButton1.TextColor = Color.White;
-            customButton1.Click += customButton1_Click;
+            btn_Exit.boderGradientBottom1 = Color.White;
+            btn_Exit.boderGradientTop1 = Color.White;
+            btn_Exit.boderRadius1 = 40;
+            btn_Exit.boderSize1 = 0;
+            btn_Exit.Cursor = Cursors.Hand;
+            btn_Exit.gradientAngle1 = 90F;
+            btn_Exit.Image = (Image)resources.GetObject("btn_Exit.Image");
+            btn_Exit.Location = new Point(378, 11);
+            btn_Exit.Margin = new Padding(3, 2, 3, 2);
+            btn_Exit.Name = "btn_Exit";
+            btn_Exit.Size = new Size(30, 30);
+            btn_Exit.SizeMode = PictureBoxSizeMode.StretchImage;
+            btn_Exit.TabIndex = 9;
+            btn_Exit.TabStop = false;
+            btn_Exit.Click += btn_Exit_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            label1.Location = new Point(118, 11);
+            label1.Name = "label1";
+            label1.Size = new Size(184, 32);
+            label1.TabIndex = 10;
+            label1.Text = "Server selector";
             // 
             // Multiplayer
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(192, 255, 255);
-            ClientSize = new Size(410, 450);
-            Controls.Add(customButton1);
-            Controls.Add(customButtonAnimation2);
-            Controls.Add(customButtonAnimation1);
+            BackColor = Color.White;
+            ClientSize = new Size(420, 240);
+            Controls.Add(label1);
+            Controls.Add(btn_Exit);
+            Controls.Add(JoinOtherBtn);
+            Controls.Add(HostMyOwnBtn);
             Name = "Multiplayer";
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Multiplayer";
+            ((System.ComponentModel.ISupportInitialize)btn_Exit).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private libraries.CustomControls.CustomButtonAnimation customButtonAnimation1;
-        private libraries.CustomControls.CustomButtonAnimation customButtonAnimation2;
-        private libraries.CustomControls.CustomButton customButton1;
+        private libraries.CustomControls.CustomButton HostMyOwnBtn;
+        private libraries.CustomControls.CustomButton JoinOtherBtn;
+        private libraries.CustomControls.CustomPictureBox btn_Exit;
+        private Label label1;
     }
 }

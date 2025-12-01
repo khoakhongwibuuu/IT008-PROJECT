@@ -23,6 +23,7 @@ namespace WordleClient.libraries.ingame
                 {
                     list.Add(reader.GetString(0));
                 }
+                connection.Close();
             }
 
             Debug.WriteLine($"Loaded {list.Count} tokens of length {TOKEN_SIZE} from database.");
@@ -31,6 +32,10 @@ namespace WordleClient.libraries.ingame
         public bool TokenExists(string TOKEN)
         {
             return _tokens.Contains(TOKEN);
+        }
+        public void Dispose()
+        {
+            _tokens.Clear();
         }
     }
 }

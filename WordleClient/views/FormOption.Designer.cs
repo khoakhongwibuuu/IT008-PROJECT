@@ -36,7 +36,6 @@ namespace WordleClient.views
             rd_Easy = new CustomRadioButton();
             rd_Hard = new CustomRadioButton();
             rd_Random = new CustomRadioButton();
-            btn_StartGame = new CustomButtonAnimation();
             customGroupBox2 = new CustomGroupBox();
             customLabel4 = new CustomLabel();
             customLabel3 = new CustomLabel();
@@ -45,6 +44,7 @@ namespace WordleClient.views
             trackBarGuess = new TrackBar();
             cbbTopic = new ComboBox();
             btn_Exit = new CustomPictureBox();
+            btn_StartGame = new CustomButton();
             customGroupBox1.SuspendLayout();
             customGroupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarGuess).BeginInit();
@@ -58,8 +58,8 @@ namespace WordleClient.views
             customPanel1.Dock = DockStyle.Fill;
             customPanel1.ForeColor = Color.Black;
             customPanel1.GradientAngle = 90F;
-            customPanel1.GradientBottomColor = Color.SkyBlue;
-            customPanel1.GradientTopColor = Color.FromArgb(192, 255, 255);
+            customPanel1.GradientBottomColor = Color.FromArgb(253, 205, 159);
+            customPanel1.GradientTopColor = Color.FromArgb(248, 232, 212);
             customPanel1.Location = new Point(0, 0);
             customPanel1.Margin = new Padding(3, 2, 3, 2);
             customPanel1.Name = "customPanel1";
@@ -149,27 +149,6 @@ namespace WordleClient.views
             rd_Random.UnCheckedColor = Color.Gray;
             rd_Random.UseVisualStyleBackColor = false;
             rd_Random.CheckedChanged += rd_Random_CheckedChanged;
-            // 
-            // btn_StartGame
-            // 
-            btn_StartGame.BackgroundColor = Color.FromArgb(128, 255, 255);
-            btn_StartGame.BorderColor = Color.FromArgb(192, 255, 255);
-            btn_StartGame.BorderRadius = 20;
-            btn_StartGame.BorderSize = 2;
-            btn_StartGame.ButtonImage = null;
-            btn_StartGame.EnableStripe = true;
-            btn_StartGame.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            btn_StartGame.ImageSize = 24;
-            btn_StartGame.Location = new Point(164, 500);
-            btn_StartGame.Margin = new Padding(3, 2, 3, 2);
-            btn_StartGame.Name = "btn_StartGame";
-            btn_StartGame.Size = new Size(345, 58);
-            btn_StartGame.StripeSpeed = 4;
-            btn_StartGame.TabIndex = 2;
-            btn_StartGame.Text = "StartGame";
-            btn_StartGame.TextAlign = ContentAlignment.MiddleCenter;
-            btn_StartGame.TextColor = Color.Black;
-            btn_StartGame.Click += btn_StartGame_Click;
             // 
             // customGroupBox2
             // 
@@ -295,23 +274,41 @@ namespace WordleClient.views
             btn_Exit.Cursor = Cursors.Hand;
             btn_Exit.gradientAngle1 = 90F;
             btn_Exit.Image = (Image)resources.GetObject("btn_Exit.Image");
-            btn_Exit.Location = new Point(635, 0);
+            btn_Exit.Location = new Point(623, 11);
             btn_Exit.Margin = new Padding(3, 2, 3, 2);
             btn_Exit.Name = "btn_Exit";
-            btn_Exit.Size = new Size(30, 26);
+            btn_Exit.Size = new Size(30, 30);
             btn_Exit.SizeMode = PictureBoxSizeMode.StretchImage;
             btn_Exit.TabIndex = 7;
             btn_Exit.TabStop = false;
             btn_Exit.Click += btn_Exit_Click;
+            // 
+            // btn_StartGame
+            // 
+            btn_StartGame.BackgroundColor = Color.FromArgb(87, 162, 62);
+            btn_StartGame.BorderColor = Color.FromArgb(87, 162, 62);
+            btn_StartGame.BorderRadius = 20;
+            btn_StartGame.BorderSize = 2;
+            btn_StartGame.ButtonImage = null;
+            btn_StartGame.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            btn_StartGame.ImageSize = 24;
+            btn_StartGame.Location = new Point(164, 499);
+            btn_StartGame.Name = "btn_StartGame";
+            btn_StartGame.Size = new Size(345, 58);
+            btn_StartGame.TabIndex = 8;
+            btn_StartGame.Text = "Start game";
+            btn_StartGame.TextAlign = ContentAlignment.MiddleCenter;
+            btn_StartGame.TextColor = Color.White;
+            btn_StartGame.Click += btn_StartGame_Click;
             // 
             // FormOption
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(665, 588);
+            Controls.Add(btn_StartGame);
             Controls.Add(btn_Exit);
             Controls.Add(customGroupBox2);
-            Controls.Add(btn_StartGame);
             Controls.Add(customGroupBox1);
             Controls.Add(customPanel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -333,7 +330,6 @@ namespace WordleClient.views
         private CustomPanel customPanel1;
         private CustomGroupBox customGroupBox1;
         private CustomRadioButton rd_Random;
-        private CustomButtonAnimation btn_StartGame;
         private CustomRadioButton rd_Easy;
         private CustomRadioButton rd_Hard;
         private CustomGroupBox customGroupBox2;
@@ -344,5 +340,6 @@ namespace WordleClient.views
         private CustomLabel customLabel2;
         private CustomLabel customLabel1;
         private CustomLabel customLabel4;
+        private CustomButton btn_StartGame;
     }
 }

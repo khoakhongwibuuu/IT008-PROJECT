@@ -9,21 +9,15 @@ namespace WordleClient.views
         {
             InitializeComponent();
         }
-
         private void btn_Exit_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
             this.Close();
         }
-
         private void btn_Sound_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
             CustomSound.ToggleMute();
-            UpdateSound();
-        }
-        private void UpdateSound()
-        {
             if (CustomSound.IsMuted())
             {
                 btn_Sound.Image = Properties.Resources.soundOFFicon;
@@ -50,7 +44,6 @@ namespace WordleClient.views
                 this.BackColor = Color.White;
             }
         }
-
         private void btn_DarkLight_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();

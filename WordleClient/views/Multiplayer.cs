@@ -50,20 +50,23 @@ namespace WordleClient.views
             int newY = startY + (int)((targetY - startY) * eased);
             this.Top = newY;
         }
-        private void customButton1_Click(object sender, EventArgs e)
+        private void HostMyOwnBtn_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            //this.Close();
+            MessageBox.Show("Feature coming soon!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        private void JoinOtherBtn_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            //this.Close();
+            MessageBox.Show("Feature coming soon!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btn_Exit_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
             this.Close();
-        }
-
-        private void customButtonAnimation1_Click(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
-        }
-
-        private void customButtonAnimation2_Click(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
         }
     }
 }

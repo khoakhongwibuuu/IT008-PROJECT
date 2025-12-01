@@ -1,7 +1,6 @@
 ﻿using WordleClient.libraries.CustomControls;
 using WordleClient.libraries.StateFrom;
 using WordleClient.views;
-
 namespace WordleClient
 {
     public partial class MainMenu : CustomForm
@@ -12,10 +11,11 @@ namespace WordleClient
         }
         private void MainMenu_Load(object sender, EventArgs e)
         {
-            if (!CustomSound.IsMuted())
-            {
-                CustomSound.PlayBackgroundLoop();
-            }
+            //CustomSound.ToggleMute();
+            if (!CustomSound.IsMuted()) CustomSound.PlayBackgroundLoop();
+            btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
+            btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
+            //ThemeManager.ApplyTheme(this);
         }
         private void btn_SinglePlayer_Click(object sender, EventArgs e)
         {
@@ -25,7 +25,42 @@ namespace WordleClient
             formOption.Show();
             this.Hide();
         }
-
+        private void btn_MultiPlayer_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            Multiplayer multiplayer = new Multiplayer();
+            multiplayer.ShowDialog();
+        }
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+        private void minimunsize_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            this.WindowState = FormWindowState.Minimized;
+        }
+        private void btn_Sound_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            CustomSound.ToggleMute();
+            btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
+        }
+        private void btn_DarkLight_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            CustomDarkLight.IsDark = !CustomDarkLight.IsDark;
+            btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
+            btn_DarkLight.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
+            btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
+            btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
+            btn_Sound.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
+            btn_Sound.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
+        }
         private void FormOption_FormClosed(object? sender, FormClosedEventArgs e)
         {
             // Only show MainMenu again when FormOption indicates it should return to main.
@@ -34,50 +69,15 @@ namespace WordleClient
                 this.Show();
             }
         }
-
-        private void btn_MultiPlayer_Click(object sender, EventArgs e)
+        private void btn_SingleStats_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            Multiplayer multiplayer = new Multiplayer();
-            multiplayer.ShowDialog();
+            MessageBox.Show("This feature is coming soon!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        private void btn_Exit_Click(object sender, EventArgs e)
+        private void btn_MultiStats_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                {
-                   Application.Exit();
-                }
-            }
-        }
-        private void Exit_Click(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
-            if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                {
-                    Application.Exit();
-                }
-            }
-        }
-        private void btn_Setting_Click_1(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
-            FormSetting setting = new FormSetting();
-            setting.ShowDialog();
-        }
-        private void minimunsize_Click(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
-            this.WindowState = FormWindowState.Minimized;
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
-            CustomDgv  customDgv = new CustomDgv();
-            customDgv.ShowDialog();
+            MessageBox.Show("This feature is coming soon!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
