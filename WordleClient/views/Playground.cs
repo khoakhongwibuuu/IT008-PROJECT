@@ -106,6 +106,11 @@ namespace WordleClient.views
         private void Playground_Load(object? sender, EventArgs e)
         {
             ThemeManager.ApplyTheme(this);
+            string nickname = ProfileState.Current.Nickname ?? "Player";
+            AlertBox alertBox = new AlertBox(3000);
+            CustomSound.PlayClickAlert();
+            alertBox.ShowAlert(this, "Welcome", $"Welcome to Playground, {nickname}!");
+            label8.Text = nickname;
         }
         private void Playground_FormClosing(object? sender, FormClosingEventArgs e)
         {

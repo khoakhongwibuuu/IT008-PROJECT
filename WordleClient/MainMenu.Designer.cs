@@ -53,11 +53,13 @@ namespace WordleClient
             btn_MultiStats = new CustomButtonAnimation();
             btn_Exit = new CustomButtonAnimation();
             exit = new CustomPictureBox();
+            customPictureBox1 = new CustomPictureBox();
             ((System.ComponentModel.ISupportInitialize)minimunsize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btn_DarkLight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btn_Sound).BeginInit();
             customPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)exit).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)customPictureBox1).BeginInit();
             SuspendLayout();
             // 
             // minimunsize
@@ -422,6 +424,21 @@ namespace WordleClient
             exit.TabStop = false;
             exit.Click += Exit_Click;
             // 
+            // customPictureBox1
+            // 
+            customPictureBox1.boderGradientBottom1 = Color.SlateBlue;
+            customPictureBox1.boderGradientTop1 = Color.MediumSlateBlue;
+            customPictureBox1.boderRadius1 = 40;
+            customPictureBox1.boderSize1 = 2;
+            customPictureBox1.gradientAngle1 = 90F;
+            customPictureBox1.Location = new Point(499, 317);
+            customPictureBox1.Name = "customPictureBox1";
+            customPictureBox1.Size = new Size(96, 86);
+            customPictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            customPictureBox1.TabIndex = 16;
+            customPictureBox1.TabStop = false;
+            customPictureBox1.Click += customPictureBox1_Click;
+            // 
             // MainMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -429,6 +446,7 @@ namespace WordleClient
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1110, 709);
+            Controls.Add(customPictureBox1);
             Controls.Add(exit);
             Controls.Add(customPanel1);
             Controls.Add(btn_DarkLight);
@@ -456,6 +474,7 @@ namespace WordleClient
             ((System.ComponentModel.ISupportInitialize)btn_Sound).EndInit();
             customPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)exit).EndInit();
+            ((System.ComponentModel.ISupportInitialize)customPictureBox1).EndInit();
             ResumeLayout(false);
         }
 
@@ -480,5 +499,6 @@ namespace WordleClient
         private CustomButtonAnimation btn_MultiPlayer;
         private CustomButtonAnimation btn_SinglePlayer;
         private CustomPictureBox exit;
+        private CustomPictureBox customPictureBox1;
     }
 }
