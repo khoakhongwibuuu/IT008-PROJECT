@@ -20,9 +20,11 @@ namespace WordleClient.libraries.StateFrom
         // Load profile from JSON file (deserialize)
         public static void Load()
         {
-            if (File.Exists(saveFile))
+            string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WordleClient", "userdata");
+            string filepath = Path.Combine(folder, saveFile);
+            if (File.Exists(filepath))
             {
-                string json = File.ReadAllText(saveFile);
+                string json = File.ReadAllText(filepath);
                 Current = JsonSerializer.Deserialize<ProfileState>(json,jsonOptions) ?? new ProfileState();
             }
             else
@@ -33,8 +35,11 @@ namespace WordleClient.libraries.StateFrom
         // Save profile to JSON file (serialize)
         public static void Save()
         {
-            string json = JsonSerializer.Serialize(Current, jsonOptions);
-            File.WriteAllText(saveFile, json);
+            string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WordleClient", "userdata");
+            Directory.CreateDirectory(folder);
+            string filePath = Path.Combine(folder, saveFile);
+            string json= JsonSerializer.Serialize(Current,jsonOptions);
+            File.WriteAllText(filePath,json);
         }
         // Get avatar image based on AvatarPath
         public static Image GetAvatar()
