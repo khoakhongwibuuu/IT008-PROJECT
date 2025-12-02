@@ -76,13 +76,13 @@ namespace WordleClient.views
             customGroupBox1.Controls.Add(rd_Easy);
             customGroupBox1.Controls.Add(rd_Hard);
             customGroupBox1.Controls.Add(rd_Random);
-            customGroupBox1.Font = new Font("Segoe UI", 12F);
+            customGroupBox1.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             customGroupBox1.ForeColor = Color.White;
-            customGroupBox1.Location = new Point(164, 28);
+            customGroupBox1.Location = new Point(118, 25);
             customGroupBox1.Margin = new Padding(3, 2, 3, 2);
             customGroupBox1.Name = "customGroupBox1";
             customGroupBox1.Padding = new Padding(3, 2, 3, 2);
-            customGroupBox1.Size = new Size(345, 218);
+            customGroupBox1.Size = new Size(429, 220);
             customGroupBox1.TabIndex = 1;
             customGroupBox1.TabStop = false;
             customGroupBox1.Text = "Select word difficulty";
@@ -163,13 +163,13 @@ namespace WordleClient.views
             customGroupBox2.Controls.Add(customLabel1);
             customGroupBox2.Controls.Add(trackBarGuess);
             customGroupBox2.Controls.Add(cbbTopic);
-            customGroupBox2.Font = new Font("Segoe UI", 12F);
+            customGroupBox2.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             customGroupBox2.ForeColor = Color.White;
-            customGroupBox2.Location = new Point(164, 274);
+            customGroupBox2.Location = new Point(118, 261);
             customGroupBox2.Margin = new Padding(3, 2, 3, 2);
             customGroupBox2.Name = "customGroupBox2";
             customGroupBox2.Padding = new Padding(3, 2, 3, 2);
-            customGroupBox2.Size = new Size(345, 197);
+            customGroupBox2.Size = new Size(429, 215);
             customGroupBox2.TabIndex = 3;
             customGroupBox2.TabStop = false;
             customGroupBox2.Text = "Select topic and maximum number of guesses";
@@ -181,10 +181,11 @@ namespace WordleClient.views
             // 
             customLabel4.BoderRadius = 3F;
             customLabel4.BorderColor = Color.White;
+            customLabel4.Cursor = Cursors.Hand;
             customLabel4.EndColor = Color.MediumPurple;
             customLabel4.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             customLabel4.ForeColor = Color.White;
-            customLabel4.Location = new Point(256, 136);
+            customLabel4.Location = new Point(326, 132);
             customLabel4.Margin = new Padding(3, 2, 3, 2);
             customLabel4.Name = "customLabel4";
             customLabel4.ShadowOffset = 4;
@@ -192,15 +193,17 @@ namespace WordleClient.views
             customLabel4.StartColor = Color.MediumSlateBlue;
             customLabel4.TabIndex = 3;
             customLabel4.Text = "9";
+            customLabel4.Click += this.customLabel4_Click;
             // 
             // customLabel3
             // 
             customLabel3.BoderRadius = 3F;
             customLabel3.BorderColor = Color.White;
+            customLabel3.Cursor = Cursors.Hand;
             customLabel3.EndColor = Color.MediumPurple;
             customLabel3.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             customLabel3.ForeColor = Color.White;
-            customLabel3.Location = new Point(132, 136);
+            customLabel3.Location = new Point(148, 132);
             customLabel3.Margin = new Padding(3, 2, 3, 2);
             customLabel3.Name = "customLabel3";
             customLabel3.ShadowOffset = 4;
@@ -208,15 +211,17 @@ namespace WordleClient.views
             customLabel3.StartColor = Color.MediumSlateBlue;
             customLabel3.TabIndex = 2;
             customLabel3.Text = "7";
+            customLabel3.Click += this.customLabel3_Click;
             // 
             // customLabel2
             // 
             customLabel2.BoderRadius = 3F;
             customLabel2.BorderColor = Color.White;
+            customLabel2.Cursor = Cursors.Hand;
             customLabel2.EndColor = Color.MediumPurple;
             customLabel2.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             customLabel2.ForeColor = Color.White;
-            customLabel2.Location = new Point(195, 136);
+            customLabel2.Location = new Point(237, 132);
             customLabel2.Margin = new Padding(3, 2, 3, 2);
             customLabel2.Name = "customLabel2";
             customLabel2.ShadowOffset = 4;
@@ -224,15 +229,17 @@ namespace WordleClient.views
             customLabel2.StartColor = Color.MediumSlateBlue;
             customLabel2.TabIndex = 2;
             customLabel2.Text = "8";
+            customLabel2.Click += customLabel2_Click;
             // 
             // customLabel1
             // 
             customLabel1.BoderRadius = 3F;
             customLabel1.BorderColor = Color.White;
+            customLabel1.Cursor = Cursors.Hand;
             customLabel1.EndColor = Color.MediumPurple;
             customLabel1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             customLabel1.ForeColor = Color.White;
-            customLabel1.Location = new Point(71, 136);
+            customLabel1.Location = new Point(58, 131);
             customLabel1.Margin = new Padding(3, 2, 3, 2);
             customLabel1.Name = "customLabel1";
             customLabel1.ShadowOffset = 4;
@@ -240,28 +247,29 @@ namespace WordleClient.views
             customLabel1.StartColor = Color.MediumSlateBlue;
             customLabel1.TabIndex = 2;
             customLabel1.Text = "6";
+            customLabel1.Click += customLabel1_Click;
             // 
             // trackBarGuess
             // 
-            trackBarGuess.Location = new Point(71, 108);
+            trackBarGuess.Location = new Point(60, 103);
             trackBarGuess.Margin = new Padding(3, 2, 3, 2);
             trackBarGuess.Maximum = 9;
             trackBarGuess.Minimum = 6;
             trackBarGuess.Name = "trackBarGuess";
-            trackBarGuess.Size = new Size(214, 45);
+            trackBarGuess.Size = new Size(296, 45);
             trackBarGuess.TabIndex = 1;
             trackBarGuess.Value = 6;
             // 
             // cbbTopic
             // 
             cbbTopic.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbbTopic.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cbbTopic.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbbTopic.FormattingEnabled = true;
-            cbbTopic.Location = new Point(71, 48);
+            cbbTopic.Location = new Point(60, 48);
             cbbTopic.Margin = new Padding(3, 2, 3, 2);
             cbbTopic.MaxDropDownItems = 5;
             cbbTopic.Name = "cbbTopic";
-            cbbTopic.Size = new Size(215, 33);
+            cbbTopic.Size = new Size(296, 33);
             cbbTopic.TabIndex = 0;
             cbbTopic.SelectedIndexChanged += cbbTopic_SelectedIndexChanged;
             // 
@@ -292,9 +300,9 @@ namespace WordleClient.views
             btn_StartGame.ButtonImage = null;
             btn_StartGame.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
             btn_StartGame.ImageSize = 24;
-            btn_StartGame.Location = new Point(164, 499);
+            btn_StartGame.Location = new Point(156, 498);
             btn_StartGame.Name = "btn_StartGame";
-            btn_StartGame.Size = new Size(345, 58);
+            btn_StartGame.Size = new Size(345, 65);
             btn_StartGame.TabIndex = 8;
             btn_StartGame.Text = "Start game";
             btn_StartGame.TextAlign = ContentAlignment.MiddleCenter;
