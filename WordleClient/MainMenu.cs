@@ -12,6 +12,8 @@ namespace WordleClient
         private void MainMenu_Load(object sender, EventArgs e)
         {
             //CustomSound.ToggleMute();
+            ProfileState.Load();
+            customPictureBox1.Image = ProfileState.GetAvatar();
             if (!CustomSound.IsMuted()) CustomSound.PlayBackgroundLoop();
             btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
             btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
@@ -78,6 +80,13 @@ namespace WordleClient
         {
             CustomSound.PlayClick();
             MessageBox.Show("This feature is coming soon!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        private void customPictureBox1_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            FormProfile formProfile = new FormProfile();
+            formProfile.ShowDialog();
+            customPictureBox1.Image = ProfileState.GetAvatar();
         }
     }
 }

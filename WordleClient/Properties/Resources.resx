@@ -175,4 +175,31 @@
   <data name="MusicOffDark" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\MusicOffDark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Avatar1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\Avatar1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Avatar3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\Avatar3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Avatar4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\Avatar4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Avatar5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\Avatar5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Avatar6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\Avatar6.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Avatar7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\Avatar7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Avatar9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\Avatar9.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Avatar8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\Avatar8.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Avatar2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\Avatar2..png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

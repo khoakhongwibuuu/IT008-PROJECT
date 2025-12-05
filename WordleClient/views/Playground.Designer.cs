@@ -21,6 +21,8 @@
             customButton1 = new WordleClient.libraries.CustomControls.CustomButton();
             customButton2 = new WordleClient.libraries.CustomControls.CustomButton();
             panel1 = new Panel();
+            label8 = new Label();
+            label4 = new Label();
             lbl_Hint2_Placeholder = new Label();
             label7 = new Label();
             lbl_Hint1_Placeholder = new Label();
@@ -79,6 +81,8 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(label8);
+            panel1.Controls.Add(label4);
             panel1.Controls.Add(lbl_Hint2_Placeholder);
             panel1.Controls.Add(label7);
             panel1.Controls.Add(lbl_Hint1_Placeholder);
@@ -95,6 +99,28 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(300, 810);
             panel1.TabIndex = 2;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label8.Location = new Point(115, 78);
+            label8.Margin = new Padding(1, 0, 1, 0);
+            label8.Name = "label8";
+            label8.Size = new Size(84, 21);
+            label8.TabIndex = 17;
+            label8.Text = "Unknown";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label4.Location = new Point(18, 78);
+            label4.Margin = new Padding(1, 0, 1, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(96, 21);
+            label4.TabIndex = 16;
+            label4.Text = "Nickname: ";
             // 
             // lbl_Hint2_Placeholder
             // 
@@ -288,5 +314,7 @@
         private Label label7;
         private Label lbl_Streak;
         private Label label6;
+        private Label label4;
+        private Label label8;
     }
 }
