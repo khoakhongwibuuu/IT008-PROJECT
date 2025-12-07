@@ -57,10 +57,15 @@ namespace WordleClient.libraries.CustomControls
             if (borderRadius > 2)
             {
                 using (GraphicsPath path = GetFigurePath(rectF, borderRadius))
-                using (Pen pen = new Pen(this.Parent.BackColor, 2))
                 {
-                    this.Region = new Region(path);
-                    e.Graphics.DrawPath(pen, path);
+                    if (Parent != null)
+                    {
+                        using (Pen pen = new Pen(Parent.BackColor, 2))
+                        {
+                            this.Region = new Region(path);
+                            e.Graphics.DrawPath(pen, path);
+                        }
+                    }
                 }
             }
             else
