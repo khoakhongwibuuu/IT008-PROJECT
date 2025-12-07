@@ -1,86 +1,83 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
+﻿using WordleClient.libraries.CustomControls;
+using WordleClient.libraries.StateFrom;
+using WordleClient.views;
 namespace WordleClient
 {
-    public partial class MainMenu : Form
+    public partial class MainMenu : CustomForm
     {
         public MainMenu()
         {
             InitializeComponent();
         }
-
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainMenu_Load(object sender, EventArgs e)
         {
-            CenterButtons(MainPanel, new Button[] { singleplayerButton, multiplayerButton });
+            //CustomSound.ToggleMute();
+            if (!CustomSound.IsMuted()) CustomSound.PlayBackgroundLoop();
+            btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
+            btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
+            //ThemeManager.ApplyTheme(this);
         }
-        private void Form1_Resize(object sender, EventArgs e)
+        private void btn_SinglePlayer_Click(object sender, EventArgs e)
         {
-            // Center the button inside the form
-
-            CenterButtons(MainPanel, new Button[] { singleplayerButton, multiplayerButton });
+            CustomSound.PlayClick();
+            FormOption formOption = new FormOption();
+            formOption.FormClosed += FormOption_FormClosed;
+            formOption.Show();
+            this.Hide();
         }
-        private void CenterButtons(Control container, Button[] buttons)
+        private void btn_MultiPlayer_Click(object sender, EventArgs e)
         {
-            int spacing = 10; // space between buttons
-
-            // Calculate total height of all buttons + spacing
-            int totalHeight = 0;
-            foreach (Button btn in buttons)
-                totalHeight += btn.Height;
-            totalHeight += spacing * (buttons.Length - 1);
-
-            // Center the group vertically within the container
-            int startY = (container.ClientSize.Height - totalHeight) / 2;
-
-            // Position each button
-            for (int i = 0; i < buttons.Length; i++)
+            CustomSound.PlayClick();
+            Multiplayer multiplayer = new Multiplayer();
+            multiplayer.ShowDialog();
+        }
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                buttons[i].Left = (container.ClientSize.Width - buttons[i].Width) / 2;
-                buttons[i].Top = startY + i * (buttons[i].Height + spacing);
+                Application.Exit();
             }
         }
-
-
-        private void singleplayerButton_Click(object sender, EventArgs e)
+        private void minimunsize_Click(object sender, EventArgs e)
         {
-            ShowPanel(OptionsPanel);
+            CustomSound.PlayClick();
+            this.WindowState = FormWindowState.Minimized;
         }
-        private void buttonReturn_Click(object sender, EventArgs e)
+        private void btn_Sound_Click(object sender, EventArgs e)
         {
-            ShowPanel(MainPanel);
+            CustomSound.PlayClick();
+            CustomSound.ToggleMute();
+            btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
         }
-
-        private void buttonStartGameSinglePlayer_Click(object sender, EventArgs e)
+        private void btn_DarkLight_Click(object sender, EventArgs e)
         {
-            ShowPanel(SingleplayerPanel);
-            ShowPanel(ToolbarPanel);
-            ShowPanel(KeyboardPanel);
+            CustomSound.PlayClick();
+            CustomDarkLight.IsDark = !CustomDarkLight.IsDark;
+            btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
+            btn_DarkLight.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
+            btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
+            btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
+            btn_Sound.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
+            btn_Sound.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
         }
-        private void buttonReturnFromOptions_Click(object sender, EventArgs e)
+        private void FormOption_FormClosed(object? sender, FormClosedEventArgs e)
         {
-            ShowPanel(MainPanel);
-        }
-        private void ShowPanel(Panel panelToShow)
-        {
-            // Hide all panels in the main area
-            foreach (Control ctrl in MainPanel.Controls)
+            // Only show MainMenu again when FormOption indicates it should return to main.
+            if (sender is FormOption fo && fo.ReturnToMainOnClose)
             {
-                if (ctrl is Panel pnl)
-                    pnl.Visible = false;
+                this.Show();
             }
-            // Show the one you want
-            panelToShow.Visible = true;
-            panelToShow.BringToFront(); // ensures it's on top visually
         }
-
-
+        private void btn_SingleStats_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            MessageBox.Show("This feature is coming soon!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        private void btn_MultiStats_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            MessageBox.Show("This feature is coming soon!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 }
