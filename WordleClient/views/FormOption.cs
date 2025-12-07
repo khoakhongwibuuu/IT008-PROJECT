@@ -110,5 +110,28 @@ namespace WordleClient.views
         {
             selectedDifficulty = "EASY";
         }
+
+        private void customLabel1_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            trackBarGuess.Value = 6;
+        }
+
+        private void customLabel2_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            trackBarGuess.Value = 8;
+        }
+        private void customLabel3_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            trackBarGuess.Value = 7;
+        }
+        private void customLabel4_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            trackBarGuess.Value = 9;
+        }
+
     }
 }
