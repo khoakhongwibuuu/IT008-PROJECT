@@ -35,9 +35,9 @@
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.Guide;
-            pictureBox1.Location = new Point(-3, 0);
+            pictureBox1.Location = new Point(0, -5);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(420, 435);
+            pictureBox1.Size = new Size(418, 433);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
@@ -45,13 +45,13 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(412, 430);
+            ClientSize = new Size(415, 424);
             Controls.Add(pictureBox1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormHelp";
-            Text = "Guide";
+            Text = "FormHelp";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }

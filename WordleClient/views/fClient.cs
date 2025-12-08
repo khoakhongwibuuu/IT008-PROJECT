@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace WordleClient.views
 {
-    public partial class FormHelp : Form
+    public partial class fClient : Form
     {
-        public FormHelp()
+        public fClient()
         {
             InitializeComponent();
         }

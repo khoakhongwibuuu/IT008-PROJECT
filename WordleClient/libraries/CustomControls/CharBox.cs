@@ -5,18 +5,23 @@ using System.Windows.Forms;
 
 namespace WordleClient.libraries.CustomControls
 {
-    // Simple user control that acts as a "box" which can show one character
-    // and have its background color changed via the public methods.
     public class CharBox : UserControl
     {
         private readonly Label lbl;
-        private int borderRadius = 5;
+
+        private int borderRadius = 8;
         private Color borderColor = SystemColors.ControlDark;
         private int borderSize = 1;
+
+        // === Cursor fields ===
+        private bool _showCursor = false;
+        private bool _cursorVisible = false;
+        private readonly System.Windows.Forms.Timer blinkTimer;
 
         public CharBox()
         {
             DoubleBuffered = true;
+
             lbl = new Label
             {
                 Dock = DockStyle.Fill,
@@ -26,69 +31,67 @@ namespace WordleClient.libraries.CustomControls
                 BackColor = Color.Transparent
             };
 
-            BorderStyle = BorderStyle.None;
-            BackColor = SystemColors.Window;
             Controls.Add(lbl);
-            Size = new Size(45, 45);
+            Size = new Size(50, 50);
             Padding = new Padding(borderSize);
+
             UpdateRegion();
+
+            // === blinking cursor timer ===
+            blinkTimer = new System.Windows.Forms.Timer();
+            blinkTimer.Interval = 500; // blinking duration
+            blinkTimer.Tick += (s, e) =>
+            {
+                if (_showCursor)
+                {
+                    _cursorVisible = !_cursorVisible;
+                    Invalidate();
+                }
+            };
         }
+
+        // ===== Character Handling =====
         public void SetCharacter(char ch)
         {
-            if (ch == '\0')
+            if (ch == '\0' || ch == '-')
                 lbl.Text = string.Empty;
             else
                 lbl.Text = ch.ToString();
         }
+
+        public string Character
+        {
+            get => lbl.Text;
+            set => lbl.Text = string.IsNullOrEmpty(value) ? string.Empty : value.Substring(0, 1);
+        }
+
         public void SetBackgroundColor(Color color)
         {
             BackColor = color;
             Invalidate();
         }
-        public string Character
+
+        // ===== Cursor Control =====
+        public void ShowCursor(bool show)
         {
-            get => lbl.Text;
-            set => lbl.Text = string.IsNullOrEmpty(value) ? string.Empty : value[0].ToString();
+            _showCursor = show;
+
+            if (show)
+            {
+                _cursorVisible = true;   // dot visible immediately
+                blinkTimer.Stop();
+                blinkTimer.Start();
+            }
+            else
+            {
+                blinkTimer.Stop();
+                _cursorVisible = false;
+            }
+
+            Invalidate();
         }
 
-        [Category("Appearance")]
-        [DefaultValue(5)]
-        public int BorderRadius
-        {
-            get => borderRadius;
-            set
-            {
-                borderRadius = Math.Max(0, value);
-                UpdateRegion();
-                Invalidate();
-            }
-        }
-
-        [Category("Appearance")]
-        [DefaultValue(typeof(Color), "ControlDark")]
-        public Color BorderColor
-        {
-            get => borderColor;
-            set
-            {
-                borderColor = value;
-                Invalidate();
-            }
-        }
-
-        [Category("Appearance")]
-        [DefaultValue(1)]
-        public int BorderSize
-        {
-            get => borderSize;
-            set
-            {
-                borderSize = Math.Max(0, value);
-                Padding = new Padding(borderSize);
-                UpdateRegion();
-                Invalidate();
-            }
-        }
+        // ====== Draw Control ======
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -99,24 +102,57 @@ namespace WordleClient.libraries.CustomControls
             Rectangle rect = ClientRectangle;
             if (rect.Width <= 0 || rect.Height <= 0) return;
 
-            using GraphicsPath path = GetRoundedRectanglePath(rect, borderRadius);
+            using GraphicsPath path = CreateRoundRect(rect, borderRadius);
+
             using (var brush = new SolidBrush(BackColor))
-            {
                 g.FillPath(brush, path);
-            }
 
             if (borderSize > 0)
+                using (var pen = new Pen(borderColor, borderSize))
+                    g.DrawPath(pen, path);
+
+            // === draw blinking cursor dot ===
+            if (_showCursor && _cursorVisible)
             {
-                using var pen = new Pen(borderColor, borderSize);
-                g.DrawPath(pen, path);
+                int size = 9;
+                g.FillEllipse(
+                    Brushes.Red,
+                    (Width - size) / 2,
+                    Height - size - 5,
+                    size,
+                    size
+                );
             }
         }
+
+        // === Border radius properties ===
+        [Category("Appearance")]
+        public int BorderRadius
+        {
+            get => borderRadius;
+            set { borderRadius = value; UpdateRegion(); Invalidate(); }
+        }
+
+        [Category("Appearance")]
+        public Color BorderColor
+        {
+            get => borderColor;
+            set { borderColor = value; Invalidate(); }
+        }
+
+        [Category("Appearance")]
+        public int BorderSize
+        {
+            get => borderSize;
+            set { borderSize = value; Padding = new Padding(value); UpdateRegion(); Invalidate(); }
+        }
+
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
             UpdateRegion();
-            Invalidate();
         }
+
         private void UpdateRegion()
         {
             Rectangle rect = ClientRectangle;
@@ -126,32 +162,32 @@ namespace WordleClient.libraries.CustomControls
                 return;
             }
 
-            using GraphicsPath path = GetRoundedRectanglePath(rect, borderRadius);
+            using GraphicsPath path = CreateRoundRect(rect, borderRadius);
             Region?.Dispose();
             Region = new Region(path);
         }
-        private static GraphicsPath GetRoundedRectanglePath(Rectangle rect, int radius)
+
+        private static GraphicsPath CreateRoundRect(Rectangle r, int radius)
         {
             GraphicsPath path = new GraphicsPath();
             if (radius <= 0)
             {
-                path.AddRectangle(rect);
-                path.CloseFigure();
+                path.AddRectangle(r);
                 return path;
             }
 
-            int diameter = radius * 2;
-            Rectangle arc = new Rectangle(rect.Location, new Size(diameter, diameter));
+            int d = radius * 2;
+            Rectangle arc = new Rectangle(r.Location, new Size(d, d));
 
             path.AddArc(arc, 180, 90);
-            arc.X = rect.Right - diameter;
 
+            arc.X = r.Right - d;
             path.AddArc(arc, 270, 90);
-            arc.Y = rect.Bottom - diameter;
 
+            arc.Y = r.Bottom - d;
             path.AddArc(arc, 0, 90);
-            arc.X = rect.Left;
 
+            arc.X = r.Left;
             path.AddArc(arc, 90, 90);
 
             path.CloseFigure();

@@ -82,17 +82,22 @@ namespace WordleClient.libraries.CustomControls
             var rectangleBorder = Rectangle.Inflate(ClientRectangle, -boderSize, -boderSize);
             var smoothSize = boderSize > 0 ? boderSize * 3  : 1;
             using (var BoderGadientColor = new LinearGradientBrush(rectangleBorder,boderGradientTop, boderGradientBottom, gradientAngle))
-            using (var pathSmooth = new Pen(Parent.BackColor,smoothSize))
-            using (var pathRegion = new GraphicsPath())
-            using (var pathBorder = new Pen(BoderGadientColor,smoothSize))
             {
-                pathRegion.AddEllipse(rectangleSmooth);
-                Region  = new Region (pathRegion);
-                graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                graphics.DrawEllipse(pathSmooth, rectangleSmooth);
-                if(boderSize > 0 )
+                if (Parent != null)
                 {
-                    graphics.DrawEllipse(pathBorder, rectangleBorder);
+                    using (var pathSmooth = new Pen(Parent.BackColor, smoothSize))
+                    using (var pathRegion = new GraphicsPath())
+                    using (var pathBorder = new Pen(BoderGadientColor, smoothSize))
+                    {
+                        pathRegion.AddEllipse(rectangleSmooth);
+                        Region = new Region(pathRegion);
+                        graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                        graphics.DrawEllipse(pathSmooth, rectangleSmooth);
+                        if (boderSize > 0)
+                        {
+                            graphics.DrawEllipse(pathBorder, rectangleBorder);
+                        }
+                    }
                 }
             }
             Size = new Size(Width, Height);

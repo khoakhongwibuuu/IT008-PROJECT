@@ -10,11 +10,13 @@ using System.Windows.Forms;
 
 namespace WordleClient.views
 {
-    public partial class FormHelp : Form
+    public partial class fSever : Form
     {
-        public FormHelp()
+        public fSever()
         {
             InitializeComponent();
         }
+
+      
     }
 }
