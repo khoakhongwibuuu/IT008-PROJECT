@@ -16,7 +16,6 @@ namespace WordleClient
             customPictureBox1.Image = ProfileState.GetAvatar();
             if (!CustomSound.IsMuted()) CustomSound.PlayBackgroundLoop();
             btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
-            btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
             //ThemeManager.ApplyTheme(this);
         }
         private void btn_SinglePlayer_Click(object sender, EventArgs e)
@@ -52,17 +51,7 @@ namespace WordleClient
             CustomSound.ToggleMute();
             btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
         }
-        private void btn_DarkLight_Click(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
-            CustomDarkLight.IsDark = !CustomDarkLight.IsDark;
-            btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
-            btn_DarkLight.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
-            btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
-            btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
-            btn_Sound.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
-            btn_Sound.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
-        }
+
         private void FormOption_FormClosed(object? sender, FormClosedEventArgs e)
         {
             // Only show MainMenu again when FormOption indicates it should return to main.
@@ -87,6 +76,12 @@ namespace WordleClient
             FormProfile formProfile = new FormProfile();
             formProfile.ShowDialog();
             customPictureBox1.Image = ProfileState.GetAvatar();
+        }
+
+        private void btn_Guide_Click(object sender, EventArgs e)
+        {
+            FormHelp help = new FormHelp();
+            help.ShowDialog();
         }
     }
 }

@@ -37,9 +37,11 @@
             label6 = new Label();
             panel2 = new Panel();
             panel3 = new Panel();
+            btn_DarkLight = new WordleClient.libraries.CustomControls.CustomPictureBox();
             MasterPanel = new Panel();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)btn_DarkLight).BeginInit();
             MasterPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -256,12 +258,31 @@
             // 
             // panel3
             // 
+            panel3.Controls.Add(btn_DarkLight);
             panel3.Controls.Add(customButton2);
             panel3.Controls.Add(customButton1);
             panel3.Location = new Point(780, 0);
             panel3.Name = "panel3";
             panel3.Size = new Size(300, 810);
             panel3.TabIndex = 2;
+            // 
+            // btn_DarkLight
+            // 
+            btn_DarkLight.boderGradientBottom1 = Color.Gainsboro;
+            btn_DarkLight.boderGradientTop1 = SystemColors.ButtonFace;
+            btn_DarkLight.boderRadius1 = 40;
+            btn_DarkLight.boderSize1 = 2;
+            btn_DarkLight.Cursor = Cursors.Hand;
+            btn_DarkLight.gradientAngle1 = 90F;
+            btn_DarkLight.Image = Properties.Resources.Light;
+            btn_DarkLight.Location = new Point(240, 2);
+            btn_DarkLight.Margin = new Padding(3, 2, 3, 2);
+            btn_DarkLight.Name = "btn_DarkLight";
+            btn_DarkLight.Size = new Size(60, 60);
+            btn_DarkLight.SizeMode = PictureBoxSizeMode.StretchImage;
+            btn_DarkLight.TabIndex = 12;
+            btn_DarkLight.TabStop = false;
+            btn_DarkLight.Click += btn_DarkLight_Click;
             // 
             // MasterPanel
             // 
@@ -280,6 +301,7 @@
             BackColor = Color.FromArgb(248, 250, 252);
             ClientSize = new Size(1080, 810);
             Controls.Add(MasterPanel);
+            DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MaximumSize = new Size(1096, 849);
@@ -290,6 +312,7 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)btn_DarkLight).EndInit();
             MasterPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -316,5 +339,6 @@
         private Label label6;
         private Label label4;
         private Label label8;
+        private libraries.CustomControls.CustomPictureBox btn_DarkLight;
     }
 }

@@ -102,6 +102,9 @@ namespace WordleClient.views
         private void Playground_Load(object? sender, EventArgs e)
         {
             ThemeManager.ApplyTheme(this);
+            btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
+            btn_DarkLight.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
+            btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
             string nickname = (ProfileState.Current == null) ? "Player" : ProfileState.Current.Nickname ?? "Player";
             AlertBox alertBox = new AlertBox(3000);
             CustomSound.PlayClickAlert();
@@ -687,6 +690,20 @@ namespace WordleClient.views
         {
             CustomSound.PlayClick();
             this.Close();
+        }
+
+        private void btn_DarkLight_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            CustomDarkLight.IsDark = !CustomDarkLight.IsDark;
+            btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
+            btn_DarkLight.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
+            btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
+            foreach (Form f in Application.OpenForms)
+            {
+                ThemeManager.ApplyTheme(f);
+                f.Refresh();
+            }
         }
     }
 }
