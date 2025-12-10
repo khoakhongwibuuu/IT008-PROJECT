@@ -1,10 +1,12 @@
 ﻿using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using WordleClient.libraries.CustomControls;
 using WordleClient.libraries.ingame;
 using WordleClient.libraries.lowlevel;
 using WordleClient.libraries.StateFrom;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WordleClient.views
 {
@@ -14,7 +16,7 @@ namespace WordleClient.views
         private readonly int rows;
         private int cols;
         private int streak = 0;
-
+        private int lives = 5;
         private readonly Panel matrixPanel;
 
         // Virtual keyboard
@@ -70,7 +72,8 @@ namespace WordleClient.views
             this.HintRemaining = 2;
             this.lastToken = TheChosenOne.TOKEN;
             InitializeComponent();
-
+            LoadHearts();
+            StartHeartAnimation();
             // Dynamic matrix panel
             this.matrixPanel = new Panel
             {
@@ -432,6 +435,9 @@ namespace WordleClient.views
                             if (CustomMessageBoxYesNo.Show(this, "Start a new game?", MessageBoxIcon.Question)
                                 == DialogResult.Yes)
                             {
+                                lives = 5;
+                                LoadHearts();
+                                StartHeartAnimation();
                                 streak = 0;
                                 lbl_Streak.Text = "0";
 
@@ -450,6 +456,9 @@ namespace WordleClient.views
                         CustomSound.PlayClickAlertError();
                         new AlertBox(750).ShowAlert(this, "Invalid Word", "Word not in dictionary!", MessageBoxIcon.Warning);
                         await ShakeRow(currentRow);
+                        Loselife();
+                        e.Handled = true;
+                        return;
                     }
 
                     e.Handled = true;
@@ -687,6 +696,94 @@ namespace WordleClient.views
         {
             CustomSound.PlayClick();
             this.Close();
+        }
+        private void LoadHearts()
+        {
+            flowLayoutPanel1.Controls.Clear();
+            for (int i = 0; i < lives; i++)
+            {
+                PictureBox pictureBox = new PictureBox
+                {
+                    Image = Properties.Resources.heart,
+                    SizeMode = PictureBoxSizeMode.Zoom,
+                    Size = new Size(30, 30),
+                    Margin = new Padding(2)
+                };
+                flowLayoutPanel1.Controls.Add(pictureBox);
+            }
+        }
+        private void Loselife()
+        {
+            if(lives <= 0)
+            {
+                return;
+            }
+            lives--;
+            if(flowLayoutPanel1.Controls.Count > 0)
+            {
+                flowLayoutPanel1.Controls.RemoveAt(flowLayoutPanel1.Controls.Count - 1);
+            }
+            if(lives <= 0)
+            {
+                GameEnded = true;
+                CustomSound.PlayClickGameOver();
+                new AlertBox(1700).ShowAlert(
+                    this,
+                    "Game Over",
+                    $"You lost all lives!The word was: {gameInstance.GetToken()}",
+                    MessageBoxIcon.Information
+                );
+                logger.SaveToDatabase(new SingleplayerPlayLog(
+                    DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                    gameInstance.GetToken(),
+                    gameInstance.GetGroupName(),
+                    gameInstance.GetDifficulty(),
+                    false, rows, currentRow + 1
+                ));
+                Task.Delay(1700).Wait();
+                if (CustomMessageBoxYesNo.Show(this, "Play again?", MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    lives = 5;
+                    LoadHearts();
+                    StartHeartAnimation();
+                    if (initialDifficulty == "HARD")
+                        ResetHardGame();
+                    else
+                        Resetnew_Game();
+                }
+                else this.Close();
+            }
+        }
+        private async Task HeartAnimation(PictureBox heart)
+        {
+            if (heart == null) return;
+            // Size ban đầu
+            int originalW = heart.Width;
+            int originalH = heart.Height;
+            // Độ nở
+            int beatW = originalW + 4;
+            int beatH = originalH + 4;
+            // Cập nhật size mới
+            heart.Size = new Size(beatW, beatH);
+            // Giữ tâm nở đều cả 4 phía
+            heart.Location = new Point(heart.Location.X - 2, heart.Location.Y - 2);
+            await Task.Delay(120);
+            // Trở về vị trí cũ
+            heart.Size = new Size(originalW, originalH);
+            heart.Location = new Point(heart.Location.X + 2, heart.Location.Y + 2);
+            await Task.Delay(120);
+        }
+        private async void StartHeartAnimation()
+        {
+            while (!GameEnded)
+            {
+                foreach (Control c in flowLayoutPanel1.Controls)
+                {
+                    if (c is PictureBox pb)
+                        await HeartAnimation(pb);
+                }
+                await Task.Delay(600); 
+            }
         }
     }
 }

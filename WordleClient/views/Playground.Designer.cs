@@ -38,6 +38,7 @@
             panel2 = new Panel();
             panel3 = new Panel();
             MasterPanel = new Panel();
+            flowLayoutPanel1 = new FlowLayoutPanel();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             MasterPanel.SuspendLayout();
@@ -83,6 +84,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(flowLayoutPanel1);
             panel1.Controls.Add(label8);
             panel1.Controls.Add(label4);
             panel1.Controls.Add(lbl_Hint2_Placeholder);
@@ -279,6 +281,16 @@
             MasterPanel.Size = new Size(1234, 1080);
             MasterPanel.TabIndex = 0;
             // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.AutoSize = true;
+            flowLayoutPanel1.BackColor = Color.Transparent;
+            flowLayoutPanel1.Location = new Point(21, 169);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(250, 41);
+            flowLayoutPanel1.TabIndex = 18;
+            flowLayoutPanel1.WrapContents = false;
+            // 
             // Playground
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -323,5 +335,6 @@
         private Label label6;
         private Label label4;
         private Label label8;
+        private FlowLayoutPanel flowLayoutPanel1;
     }
 }
