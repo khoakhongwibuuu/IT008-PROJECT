@@ -696,10 +696,55 @@ namespace WordleClient.views
             btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
             btn_DarkLight.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
             btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
+
+            // Gameplay colors used by UpdateKeyboardColors / FlipRow
+            Color matchColor = Color.FromArgb(0x53, 0x8D, 0x4E);
+            Color invalidOrderColor = Color.FromArgb(0xB5, 0x9F, 0x3B);
+            Color notExistColor = Color.FromArgb(0x3A, 0x3A, 0x3C);
+
+            // Save only keys that were changed by the game (i.e. have one of the game result colors).
+            // Previously we compared against a hard-coded default (LightGray) which breaks when theme was previously applied.
+            var savedKeyColors = new Dictionary<char, Color>(keyboardKeys.Count);
+            foreach (var kvp in keyboardKeys)
+            {
+                var key = kvp.Value;
+                var c = key.BackColor;
+                if (c == matchColor || c == invalidOrderColor || c == notExistColor)
+                    savedKeyColors[kvp.Key] = c;
+            }
+
+            // Save only matrix boxes that were changed by the game (colors set by FlipRow)
+            var savedBoxColors = new Dictionary<int, Color>(matrixPanel.Controls.Count);
+            for (int i = 0; i < matrixPanel.Controls.Count; i++)
+            {
+                if (matrixPanel.Controls[i] is CharBox cb)
+                {
+                    var c = cb.BackColor;
+                    if (c == matchColor || c == invalidOrderColor || c == notExistColor)
+                        savedBoxColors[i] = c;
+                }
+            }
+
+            // Apply theme to all open forms (this may reset control colors)
             foreach (Form f in Application.OpenForms)
             {
                 ThemeManager.ApplyTheme(f);
                 f.Refresh();
+            }
+
+            // Restore only the saved gameplay-updated keyboard keys
+            foreach (var kvp in savedKeyColors)
+            {
+                if (keyboardKeys.TryGetValue(kvp.Key, out var key))
+                    key.SetBackgroundColor(kvp.Value);
+            }
+
+            // Restore only the saved gameplay-updated matrix boxes by index
+            foreach (var kvp in savedBoxColors)
+            {
+                int idx = kvp.Key;
+                if (idx >= 0 && idx < matrixPanel.Controls.Count && matrixPanel.Controls[idx] is CharBox cb)
+                    cb.SetBackgroundColor(kvp.Value);
             }
         }
     }
