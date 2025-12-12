@@ -53,7 +53,7 @@
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormHelp";
-            Text = "FormHelp";
+            Text = "How to play";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
