@@ -302,7 +302,7 @@ namespace WordleClient.views
                         break;
 
                     case TriState.NOT_EXIST:
-                        if (key.BackColor == Color.LightGray)
+                        if (key.BackColor != Color.FromArgb(0x53, 0x8D, 0x4E) && key.BackColor != Color.FromArgb(0xB5, 0x9F, 0x3B))
                             key.SetBackgroundColor(Color.FromArgb(0x3A, 0x3A, 0x3C));
                         break;
                 }
