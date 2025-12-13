@@ -751,6 +751,7 @@ namespace WordleClient.views
                         ResetHardGame();
                     else
                         Resetnew_Game();
+                    ThemeManager.ApplyTheme(this);
                 }
                 else this.Close();
             }
