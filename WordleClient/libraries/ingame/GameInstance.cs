@@ -9,18 +9,24 @@ namespace WordleClient.libraries.ingame
         // GI Params
         private readonly WDBRecord targetRecord;
         private List<string> previousGuesses;
+        private List<Hint> previousHints;
+        private Dictionary<char, TriState> keyboardLetterStates;
 
         public GameInstance(WDBRecord targetRecord)
         {
             WordDatabaseReader wdr = new();
             this.targetRecord = targetRecord;
             this.previousGuesses = [];
+            this.previousHints = [];
+            this.keyboardLetterStates = new Dictionary<char, TriState>();
             wdr.Close();
         }
         public GameInstance(string testWord)
         {
             this.targetRecord = new WDBRecord { TOKEN = testWord, DEFINITION = "undefined", GROUP_NAME = "undefined" };
             this.previousGuesses = [];
+            this.previousHints = [];
+            this.keyboardLetterStates = new Dictionary<char, TriState>();
         }
         public StateArray EvaluateGuess(string guess)
         {
@@ -74,23 +80,6 @@ namespace WordleClient.libraries.ingame
         public string GetDifficulty()
         {
             return targetRecord.LEVEL;
-        }
-        public string GetHint(int seed)
-        {
-            if (seed % 2 == 0)
-            {
-                char? vowel = HintGetter.GetRandomVowel(targetRecord.TOKEN);
-                return vowel != null
-                    ? $"The chosen word has the letter {vowel}."
-                    : "The chosen word does not contain any vowels.";
-            }
-            else
-            {
-                char? consonant = HintGetter.GetRandomConsonant(targetRecord.TOKEN);
-                return consonant != null
-                    ? $"The chosen word has the letter {consonant}."
-                    : "The chosen word does not contain any consonants.";
-            }
         }
         public void Dispose()
         {

@@ -5,8 +5,8 @@ namespace WordleClient.libraries.lowlevel
     public enum TriState : byte
     {
         NOT_EXIST = 0,      // Character does not exist in the word
-        MATCH = 1,          // Character exists in the word and is in the correct position
-        INVALID_ORDER = 2   // Character exists in the word but is in the wrong position
+        INVALID_ORDER = 1,   // Character exists in the word but is in the wrong position
+        MATCH = 2          // Character exists in the word and is in the correct position
     }
     public class StateArray : IEnumerable<TriState>, IEnumerable
     {

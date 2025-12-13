@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WordleClient.libraries.lowlevel;
 
 namespace WordleClient.libraries.ingame
 {
@@ -23,7 +19,7 @@ namespace WordleClient.libraries.ingame
         private static readonly HashSet<char> VowelSet = new HashSet<char>(Vowels);
         private static readonly HashSet<char> ConsonantSet = new HashSet<char>(Consonants);
 
-        public static char? GetRandomVowel(string input)
+        private static char? GetRandomVowel(string input)
         {
             if (string.IsNullOrEmpty(input)) return null;
 
@@ -35,7 +31,7 @@ namespace WordleClient.libraries.ingame
 
             return vowels[_rand.Next(vowels.Count)];
         }
-        public static char? GetRandomConsonant(string input)
+        private static char? GetRandomConsonant(string input)
         {
             if (string.IsNullOrEmpty(input)) return null;
 
@@ -46,6 +42,32 @@ namespace WordleClient.libraries.ingame
             if (consonants.Count == 0) return null;
 
             return consonants[_rand.Next(consonants.Count)];
+        }
+        public static String HintTranslator(Hint hint)
+        {
+            if (hint.h_type == HintType.Present)
+            {
+                return $"The chosen word has the letter '{hint.pre_letter}' .";
+            }
+            else
+            {
+                if (hint.abs_type == AbsentType.VOWEL)
+                {
+                    return "There are no vowels in the word.";
+                }
+                else
+                {
+                    return "There are no consonants in the word.";
+                }
+            }
+        }
+        public static Hint GetHint(string token, int seed)
+        {
+            bool even = (seed % 2) == 0;
+            char? c = even ? GetRandomVowel(token) : GetRandomConsonant(token);
+            return c == null
+                ? new Hint(HintType.Absent, null, even ? AbsentType.VOWEL : AbsentType.CONSONANT)
+                : new Hint(HintType.Present, c, null);
         }
     }
 }

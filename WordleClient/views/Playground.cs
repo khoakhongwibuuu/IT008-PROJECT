@@ -21,7 +21,7 @@ namespace WordleClient.views
         private Panel? keyboardPanel;
         private Dictionary<char, CharBox> keyboardKeys = new();
 
-        // Does nothing when Difficulty is set to HARD
+        // Store FormOption's configuration to reuse in multiple game sessions, does nothing when Difficulty is set to HARD
         private readonly string? initialTopic;
         private readonly string? initialDifficulty;
 
@@ -105,6 +105,9 @@ namespace WordleClient.views
             btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
             btn_DarkLight.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
             btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
+
+            UpdateCustomGroupBoxTheme();
+
             string nickname = (ProfileState.Current == null) ? "Player" : ProfileState.Current.Nickname ?? "Player";
             AlertBox alertBox = new AlertBox(3000);
             CustomSound.PlayClickAlert();
@@ -293,16 +296,19 @@ namespace WordleClient.views
                 switch (result.Get(col))
                 {
                     case TriState.MATCH:
+                        // MATCH has highest priority
                         key.SetBackgroundColor(Color.FromArgb(0x53, 0x8D, 0x4E));
                         break;
 
                     case TriState.INVALID_ORDER:
+                        // MATCH has priority over INVALID_ORDER
                         if (key.BackColor != Color.FromArgb(0x53, 0x8D, 0x4E))
                             key.SetBackgroundColor(Color.FromArgb(0xB5, 0x9F, 0x3B));
                         break;
 
                     case TriState.NOT_EXIST:
-                        if (key.BackColor == Color.LightGray)
+                        // MATCH and INVALID_ORDER have priority over NOT_EXIST
+                        if (key.BackColor != Color.FromArgb(0x53, 0x8D, 0x4E) && key.BackColor != Color.FromArgb(0xB5, 0x9F, 0x3B))
                             key.SetBackgroundColor(Color.FromArgb(0x3A, 0x3A, 0x3C));
                         break;
                 }
@@ -314,18 +320,19 @@ namespace WordleClient.views
             if (HintRemaining > 0 && !GameEnded)
             {
                 CustomSound.PlayClick();
-                string hint = gameInstance.GetHint(HintRemaining + GameSeed);
+                Hint hintObject = HintGetter.GetHint(gameInstance.GetToken(), HintRemaining + GameSeed);
+                String literalHint = HintGetter.HintTranslator(hintObject);
 
                 CustomSound.PlayClickAlert();
                 AlertBox alert = new AlertBox(1500);
-                alert.ShowAlert(this, "Hint", hint);
+                alert.ShowAlert(this, "Hint", literalHint);
 
                 HintRemaining--;
 
                 if (HintRemaining == 1)
-                    lbl_Hint1_Placeholder.Text = hint;
+                    lbl_Hint1_Placeholder.Text = literalHint;
                 else if (HintRemaining == 0)
-                    lbl_Hint2_Placeholder.Text = hint;
+                    lbl_Hint2_Placeholder.Text = literalHint;
 
                 lbl_HintRemaining.Text = HintRemaining.ToString();
 
@@ -401,7 +408,7 @@ namespace WordleClient.views
                                 ResetHardGame();
                             else
                                 Resetnew_Game();
-
+                            ThemeManager.ApplyTheme(this);
                             return;
                         }
 
@@ -442,6 +449,7 @@ namespace WordleClient.views
                                     ResetHardGame();
                                 else
                                     Resetnew_Game();
+                                ThemeManager.ApplyTheme(this);
                             }
                             else this.Close();
 
@@ -699,11 +707,72 @@ namespace WordleClient.views
             btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
             btn_DarkLight.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
             btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
+
+            UpdateCustomGroupBoxTheme();
+
+            // Gameplay colors used by UpdateKeyboardColors / FlipRow
+            Color matchColor = Color.FromArgb(0x53, 0x8D, 0x4E);
+            Color invalidOrderColor = Color.FromArgb(0xB5, 0x9F, 0x3B);
+            Color notExistColor = Color.FromArgb(0x3A, 0x3A, 0x3C);
+
+            // Save only keys that were changed by the game (i.e. have one of the game result colors).
+            // Previously we compared against a hard-coded default (LightGray) which breaks when theme was previously applied.
+            var savedKeyColors = new Dictionary<char, Color>(keyboardKeys.Count);
+            foreach (var kvp in keyboardKeys)
+            {
+                var key = kvp.Value;
+                var c = key.BackColor;
+                if (c == matchColor || c == invalidOrderColor || c == notExistColor)
+                    savedKeyColors[kvp.Key] = c;
+            }
+
+            // Save only matrix boxes that were changed by the game (colors set by FlipRow)
+            var savedBoxColors = new Dictionary<int, Color>(matrixPanel.Controls.Count);
+            for (int i = 0; i < matrixPanel.Controls.Count; i++)
+            {
+                if (matrixPanel.Controls[i] is CharBox cb)
+                {
+                    var c = cb.BackColor;
+                    if (c == matchColor || c == invalidOrderColor || c == notExistColor)
+                        savedBoxColors[i] = c;
+                }
+            }
+
+            // Apply theme to all open forms (this may reset control colors)
             foreach (Form f in Application.OpenForms)
             {
                 ThemeManager.ApplyTheme(f);
                 f.Refresh();
             }
+
+            // Restore only the saved gameplay-updated keyboard keys
+            foreach (var kvp in savedKeyColors)
+            {
+                if (keyboardKeys.TryGetValue(kvp.Key, out var key))
+                    key.SetBackgroundColor(kvp.Value);
+            }
+
+            // Restore only the saved gameplay-updated matrix boxes by index
+            foreach (var kvp in savedBoxColors)
+            {
+                int idx = kvp.Key;
+                if (idx >= 0 && idx < matrixPanel.Controls.Count && matrixPanel.Controls[idx] is CharBox cb)
+                    cb.SetBackgroundColor(kvp.Value);
+            }
+        }
+        private void UpdateCustomGroupBoxTheme()
+        {
+            gameStats.BackgroundColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+            revealedHints.BackgroundColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+            playerInfo.BackgroundColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+
+            gameStats.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            revealedHints.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            playerInfo.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+
+            gameStats.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            revealedHints.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            playerInfo.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
         }
     }
 }
