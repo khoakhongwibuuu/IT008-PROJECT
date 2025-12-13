@@ -43,6 +43,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Update="views\ClientLobby.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="views\ServerLobby.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">

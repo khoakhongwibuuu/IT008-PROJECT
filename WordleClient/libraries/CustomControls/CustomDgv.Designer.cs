@@ -31,7 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomDgv));
             customPanel1 = new CustomPanel();
             Exit_1 = new CustomPictureBox();
+            dgv_singleStats = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)Exit_1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_singleStats).BeginInit();
             SuspendLayout();
             // 
             // customPanel1
@@ -67,12 +69,23 @@
             Exit_1.TabStop = false;
             Exit_1.Click += Exit_1_Click;
             // 
+            // dgv_singleStats
+            // 
+            dgv_singleStats.BackgroundColor = Color.White;
+            dgv_singleStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_singleStats.Location = new Point(53, 33);
+            dgv_singleStats.Name = "dgv_singleStats";
+            dgv_singleStats.RowHeadersWidth = 51;
+            dgv_singleStats.Size = new Size(1068, 687);
+            dgv_singleStats.TabIndex = 8;
+            // 
             // CustomDgv
             // 
-            AutoScaleDimensions = new SizeF(8F, 19F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(235, 230, 255);
             ClientSize = new Size(1171, 743);
+            Controls.Add(dgv_singleStats);
             Controls.Add(Exit_1);
             Controls.Add(customPanel1);
             Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -83,6 +96,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CustomDgv";
             ((System.ComponentModel.ISupportInitialize)Exit_1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_singleStats).EndInit();
             ResumeLayout(false);
         }
 
@@ -90,5 +104,6 @@
 
         private CustomPanel customPanel1;
         private CustomPictureBox Exit_1;
+        private DataGridView dgv_singleStats;
     }
 }

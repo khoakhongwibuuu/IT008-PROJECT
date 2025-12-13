@@ -16,22 +16,7 @@ namespace WordleClient
             customPictureBox1.Image = ProfileState.GetAvatar();
             if (!CustomSound.IsMuted()) CustomSound.PlayBackgroundLoop();
             btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
-            btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
             //ThemeManager.ApplyTheme(this);
-        }
-        private void btn_SinglePlayer_Click(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
-            FormOption formOption = new FormOption();
-            formOption.FormClosed += FormOption_FormClosed;
-            formOption.Show();
-            this.Hide();
-        }
-        private void btn_MultiPlayer_Click(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
-            Multiplayer multiplayer = new Multiplayer();
-            multiplayer.ShowDialog();
         }
         private void Exit_Click(object sender, EventArgs e)
         {
@@ -52,16 +37,37 @@ namespace WordleClient
             CustomSound.ToggleMute();
             btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
         }
-        private void btn_DarkLight_Click(object sender, EventArgs e)
+        private void btn_SinglePlayer_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            CustomDarkLight.IsDark = !CustomDarkLight.IsDark;
-            btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
-            btn_DarkLight.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
-            btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
-            btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
-            btn_Sound.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
-            btn_Sound.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
+            FormOption formOption = new FormOption();
+            formOption.FormClosed += FormOption_FormClosed;
+            formOption.Show();
+            this.Hide();
+        }
+        private void btn_Client_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            ClientLobby clientLobby = new ClientLobby();
+            clientLobby.FormClosed += ClientLobby_FormClosed;
+            clientLobby.Show();
+            this.Hide();
+        }
+
+        private void btn_Server_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            ServerLobby serverLobby = new ServerLobby();
+            serverLobby.FormClosed += ServerLobby_FormClosed;
+            serverLobby.Show();
+            this.Hide();
+        }
+
+        private void btn_Stats_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            CustomDgv customDgv = new CustomDgv();
+            customDgv.ShowDialog();
         }
         private void FormOption_FormClosed(object? sender, FormClosedEventArgs e)
         {
@@ -71,15 +77,21 @@ namespace WordleClient
                 this.Show();
             }
         }
-        private void btn_SingleStats_Click(object sender, EventArgs e)
+        private void ClientLobby_FormClosed(object? sender, FormClosedEventArgs e)
         {
-            CustomSound.PlayClick();
-            MessageBox.Show("This feature is coming soon!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Only show MainMenu again when ClientLobby indicates it should return to main.
+            if (sender is ClientLobby cl && cl.ReturnToMainOnClose)
+            {
+                this.Show();
+            }
         }
-        private void btn_MultiStats_Click(object sender, EventArgs e)
+        private void ServerLobby_FormClosed(object? sender, FormClosedEventArgs e)
         {
-            CustomSound.PlayClick();
-            MessageBox.Show("This feature is coming soon!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Only show MainMenu again when ServerLobby indicates it should return to main.
+            if (sender is ServerLobby sl && sl.ReturnToMainOnClose)
+            {
+                this.Show();
+            }
         }
         private void customPictureBox1_Click(object sender, EventArgs e)
         {
@@ -87,6 +99,12 @@ namespace WordleClient
             FormProfile formProfile = new FormProfile();
             formProfile.ShowDialog();
             customPictureBox1.Image = ProfileState.GetAvatar();
+        }
+        private void btn_Guide_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            FormHelp help = new FormHelp();
+            help.ShowDialog();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace WordleClient.libraries.StateFrom
                     }
                     else
                     {
-                        parent.BackColor = Color.White;
+                        parent.BackColor = Color.LightGray;
                     }
                     // Recurse into CharBox children
                     foreach (Control c in parent.Controls)
@@ -36,7 +36,7 @@ namespace WordleClient.libraries.StateFrom
                 {
                     if (CustomDarkLight.IsDark)
                     {
-                        parent.ForeColor = Color.White;
+                        parent.ForeColor = Color.LightGray;
                     }
                     else
                     {
