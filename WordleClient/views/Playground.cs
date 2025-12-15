@@ -14,6 +14,7 @@ namespace WordleClient.views
         private readonly int rows;
         private int cols;
         private int streak = 0;
+        private int lives = 3;
 
         private readonly Panel matrixPanel;
 
@@ -21,7 +22,7 @@ namespace WordleClient.views
         private Panel? keyboardPanel;
         private Dictionary<char, CharBox> keyboardKeys = new();
 
-        // Does nothing when Difficulty is set to HARD
+        // Store FormOption's configuration to reuse in multiple game sessions, does nothing when Difficulty is set to HARD
         private readonly string? initialTopic;
         private readonly string? initialDifficulty;
 
@@ -70,7 +71,8 @@ namespace WordleClient.views
             this.HintRemaining = 2;
             this.lastToken = TheChosenOne.TOKEN;
             InitializeComponent();
-
+            LoadHearts();
+            StartHeartAnimation();
             // Dynamic matrix panel
             this.matrixPanel = new Panel
             {
@@ -102,6 +104,12 @@ namespace WordleClient.views
         private void Playground_Load(object? sender, EventArgs e)
         {
             ThemeManager.ApplyTheme(this);
+            btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
+            btn_DarkLight.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
+            btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
+
+            UpdateCustomGroupBoxTheme();
+
             string nickname = (ProfileState.Current == null) ? "Player" : ProfileState.Current.Nickname ?? "Player";
             AlertBox alertBox = new AlertBox(3000);
             CustomSound.PlayClickAlert();
@@ -290,16 +298,19 @@ namespace WordleClient.views
                 switch (result.Get(col))
                 {
                     case TriState.MATCH:
+                        // MATCH has highest priority
                         key.SetBackgroundColor(Color.FromArgb(0x53, 0x8D, 0x4E));
                         break;
 
                     case TriState.INVALID_ORDER:
+                        // MATCH has priority over INVALID_ORDER
                         if (key.BackColor != Color.FromArgb(0x53, 0x8D, 0x4E))
                             key.SetBackgroundColor(Color.FromArgb(0xB5, 0x9F, 0x3B));
                         break;
 
                     case TriState.NOT_EXIST:
-                        if (key.BackColor == Color.LightGray)
+                        // MATCH and INVALID_ORDER have priority over NOT_EXIST
+                        if (key.BackColor != Color.FromArgb(0x53, 0x8D, 0x4E) && key.BackColor != Color.FromArgb(0xB5, 0x9F, 0x3B))
                             key.SetBackgroundColor(Color.FromArgb(0x3A, 0x3A, 0x3C));
                         break;
                 }
@@ -311,18 +322,19 @@ namespace WordleClient.views
             if (HintRemaining > 0 && !GameEnded)
             {
                 CustomSound.PlayClick();
-                string hint = gameInstance.GetHint(HintRemaining + GameSeed);
+                Hint hintObject = HintGetter.GetHint(gameInstance.GetToken(), HintRemaining + GameSeed);
+                String literalHint = HintGetter.HintTranslator(hintObject);
 
                 CustomSound.PlayClickAlert();
                 AlertBox alert = new AlertBox(1500);
-                alert.ShowAlert(this, "Hint", hint);
+                alert.ShowAlert(this, "Hint", literalHint);
 
                 HintRemaining--;
 
                 if (HintRemaining == 1)
-                    lbl_Hint1_Placeholder.Text = hint;
+                    lbl_Hint1_Placeholder.Text = literalHint;
                 else if (HintRemaining == 0)
-                    lbl_Hint2_Placeholder.Text = hint;
+                    lbl_Hint2_Placeholder.Text = literalHint;
 
                 lbl_HintRemaining.Text = HintRemaining.ToString();
 
@@ -341,6 +353,7 @@ namespace WordleClient.views
 
         private void OnVirtualKeyPress(char c)
         {
+            CustomSound.PlayClick();
             Playground_KeyPress(this, new KeyPressEventArgs(c));
         }
 
@@ -383,7 +396,6 @@ namespace WordleClient.views
 
                             CustomSound.PlayClickAlert();
                             new AlertBox(1500).ShowAlert(this, "Success", "You found the hidden word!");
-
                             logger.SaveToDatabase(new SingleplayerPlayLog(
                                 DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                                 gameInstance.GetToken(),
@@ -398,7 +410,7 @@ namespace WordleClient.views
                                 ResetHardGame();
                             else
                                 Resetnew_Game();
-
+                            ThemeManager.ApplyTheme(this);
                             return;
                         }
 
@@ -432,6 +444,9 @@ namespace WordleClient.views
                             if (CustomMessageBoxYesNo.Show(this, "Start a new game?", MessageBoxIcon.Question)
                                 == DialogResult.Yes)
                             {
+                                lives = 3;
+                                LoadHearts();
+                                StartHeartAnimation();
                                 streak = 0;
                                 lbl_Streak.Text = "0";
 
@@ -439,6 +454,7 @@ namespace WordleClient.views
                                     ResetHardGame();
                                 else
                                     Resetnew_Game();
+                                ThemeManager.ApplyTheme(this);
                             }
                             else this.Close();
 
@@ -450,6 +466,7 @@ namespace WordleClient.views
                         CustomSound.PlayClickAlertError();
                         new AlertBox(750).ShowAlert(this, "Invalid Word", "Word not in dictionary!", MessageBoxIcon.Warning);
                         await ShakeRow(currentRow);
+                        Loselife();
                     }
 
                     e.Handled = true;
@@ -534,14 +551,6 @@ namespace WordleClient.views
                 }
             }
         }
-
-        static private async Task FlipBox(CharBox box)
-        {
-            int steps = 5;
-            for (int i = 0; i < steps; i++) { box.Height -= 5; box.Top += 2; await Task.Delay(10); }
-            for (int i = 0; i < steps; i++) { box.Height += 5; box.Top -= 2; await Task.Delay(10); }
-        }
-
         private async Task FlipRow(int row, StateArray result)
         {
             for (int col = 0; col < cols; col++)
@@ -549,7 +558,7 @@ namespace WordleClient.views
                 var box = GetBox(row, col);
                 if (box == null) continue;
 
-                await FlipBox(box);
+                await Animation.FlipBox(box);
 
                 switch (result.Get(col))
                 {
@@ -602,6 +611,8 @@ namespace WordleClient.views
             Random rd = new();
             GameSeed = rd.Next(0, 2);
             HintRemaining = 2;
+            lives = 3;
+            LoadHearts();
 
             lbl_HintRemaining.Text = "2";
             lbl_Hint1_Placeholder.Text = "Unknown";
@@ -619,6 +630,7 @@ namespace WordleClient.views
 
             matrixPanel.Refresh();
             this.Refresh();
+            StartHeartAnimation();
         }
 
         private void ResetHardGame()
@@ -664,6 +676,8 @@ namespace WordleClient.views
             Random rd = new();
             GameSeed = rd.Next(0, 2);
             HintRemaining = 2;
+            lives = 3;
+            LoadHearts();
 
             lbl_HintRemaining.Text = "2";
             lbl_Hint1_Placeholder.Text = "Unknown";
@@ -681,6 +695,7 @@ namespace WordleClient.views
 
             matrixPanel.Refresh();
             this.Refresh();
+            StartHeartAnimation();
         }
 
         private void ExitBtn_Click(object sender, EventArgs e)
@@ -696,6 +711,8 @@ namespace WordleClient.views
             btn_DarkLight.Image = CustomDarkLight.IsDark ? Properties.Resources.Dark : Properties.Resources.Light;
             btn_DarkLight.boderGradientBottom1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(220, 220, 220);
             btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
+
+            UpdateCustomGroupBoxTheme();
 
             // Gameplay colors used by UpdateKeyboardColors / FlipRow
             Color matchColor = Color.FromArgb(0x53, 0x8D, 0x4E);
@@ -745,6 +762,92 @@ namespace WordleClient.views
                 int idx = kvp.Key;
                 if (idx >= 0 && idx < matrixPanel.Controls.Count && matrixPanel.Controls[idx] is CharBox cb)
                     cb.SetBackgroundColor(kvp.Value);
+            }
+        }
+        private void UpdateCustomGroupBoxTheme()
+        {
+            gameStats.BackgroundColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+            revealedHints.BackgroundColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+            playerInfo.BackgroundColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+
+            gameStats.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            revealedHints.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            playerInfo.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+
+            gameStats.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            revealedHints.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            playerInfo.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+        }
+        private void LoadHearts()
+        {
+            flp_Hearts.Controls.Clear();
+            for (int i = 0; i < lives; i++)
+            {
+                PictureBox pictureBox = new PictureBox
+                {
+                    Image = Properties.Resources.Heart,
+                    SizeMode = PictureBoxSizeMode.Zoom,
+                    Size = new Size(30, 30),
+                    Margin = new Padding(2)
+                };
+                flp_Hearts.Controls.Add(pictureBox);
+            }
+        }
+        private void Loselife()
+        {
+            if (lives <= 0)
+            {
+                return;
+            }
+            lives--;
+            if (flp_Hearts.Controls.Count > 0)
+            {
+                flp_Hearts.Controls.RemoveAt(flp_Hearts.Controls.Count - 1);
+            }
+            if (lives <= 0)
+            {
+                GameEnded = true;
+                CustomSound.PlayClickGameOver();
+                new AlertBox(1700).ShowAlert(
+                    this,
+                    "Game Over",
+                    $"You lost all lives! The word was: {gameInstance.GetToken()}",
+                    MessageBoxIcon.Information
+                );
+                logger.SaveToDatabase(new SingleplayerPlayLog(
+                    DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                    gameInstance.GetToken(),
+                    gameInstance.GetGroupName(),
+                    gameInstance.GetDifficulty(),
+                    false, rows, currentRow + 1
+                ));
+                Task.Delay(1700).Wait();
+                if (CustomMessageBoxYesNo.Show(this, "Play again?", MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    lives = 3;
+                    streak = 0;
+                    lbl_Streak.Text = "0";
+                    LoadHearts();
+                    StartHeartAnimation();
+                    if (initialDifficulty == "HARD")
+                        ResetHardGame();
+                    else
+                        Resetnew_Game();
+                    ThemeManager.ApplyTheme(this);
+                }
+                else this.Close();
+            }
+        }
+        private async void StartHeartAnimation()
+        {
+            while (!GameEnded)
+            {
+                foreach (Control c in flp_Hearts.Controls)
+                {
+                    if (c is PictureBox pb)
+                        await Animation.HeartAnimation(pb);
+                }
+                await Task.Delay(600);
             }
         }
     }

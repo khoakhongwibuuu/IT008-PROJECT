@@ -183,6 +183,16 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Gear {
+            get {
+                object obj = ResourceManager.GetObject("Gear", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Guide {
             get {
                 object obj = ResourceManager.GetObject("Guide", resourceCulture);
@@ -193,9 +203,9 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap iconSetting {
+        internal static System.Drawing.Bitmap Heart {
             get {
-                object obj = ResourceManager.GetObject("iconSetting", resourceCulture);
+                object obj = ResourceManager.GetObject("Heart", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,9 +213,9 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap information {
+        internal static System.Drawing.Bitmap Info {
             get {
-                object obj = ResourceManager.GetObject("information", resourceCulture);
+                object obj = ResourceManager.GetObject("Info", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,9 +233,9 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Maximizesize {
+        internal static System.Drawing.Bitmap MaximizeSize {
             get {
-                object obj = ResourceManager.GetObject("Maximizesize", resourceCulture);
+                object obj = ResourceManager.GetObject("MaximizeSize", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,9 +243,9 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap minisize {
+        internal static System.Drawing.Bitmap MinimizeSize {
             get {
-                object obj = ResourceManager.GetObject("minisize", resourceCulture);
+                object obj = ResourceManager.GetObject("MinimizeSize", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -283,9 +293,9 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap question {
+        internal static System.Drawing.Bitmap Mute {
             get {
-                object obj = ResourceManager.GetObject("question", resourceCulture);
+                object obj = ResourceManager.GetObject("Mute", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -293,9 +303,9 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap soundOFFicon {
+        internal static System.Drawing.Bitmap Quest {
             get {
-                object obj = ResourceManager.GetObject("soundOFFicon", resourceCulture);
+                object obj = ResourceManager.GetObject("Quest", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -303,9 +313,9 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SoundONicon {
+        internal static System.Drawing.Bitmap Stats {
             get {
-                object obj = ResourceManager.GetObject("SoundONicon", resourceCulture);
+                object obj = ResourceManager.GetObject("Stats", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -313,9 +323,9 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap spreadsheet_app {
+        internal static System.Drawing.Bitmap Tick {
             get {
-                object obj = ResourceManager.GetObject("spreadsheet-app", resourceCulture);
+                object obj = ResourceManager.GetObject("Tick", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -323,9 +333,9 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap tickSuccess {
+        internal static System.Drawing.Bitmap UnMute {
             get {
-                object obj = ResourceManager.GetObject("tickSuccess", resourceCulture);
+                object obj = ResourceManager.GetObject("UnMute", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

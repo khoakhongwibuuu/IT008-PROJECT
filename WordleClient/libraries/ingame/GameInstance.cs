@@ -9,55 +9,24 @@ namespace WordleClient.libraries.ingame
         // GI Params
         private readonly WDBRecord targetRecord;
         private List<string> previousGuesses;
+        private List<Hint> previousHints;
+        private Dictionary<char, TriState> keyboardLetterStates;
 
-        // Character constants
-        private static readonly char[] Vowels = [
-            'A', 'E', 'I', 'O', 'U'
-        ];
-        private static readonly char[] Consonants = [
-            'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M',
-            'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'
-        ];
-
-        // HashSets for fast, case-insensitive membership checks (compare using ToUpperInvariant)
-        private static readonly HashSet<char> VowelSet = new HashSet<char>(Vowels);
-        private static readonly HashSet<char> ConsonantSet = new HashSet<char>(Consonants);
-
-        public static char? GetRandomVowel(string input)
-        {
-            if (string.IsNullOrEmpty(input)) return null;
-
-            var vowels = input
-                .Where(c => char.IsLetter(c) && VowelSet.Contains(char.ToUpperInvariant(c)))
-                .ToList();
-
-            if (vowels.Count == 0) return null;
-
-            return vowels[_rand.Next(vowels.Count)];
-        }
-        public static char? GetRandomConsonant(string input)
-        {
-            if (string.IsNullOrEmpty(input)) return null;
-
-            var consonants = input
-                .Where(c => char.IsLetter(c) && ConsonantSet.Contains(char.ToUpperInvariant(c)))
-                .ToList();
-
-            if (consonants.Count == 0) return null;
-
-            return consonants[_rand.Next(consonants.Count)];
-        }
         public GameInstance(WDBRecord targetRecord)
         {
             WordDatabaseReader wdr = new();
             this.targetRecord = targetRecord;
             this.previousGuesses = [];
+            this.previousHints = [];
+            this.keyboardLetterStates = new Dictionary<char, TriState>();
             wdr.Close();
         }
         public GameInstance(string testWord)
         {
             this.targetRecord = new WDBRecord { TOKEN = testWord, DEFINITION = "undefined", GROUP_NAME = "undefined" };
             this.previousGuesses = [];
+            this.previousHints = [];
+            this.keyboardLetterStates = new Dictionary<char, TriState>();
         }
         public StateArray EvaluateGuess(string guess)
         {
@@ -111,23 +80,6 @@ namespace WordleClient.libraries.ingame
         public string GetDifficulty()
         {
             return targetRecord.LEVEL;
-        }
-        public string GetHint(int mode)
-        {
-            if (mode % 2 == 0)
-            {
-                char? vowel = GetRandomVowel(targetRecord.TOKEN);
-                return vowel != null
-                    ? $"The chosen word has the letter {vowel}."
-                    : "The chosen word does not contain any vowels.";
-            }
-            else
-            {
-                char? consonant = GetRandomConsonant(targetRecord.TOKEN);
-                return consonant != null
-                    ? $"The chosen word has the letter {consonant}."
-                    : "The chosen word does not contain any consonants.";
-            }
         }
         public void Dispose()
         {

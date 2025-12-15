@@ -35,9 +35,11 @@
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.Guide;
-            pictureBox1.Location = new Point(0, -5);
+            pictureBox1.Location = new Point(-12, -56);
+            pictureBox1.MaximumSize = new Size(670, 720);
+            pictureBox1.MinimumSize = new Size(670, 720);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(418, 433);
+            pictureBox1.Size = new Size(670, 720);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
@@ -45,13 +47,14 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(415, 424);
+            ClientSize = new Size(624, 632);
             Controls.Add(pictureBox1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormHelp";
-            Text = "FormHelp";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "How to play";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
