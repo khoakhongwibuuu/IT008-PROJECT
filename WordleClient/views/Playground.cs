@@ -15,7 +15,6 @@ namespace WordleClient.views
         private int cols;
         private int streak = 0;
         private int lives = 3;
-        private bool HeartAnimationRunning = false;
 
         private readonly Panel matrixPanel;
 
@@ -354,6 +353,7 @@ namespace WordleClient.views
 
         private void OnVirtualKeyPress(char c)
         {
+            CustomSound.PlayClick();
             Playground_KeyPress(this, new KeyPressEventArgs(c));
         }
 

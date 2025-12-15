@@ -34,6 +34,7 @@ namespace WordleClient.libraries.CustomControls
             Controls.Add(lbl);
             Size = new Size(50, 50);
             Padding = new Padding(borderSize);
+            lbl.Click += (s, e) => OnClick(e);
 
             UpdateRegion();
 
