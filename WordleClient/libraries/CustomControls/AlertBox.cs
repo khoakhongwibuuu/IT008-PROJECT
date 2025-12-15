@@ -51,7 +51,7 @@ namespace WordleClient.libraries.CustomControls
             switch (icon)
             {
                 case MessageBoxIcon.Information:
-                    customPictureBox1.Image = Properties.Resources.information;
+                    customPictureBox1.Image = Properties.Resources.Info;
                     break;
                 case MessageBoxIcon.Warning:
                     customPictureBox1.Image = Properties.Resources.Warnning;
@@ -60,7 +60,7 @@ namespace WordleClient.libraries.CustomControls
                     customPictureBox1.Image = Properties.Resources.Error;
                     break;
                 case MessageBoxIcon.Question:
-                    customPictureBox1.Image = Properties.Resources.question;
+                    customPictureBox1.Image = Properties.Resources.Quest;
                     break;
                 default:
                     customPictureBox1.Image = null;

@@ -20,16 +20,16 @@ namespace WordleClient.views
             CustomSound.ToggleMute();
             if (CustomSound.IsMuted())
             {
-                btn_Sound.Image = Properties.Resources.soundOFFicon;
+                btn_Sound.Image = Properties.Resources.Mute;
             }
             else
             {
-                btn_Sound.Image = Properties.Resources.SoundONicon;
+                btn_Sound.Image = Properties.Resources.UnMute;
             }
         }
         private void FormSetting_Load(object sender, EventArgs e)
         {
-            btn_Sound.Image = CustomSound.IsMuted() ? Properties.Resources.soundOFFicon : Properties.Resources.SoundONicon;
+            btn_Sound.Image = CustomSound.IsMuted() ? Properties.Resources.Mute : Properties.Resources.UnMute;
             btn_DarkLight.Checked = CustomDarkLight.IsDark;
             if (CustomDarkLight.IsDark)
             {

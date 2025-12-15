@@ -38,6 +38,8 @@
             lbl_Diff = new Label();
             label3 = new Label();
             label1 = new Label();
+            flp_Hearts = new FlowLayoutPanel();
+            label9 = new Label();
             panel2 = new Panel();
             panel3 = new Panel();
             btn_DarkLight = new WordleClient.libraries.CustomControls.CustomPictureBox();
@@ -151,7 +153,7 @@
             revealedHints.Controls.Add(label7);
             revealedHints.Controls.Add(lbl_Hint2_Placeholder);
             revealedHints.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            revealedHints.Location = new Point(3, 173);
+            revealedHints.Location = new Point(3, 248);
             revealedHints.Name = "revealedHints";
             revealedHints.Size = new Size(294, 159);
             revealedHints.TabIndex = 19;
@@ -216,10 +218,12 @@
             gameStats.Controls.Add(lbl_Diff);
             gameStats.Controls.Add(label3);
             gameStats.Controls.Add(label1);
+            gameStats.Controls.Add(flp_Hearts);
+            gameStats.Controls.Add(label9);
             gameStats.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             gameStats.Location = new Point(3, 8);
             gameStats.Name = "gameStats";
-            gameStats.Size = new Size(294, 159);
+            gameStats.Size = new Size(294, 234);
             gameStats.TabIndex = 18;
             gameStats.TabStop = false;
             gameStats.Text = "Game statistics";
@@ -231,7 +235,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label6.Location = new Point(10, 97);
+            label6.Location = new Point(10, 90);
             label6.Name = "label6";
             label6.Size = new Size(63, 21);
             label6.TabIndex = 14;
@@ -241,7 +245,7 @@
             // 
             lbl_Streak.AutoSize = true;
             lbl_Streak.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lbl_Streak.Location = new Point(77, 97);
+            lbl_Streak.Location = new Point(77, 90);
             lbl_Streak.Margin = new Padding(1, 0, 1, 0);
             lbl_Streak.Name = "lbl_Streak";
             lbl_Streak.Size = new Size(19, 21);
@@ -252,7 +256,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label2.Location = new Point(9, 118);
+            label2.Location = new Point(10, 111);
             label2.Name = "label2";
             label2.Size = new Size(141, 21);
             label2.TabIndex = 8;
@@ -262,7 +266,7 @@
             // 
             lbl_HintRemaining.AutoSize = true;
             lbl_HintRemaining.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lbl_HintRemaining.Location = new Point(147, 118);
+            lbl_HintRemaining.Location = new Point(157, 111);
             lbl_HintRemaining.Name = "lbl_HintRemaining";
             lbl_HintRemaining.Size = new Size(19, 21);
             lbl_HintRemaining.TabIndex = 9;
@@ -312,6 +316,23 @@
             label1.TabIndex = 2;
             label1.Text = "CEFR Level:";
             // 
+            // flp_Hearts
+            // 
+            flp_Hearts.Location = new Point(10, 183);
+            flp_Hearts.Name = "flp_Hearts";
+            flp_Hearts.Size = new Size(219, 35);
+            flp_Hearts.TabIndex = 17;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label9.Location = new Point(10, 159);
+            label9.Name = "label9";
+            label9.Size = new Size(52, 21);
+            label9.TabIndex = 16;
+            label9.Text = "Lives:";
+            // 
             // panel2
             // 
             panel2.Location = new Point(300, 0);
@@ -338,7 +359,7 @@
             btn_DarkLight.Cursor = Cursors.Hand;
             btn_DarkLight.gradientAngle1 = 90F;
             btn_DarkLight.Image = Properties.Resources.Light;
-            btn_DarkLight.Location = new Point(228, 8);
+            btn_DarkLight.Location = new Point(228, 637);
             btn_DarkLight.Margin = new Padding(3, 2, 3, 2);
             btn_DarkLight.Name = "btn_DarkLight";
             btn_DarkLight.Size = new Size(60, 60);
@@ -411,5 +432,7 @@
         private libraries.CustomControls.CustomGroupBox revealedHints;
         private Label label5;
         private libraries.CustomControls.CustomGroupBox playerInfo;
+        private FlowLayoutPanel flp_Hearts;
+        private Label label9;
     }
 }

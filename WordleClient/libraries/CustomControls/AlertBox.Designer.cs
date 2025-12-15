@@ -42,7 +42,7 @@
             customPictureBox1.boderRadius1 = 40;
             customPictureBox1.boderSize1 = 2;
             customPictureBox1.gradientAngle1 = 90F;
-            customPictureBox1.Image = Properties.Resources.tickSuccess;
+            customPictureBox1.Image = Properties.Resources.Tick;
             customPictureBox1.Location = new Point(27, -1);
             customPictureBox1.Margin = new Padding(3, 2, 3, 2);
             customPictureBox1.Name = "customPictureBox1";

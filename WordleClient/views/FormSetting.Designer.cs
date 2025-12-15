@@ -64,7 +64,7 @@ namespace WordleClient.views
             btn_Sound.boderSize1 = 2;
             btn_Sound.Cursor = Cursors.Hand;
             btn_Sound.gradientAngle1 = 90F;
-            btn_Sound.Image = Properties.Resources.SoundONicon;
+            btn_Sound.Image = Properties.Resources.UnMute;
             btn_Sound.Location = new Point(12, 76);
             btn_Sound.Margin = new Padding(3, 2, 3, 2);
             btn_Sound.Name = "btn_Sound";
