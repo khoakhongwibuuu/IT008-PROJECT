@@ -184,6 +184,7 @@ namespace WordleClient.views
             Name = "ClientLobby";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Client Lobby";
+            Load += ClientLobby_Load;
             customGroupBox2.ResumeLayout(false);
             customGroupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)btn_Exit).EndInit();

@@ -41,7 +41,6 @@ namespace WordleClient.views
             trackBarGuess = new TrackBar();
             btn_Exit = new CustomPictureBox();
             btn_StartGame = new CustomButton();
-            btn_CloseServer = new CustomButton();
             customGroupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarGuess).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btn_Exit).BeginInit();
@@ -215,39 +214,20 @@ namespace WordleClient.views
             btn_StartGame.ButtonImage = null;
             btn_StartGame.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
             btn_StartGame.ImageSize = 24;
-            btn_StartGame.Location = new Point(363, 496);
+            btn_StartGame.Location = new Point(98, 496);
             btn_StartGame.Name = "btn_StartGame";
-            btn_StartGame.Size = new Size(204, 65);
+            btn_StartGame.Size = new Size(469, 65);
             btn_StartGame.TabIndex = 8;
             btn_StartGame.Text = "Start game";
             btn_StartGame.TextAlign = ContentAlignment.MiddleCenter;
             btn_StartGame.TextColor = Color.White;
             btn_StartGame.Click += btn_StartGame_Click;
             // 
-            // btn_CloseServer
-            // 
-            btn_CloseServer.BackgroundColor = Color.FromArgb(255, 116, 108);
-            btn_CloseServer.BorderColor = Color.FromArgb(255, 116, 108);
-            btn_CloseServer.BorderRadius = 20;
-            btn_CloseServer.BorderSize = 2;
-            btn_CloseServer.ButtonImage = null;
-            btn_CloseServer.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            btn_CloseServer.ImageSize = 24;
-            btn_CloseServer.Location = new Point(100, 496);
-            btn_CloseServer.Name = "btn_CloseServer";
-            btn_CloseServer.Size = new Size(204, 65);
-            btn_CloseServer.TabIndex = 9;
-            btn_CloseServer.Text = "Close server";
-            btn_CloseServer.TextAlign = ContentAlignment.MiddleCenter;
-            btn_CloseServer.TextColor = Color.White;
-            btn_CloseServer.Click += btn_CloseServer_Click;
-            // 
             // ServerLobby
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(665, 588);
-            Controls.Add(btn_CloseServer);
             Controls.Add(btn_StartGame);
             Controls.Add(btn_Exit);
             Controls.Add(customGroupBox2);
@@ -274,7 +254,6 @@ namespace WordleClient.views
         private TrackBar trackBarGuess;
         private CustomPictureBox btn_Exit;
         private CustomButton btn_StartGame;
-        private CustomButton btn_CloseServer;
         private CustomLabel customLabel4;
         private CustomLabel customLabel3;
         private CustomLabel customLabel2;

@@ -1,26 +1,19 @@
 ﻿using WordleClient.libraries.CustomControls;
-using WordleClient.libraries.StateFrom;
-using WordleClient.libraries.ingame;
 using WordleClient.libraries.lowlevel;
 using WordleClient.libraries.network;
-using System.Diagnostics;
+using WordleClient.libraries.StateFrom;
 
 namespace WordleClient.views
 {
     public partial class ClientLobby : CustomForm
     {
         public bool ReturnToMainOnClose { get; set; } = true;
-        private ClientConnection connection = new ClientConnection();
+
+        private const int ServerPort = 5000;
 
         public ClientLobby()
         {
             InitializeComponent();
-        }
-        private void btn_Exit_Click(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
-            connection.Disconnect();
-            this.Close();
         }
         private async void btn_search_Click(object sender, EventArgs e)
         {
@@ -28,8 +21,11 @@ namespace WordleClient.views
 
             if (!System.Net.IPAddress.TryParse(ip, out _))
             {
-                MessageBox.Show("Invalid IP Address", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Invalid IP Address",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 return;
             }
 
@@ -40,7 +36,8 @@ namespace WordleClient.views
 
             try
             {
-                reachable = await connection.TryConnectAsync(ip, 5000);
+                reachable = await ConnectionManager.Connection
+                    .TryConnectAsync(ip, ServerPort);
             }
             catch
             {
@@ -49,21 +46,78 @@ namespace WordleClient.views
 
             btn_search.Enabled = true;
 
-            if (reachable)
-            {
-                lblStatus.Text = "Server is online ✅";
-
-                await connection.ConnectAsync(ip, 5000);
-            }
-            else
+            if (!reachable)
             {
                 lblStatus.Text = "Server not reachable ❌";
+                return;
             }
+
+            lblStatus.Text = "Server online ✅";
+
+            await ConnectionManager.Connection.ConnectAsync(ip, ServerPort);
         }
 
-        private void btn_JoinRequest_Click(object sender, EventArgs e)
+        private async void btn_JoinRequest_Click(object sender, EventArgs e)
         {
+            CustomSound.PlayClick();
 
+            if (!ConnectionManager.IsConnected)
+            {
+                MessageBox.Show("Not connected to server");
+                return;
+            }
+
+            //var joinPacket = new JOIN_REQUEST_Packet(
+            //    username: txtUsername.Text,
+            //    sender: "client",
+            //    recipient: "server");
+
+            //await ConnectionManager.Connection.SendAsync(joinPacket);
+        }
+
+        private void btn_Exit_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            ConnectionManager.Connection.Disconnect();
+
+            // When re-direct to Client-Playground, call these 2 lines b4 redirecting
+            ConnectionManager.Connection.PacketReceived -= OnPacketReceived;
+            ConnectionManager.Connection.Disconnected -= OnDisconnected;
+
+            this.Close();
+        }
+
+        private void OnPacketReceived(Packet packet)
+        {
+            BeginInvoke(() =>
+            {
+                switch (packet)
+                {
+                    case JOIN_RESPONSE_Packet join:
+                        lblStatus.Text = join.Success
+                            ? "Joined server successfully"
+                            : "Join failed";
+                        break;
+
+                    case GENERAL_MESSAGE_Packet msg:
+                        //listBoxLog.Items.Add(msg.Message);
+                        break;
+                }
+            });
+        }
+
+        private void OnDisconnected()
+        {
+            BeginInvoke(() =>
+            {
+                lblStatus.Text = "Disconnected from server";
+            });
+        }
+
+        private void ClientLobby_Load(object sender, EventArgs e)
+        {
+            ConnectionManager.Connection.PacketReceived += OnPacketReceived;
+            ConnectionManager.Connection.Disconnected += OnDisconnected;
         }
     }
 }

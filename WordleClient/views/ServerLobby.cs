@@ -1,9 +1,6 @@
 ﻿using WordleClient.libraries.CustomControls;
-using WordleClient.libraries.StateFrom;
-using WordleClient.libraries.ingame;
-using WordleClient.libraries.lowlevel;
 using WordleClient.libraries.network;
-using System.Diagnostics;
+using WordleClient.libraries.StateFrom;
 
 namespace WordleClient.views
 {
@@ -11,22 +8,21 @@ namespace WordleClient.views
     {
         public bool ReturnToMainOnClose { get; set; } = true;
 
-        private ServerListener serverListener = new ServerListener();
-        private CancellationTokenSource? serverCts;
-        private Task? serverTask;
+        private const int ServerPort = 5000;
 
         public ServerLobby()
         {
             InitializeComponent();
         }
+
         private void ServerLobby_Load(object sender, EventArgs e)
         {
             try
             {
-                serverCts = new CancellationTokenSource();
-
-                serverTask = serverListener.StartAsync(5000);
-
+                if (!ServerManager.IsRunning)
+                {
+                    ServerManager.Start(ServerPort);
+                }
             }
             catch (Exception ex)
             {
@@ -39,19 +35,21 @@ namespace WordleClient.views
                 Close();
             }
         }
+
+        private void btn_StartGame_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+
+            // TODO: broadcast START_GAME_Packet to clients
+        }
         private void btn_Exit_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            serverListener.Stop();
+            if (ServerManager.IsRunning)
+            {
+                ServerManager.Stop();
+            }
             this.Close();
-        }
-        private void btn_StartGame_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void btn_CloseServer_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
