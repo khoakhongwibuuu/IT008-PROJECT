@@ -34,9 +34,12 @@ namespace WordleClient.views
             customPanel1 = new CustomPanel();
             customGroupBox1 = new CustomGroupBox();
             customGroupBox2 = new CustomGroupBox();
+            lblStatus = new Label();
+            btn_search = new Button();
+            textBox1 = new TextBox();
             btn_Exit = new CustomPictureBox();
-            btn_StartGame = new CustomButton();
-            btn_CloseServer = new CustomButton();
+            btn_JoinRequest = new CustomButton();
+            customGroupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)btn_Exit).BeginInit();
             SuspendLayout();
             // 
@@ -83,19 +86,51 @@ namespace WordleClient.views
             customGroupBox2.BorderColor = Color.Teal;
             customGroupBox2.BorderRadius = 15;
             customGroupBox2.BorderSize = 2;
+            customGroupBox2.Controls.Add(lblStatus);
+            customGroupBox2.Controls.Add(btn_search);
+            customGroupBox2.Controls.Add(textBox1);
             customGroupBox2.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
             customGroupBox2.ForeColor = Color.White;
             customGroupBox2.Location = new Point(100, 358);
             customGroupBox2.Margin = new Padding(3, 2, 3, 2);
             customGroupBox2.Name = "customGroupBox2";
             customGroupBox2.Padding = new Padding(3, 2, 3, 2);
-            customGroupBox2.Size = new Size(467, 118);
+            customGroupBox2.Size = new Size(467, 133);
             customGroupBox2.TabIndex = 3;
             customGroupBox2.TabStop = false;
             customGroupBox2.Text = "Panel B";
             customGroupBox2.TextColor = Color.Black;
             customGroupBox2.TitleAlign = ContentAlignment.TopLeft;
             customGroupBox2.TitlePadding = 10;
+            // 
+            // lblStatus
+            // 
+            lblStatus.AutoSize = true;
+            lblStatus.ForeColor = Color.Black;
+            lblStatus.Location = new Point(29, 86);
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(81, 25);
+            lblStatus.TabIndex = 2;
+            lblStatus.Text = "Standby";
+            // 
+            // btn_search
+            // 
+            btn_search.ForeColor = Color.Black;
+            btn_search.Location = new Point(352, 23);
+            btn_search.Name = "btn_search";
+            btn_search.Size = new Size(88, 58);
+            btn_search.TabIndex = 1;
+            btn_search.Text = "Search";
+            btn_search.UseVisualStyleBackColor = true;
+            btn_search.Click += btn_search_Click;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(29, 37);
+            textBox1.Name = "textBox1";
+            textBox1.PlaceholderText = "Enter Server IP address here";
+            textBox1.Size = new Size(317, 32);
+            textBox1.TabIndex = 0;
             // 
             // btn_Exit
             // 
@@ -115,49 +150,31 @@ namespace WordleClient.views
             btn_Exit.TabStop = false;
             btn_Exit.Click += btn_Exit_Click;
             // 
-            // btn_StartGame
+            // btn_JoinRequest
             // 
-            btn_StartGame.BackgroundColor = Color.FromArgb(87, 162, 62);
-            btn_StartGame.BorderColor = Color.FromArgb(87, 162, 62);
-            btn_StartGame.BorderRadius = 20;
-            btn_StartGame.BorderSize = 2;
-            btn_StartGame.ButtonImage = null;
-            btn_StartGame.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            btn_StartGame.ImageSize = 24;
-            btn_StartGame.Location = new Point(363, 496);
-            btn_StartGame.Name = "btn_StartGame";
-            btn_StartGame.Size = new Size(204, 65);
-            btn_StartGame.TabIndex = 8;
-            btn_StartGame.Text = "Request to join";
-            btn_StartGame.TextAlign = ContentAlignment.MiddleCenter;
-            btn_StartGame.TextColor = Color.White;
-            btn_StartGame.Click += btn_StartGame_Click;
-            // 
-            // btn_CloseServer
-            // 
-            btn_CloseServer.BackgroundColor = Color.FromArgb(255, 116, 108);
-            btn_CloseServer.BorderColor = Color.FromArgb(255, 116, 108);
-            btn_CloseServer.BorderRadius = 20;
-            btn_CloseServer.BorderSize = 2;
-            btn_CloseServer.ButtonImage = null;
-            btn_CloseServer.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            btn_CloseServer.ImageSize = 24;
-            btn_CloseServer.Location = new Point(100, 496);
-            btn_CloseServer.Name = "btn_CloseServer";
-            btn_CloseServer.Size = new Size(204, 65);
-            btn_CloseServer.TabIndex = 9;
-            btn_CloseServer.Text = "Exit";
-            btn_CloseServer.TextAlign = ContentAlignment.MiddleCenter;
-            btn_CloseServer.TextColor = Color.White;
-            btn_CloseServer.Click += btn_CloseServer_Click;
+            btn_JoinRequest.BackgroundColor = Color.FromArgb(87, 162, 62);
+            btn_JoinRequest.BorderColor = Color.FromArgb(87, 162, 62);
+            btn_JoinRequest.BorderRadius = 20;
+            btn_JoinRequest.BorderSize = 2;
+            btn_JoinRequest.ButtonImage = null;
+            btn_JoinRequest.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            btn_JoinRequest.ImageSize = 24;
+            btn_JoinRequest.Location = new Point(98, 496);
+            btn_JoinRequest.Name = "btn_JoinRequest";
+            btn_JoinRequest.Size = new Size(469, 65);
+            btn_JoinRequest.TabIndex = 8;
+            btn_JoinRequest.Text = "Request to join";
+            btn_JoinRequest.TextAlign = ContentAlignment.MiddleCenter;
+            btn_JoinRequest.TextColor = Color.White;
+            btn_JoinRequest.Visible = false;
+            btn_JoinRequest.Click += btn_JoinRequest_Click;
             // 
             // ClientLobby
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(665, 588);
-            Controls.Add(btn_CloseServer);
-            Controls.Add(btn_StartGame);
+            Controls.Add(btn_JoinRequest);
             Controls.Add(btn_Exit);
             Controls.Add(customGroupBox2);
             Controls.Add(customGroupBox1);
@@ -166,7 +183,9 @@ namespace WordleClient.views
             Margin = new Padding(3, 2, 3, 2);
             Name = "ClientLobby";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "ServerLobby";
+            Text = "Client Lobby";
+            customGroupBox2.ResumeLayout(false);
+            customGroupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)btn_Exit).EndInit();
             ResumeLayout(false);
         }
@@ -177,7 +196,9 @@ namespace WordleClient.views
         private CustomGroupBox customGroupBox1;
         private CustomGroupBox customGroupBox2;
         private CustomPictureBox btn_Exit;
-        private CustomButton btn_StartGame;
-        private CustomButton btn_CloseServer;
+        private CustomButton btn_JoinRequest;
+        private TextBox textBox1;
+        private Button btn_search;
+        private Label lblStatus;
     }
 }

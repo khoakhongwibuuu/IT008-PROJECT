@@ -8,11 +8,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="libraries\gui\**" />
-    <Compile Remove="libraries\network\**" />
     <EmbeddedResource Remove="libraries\gui\**" />
-    <EmbeddedResource Remove="libraries\network\**" />
     <None Remove="libraries\gui\**" />
-    <None Remove="libraries\network\**" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="database\words.db" />
