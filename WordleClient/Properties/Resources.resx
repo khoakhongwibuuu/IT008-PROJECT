@@ -127,13 +127,13 @@
   <data name="Exit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\Exit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SoundONicon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="UnMute" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\SoundOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MusicOffLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\MusicOffLight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Maximizesize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="MaximizeSize" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\Maximizesize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MusicOnDark" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -142,7 +142,7 @@
   <data name="Error" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\Error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="minisize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="MinimizeSize" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\Minisize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Avatar4" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -157,7 +157,7 @@
   <data name="Avatar5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\Avatar5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="tickSuccess" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Tick" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\Success.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Avatar1" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -175,13 +175,13 @@
   <data name="Avatar2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\Avatar2..png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="question" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Quest" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\QuestionMark.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="spreadsheet-app" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Stats" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\Statistics.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="soundOFFicon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Mute" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\SoundOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Avatar3" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -190,7 +190,7 @@
   <data name="Avatar6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\Avatar6.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="iconSetting" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Gear" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\Setting.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Warnning" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -199,13 +199,13 @@
   <data name="Avatar7" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\Avatar7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="information" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Info" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\information.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Guide" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\Guide.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="heart" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Assets\img\heart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Heart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\Heart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

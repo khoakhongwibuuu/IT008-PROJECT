@@ -1,14 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WordleClient.libraries.lowlevel
+﻿namespace WordleClient.libraries.lowlevel
 {
     public class Player
     {
-        string username { get; set; }
-        string IP_address { get; set; }
+        public string Username { get; set; }
+        public string IPAddress { get; set; }
+        public Player(string username, string ipAddress)
+        {
+            Username = username;
+            IPAddress = ipAddress;
+        }
+        public string Serialize()
+        {
+            return $"{Username}|{IPAddress}";
+        }
+        public static Player Parse(string data)
+        {
+            string[] parts = data.Split('|');
+            return new Player(parts[0], parts[1]);
+        }
     }
 }
+

@@ -15,6 +15,8 @@
         public HintType h_type { get; set; }
         public char? pre_letter { get; set; } // null if h_type = absent
         public AbsentType? abs_type { get; set; } // null if h_type = present
+        public Hint() { }
+
         public Hint(HintType type, char? letter = null, AbsentType? absentType = null)
         {
             h_type = type;

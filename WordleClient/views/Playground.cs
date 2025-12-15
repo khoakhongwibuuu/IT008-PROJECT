@@ -14,8 +14,7 @@ namespace WordleClient.views
         private readonly int rows;
         private int cols;
         private int streak = 0;
-       private int lives = 5;
-private bool HeartAnimationRunning = false;
+        private int lives = 3;
 
         private readonly Panel matrixPanel;
 
@@ -354,6 +353,7 @@ private bool HeartAnimationRunning = false;
 
         private void OnVirtualKeyPress(char c)
         {
+            CustomSound.PlayClick();
             Playground_KeyPress(this, new KeyPressEventArgs(c));
         }
 
@@ -444,7 +444,7 @@ private bool HeartAnimationRunning = false;
                             if (CustomMessageBoxYesNo.Show(this, "Start a new game?", MessageBoxIcon.Question)
                                 == DialogResult.Yes)
                             {
-                                lives = 5;
+                                lives = 3;
                                 LoadHearts();
                                 StartHeartAnimation();
                                 streak = 0;
@@ -551,14 +551,6 @@ private bool HeartAnimationRunning = false;
                 }
             }
         }
-
-        static private async Task FlipBox(CharBox box)
-        {
-            int steps = 5;
-            for (int i = 0; i < steps; i++) { box.Height -= 5; box.Top += 2; await Task.Delay(10); }
-            for (int i = 0; i < steps; i++) { box.Height += 5; box.Top -= 2; await Task.Delay(10); }
-        }
-
         private async Task FlipRow(int row, StateArray result)
         {
             for (int col = 0; col < cols; col++)
@@ -566,7 +558,7 @@ private bool HeartAnimationRunning = false;
                 var box = GetBox(row, col);
                 if (box == null) continue;
 
-                await FlipBox(box);
+                await Animation.FlipBox(box);
 
                 switch (result.Get(col))
                 {
@@ -619,6 +611,8 @@ private bool HeartAnimationRunning = false;
             Random rd = new();
             GameSeed = rd.Next(0, 2);
             HintRemaining = 2;
+            lives = 3;
+            LoadHearts();
 
             lbl_HintRemaining.Text = "2";
             lbl_Hint1_Placeholder.Text = "Unknown";
@@ -682,6 +676,8 @@ private bool HeartAnimationRunning = false;
             Random rd = new();
             GameSeed = rd.Next(0, 2);
             HintRemaining = 2;
+            lives = 3;
+            LoadHearts();
 
             lbl_HintRemaining.Text = "2";
             lbl_Hint1_Placeholder.Text = "Unknown";
@@ -784,17 +780,17 @@ private bool HeartAnimationRunning = false;
         }
         private void LoadHearts()
         {
-            flowLayoutPanel1.Controls.Clear();
+            flp_Hearts.Controls.Clear();
             for (int i = 0; i < lives; i++)
             {
                 PictureBox pictureBox = new PictureBox
                 {
-                    Image = Properties.Resources.heart,
+                    Image = Properties.Resources.Heart,
                     SizeMode = PictureBoxSizeMode.Zoom,
                     Size = new Size(30, 30),
                     Margin = new Padding(2)
                 };
-                flowLayoutPanel1.Controls.Add(pictureBox);
+                flp_Hearts.Controls.Add(pictureBox);
             }
         }
         private void Loselife()
@@ -804,9 +800,9 @@ private bool HeartAnimationRunning = false;
                 return;
             }
             lives--;
-            if (flowLayoutPanel1.Controls.Count > 0)
+            if (flp_Hearts.Controls.Count > 0)
             {
-                flowLayoutPanel1.Controls.RemoveAt(flowLayoutPanel1.Controls.Count - 1);
+                flp_Hearts.Controls.RemoveAt(flp_Hearts.Controls.Count - 1);
             }
             if (lives <= 0)
             {
@@ -815,7 +811,7 @@ private bool HeartAnimationRunning = false;
                 new AlertBox(1700).ShowAlert(
                     this,
                     "Game Over",
-                    $"You lost all lives!The word was: {gameInstance.GetToken()}",
+                    $"You lost all lives! The word was: {gameInstance.GetToken()}",
                     MessageBoxIcon.Information
                 );
                 logger.SaveToDatabase(new SingleplayerPlayLog(
@@ -828,7 +824,7 @@ private bool HeartAnimationRunning = false;
                 Task.Delay(1700).Wait();
                 if (CustomMessageBoxYesNo.Show(this, "Play again?", MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    lives = 5;
+                    lives = 3;
                     streak = 0;
                     lbl_Streak.Text = "0";
                     LoadHearts();
@@ -842,33 +838,14 @@ private bool HeartAnimationRunning = false;
                 else this.Close();
             }
         }
-        private async Task HeartAnimation(PictureBox heart)
-        {
-            if (heart == null) return;
-            // Size ban đầu
-            int originalW = heart.Width;
-            int originalH = heart.Height;
-            // Độ nở
-            int beatW = originalW + 4;
-            int beatH = originalH + 4;
-            // Cập nhật size mới
-            heart.Size = new Size(beatW, beatH);
-            // Giữ tâm nở đều cả 4 phía
-            heart.Location = new Point(heart.Location.X - 2, heart.Location.Y - 2);
-            await Task.Delay(120);
-            // Trở về vị trí cũ
-            heart.Size = new Size(originalW, originalH);
-            heart.Location = new Point(heart.Location.X + 2, heart.Location.Y + 2);
-            await Task.Delay(120);
-        }
         private async void StartHeartAnimation()
         {
             while (!GameEnded)
             {
-                foreach (Control c in flowLayoutPanel1.Controls)
+                foreach (Control c in flp_Hearts.Controls)
                 {
                     if (c is PictureBox pb)
-                        await HeartAnimation(pb);
+                        await Animation.HeartAnimation(pb);
                 }
                 await Task.Delay(600);
             }

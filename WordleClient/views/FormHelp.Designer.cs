@@ -35,24 +35,21 @@
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.Guide;
-            pictureBox1.Location = new Point(0, 0);
-            pictureBox1.Margin = new Padding(3, 4, 3, 4);
-            pictureBox1.MaximumSize = new Size(766, 960);
-            pictureBox1.MinimumSize = new Size(766, 960);
+            pictureBox1.Location = new Point(-12, -56);
+            pictureBox1.MaximumSize = new Size(670, 720);
+            pictureBox1.MinimumSize = new Size(670, 720);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(766, 960);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.Size = new Size(670, 720);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
             // FormHelp
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(747, 766);
+            ClientSize = new Size(624, 632);
             Controls.Add(pictureBox1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Margin = new Padding(3, 4, 3, 4);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormHelp";

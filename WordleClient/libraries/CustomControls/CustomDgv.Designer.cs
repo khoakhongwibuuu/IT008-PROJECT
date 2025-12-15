@@ -73,7 +73,7 @@
             // 
             dgv_singleStats.BackgroundColor = Color.White;
             dgv_singleStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_singleStats.Location = new Point(53, 33);
+            dgv_singleStats.Location = new Point(52, 33);
             dgv_singleStats.Name = "dgv_singleStats";
             dgv_singleStats.RowHeadersWidth = 51;
             dgv_singleStats.Size = new Size(1068, 687);
@@ -81,7 +81,7 @@
             // 
             // CustomDgv
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(235, 230, 255);
             ClientSize = new Size(1171, 743);

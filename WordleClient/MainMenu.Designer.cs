@@ -429,7 +429,7 @@ namespace WordleClient
             btn_Guide.boderSize1 = 2;
             btn_Guide.Cursor = Cursors.Hand;
             btn_Guide.gradientAngle1 = 90F;
-            btn_Guide.Image = Properties.Resources.question;
+            btn_Guide.Image = Properties.Resources.Quest;
             btn_Guide.Location = new Point(1045, 576);
             btn_Guide.Margin = new Padding(3, 2, 3, 2);
             btn_Guide.Name = "btn_Guide";
