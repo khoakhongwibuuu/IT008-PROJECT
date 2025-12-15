@@ -21,42 +21,27 @@ namespace WordleClient.views
 
             if (!System.Net.IPAddress.TryParse(ip, out _))
             {
-                MessageBox.Show(
-                    "Invalid IP Address",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageBox.Show("Invalid IP Address");
                 return;
             }
 
             btn_search.Enabled = false;
-            lblStatus.Text = "Checking server...";
-
-            bool reachable;
+            lblStatus.Text = "Connecting...";
 
             try
             {
-                reachable = await ConnectionManager.Connection
-                    .TryConnectAsync(ip, ServerPort);
+                await ConnectionManager.Connection.ConnectAsync(ip, ServerPort);
+                lblStatus.Text = "Connected to server ✅";
             }
             catch
             {
-                reachable = false;
-            }
-
-            btn_search.Enabled = true;
-
-            if (!reachable)
-            {
                 lblStatus.Text = "Server not reachable ❌";
-                return;
             }
-
-            lblStatus.Text = "Server online ✅";
-
-            await ConnectionManager.Connection.ConnectAsync(ip, ServerPort);
+            finally
+            {
+                btn_search.Enabled = true;
+            }
         }
-
         private async void btn_JoinRequest_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
