@@ -23,7 +23,7 @@ namespace WordleClient.libraries.ingame
         }
         public GameInstance(string testWord)
         {
-            this.targetRecord = new WDBRecord { TOKEN = testWord, DEFINITION = "undefined", GROUP_NAME = "undefined" };
+            this.targetRecord = new WDBRecord { TOKEN = testWord, GROUP_NAME = "undefined" };
             this.previousGuesses = [];
             this.previousHints = [];
             this.keyboardLetterStates = new Dictionary<char, TriState>();
@@ -69,10 +69,6 @@ namespace WordleClient.libraries.ingame
         {
             return targetRecord.TOKEN;
         }
-        public string GetDefinition()
-        {
-            return targetRecord.DEFINITION;
-        }
         public string GetGroupName()
         {
             return targetRecord.GROUP_NAME;
@@ -85,7 +81,6 @@ namespace WordleClient.libraries.ingame
         {
             // Destructor
             targetRecord.TOKEN = string.Empty;
-            targetRecord.DEFINITION = string.Empty;
             targetRecord.GROUP_NAME = string.Empty;
             previousGuesses.Clear();
         }

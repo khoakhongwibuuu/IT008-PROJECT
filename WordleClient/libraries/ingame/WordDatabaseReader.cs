@@ -14,7 +14,7 @@ namespace WordleClient.libraries.ingame
         public WordDatabaseReader()
         {
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
-            string dbPath = Path.Combine(basePath, "database", "words.db");
+            string dbPath = Path.Combine(basePath, "database", "words-extended.db");
             string connectionString = $"Data Source={dbPath};Mode=ReadOnly;";
 
             sql_con = new SqliteConnection(connectionString);
@@ -53,7 +53,7 @@ namespace WordleClient.libraries.ingame
 
             using SqliteCommand cmd = sql_con.CreateCommand();
             cmd.CommandText =
-                $"SELECT TOKEN, GROUP_NAME, LEVEL, DEFINITION {baseQuery} LIMIT 1 OFFSET @offset";
+                $"SELECT TOKEN, GROUP_NAME, LEVEL {baseQuery} LIMIT 1 OFFSET @offset";
 
             cmd.Parameters.AddWithValue("@offset", offset);
             if (group != null) cmd.Parameters.AddWithValue("@group", group);
@@ -66,7 +66,7 @@ namespace WordleClient.libraries.ingame
                     TOKEN = reader.GetString(0).ToUpper(),
                     GROUP_NAME = reader.GetString(1),
                     LEVEL = reader.GetString(2),
-                    DEFINITION = reader.GetString(3)
+                    //DEFINITION = reader.GetString(3)
                 }
                 : null;
         }
