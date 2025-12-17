@@ -876,11 +876,13 @@ namespace WordleClient.views
 
         private void customButton3_Click(object sender, EventArgs e)
         {
+            CustomSound.PlayClick();
             Playground_KeyPress(this, new KeyPressEventArgs('\b'));
         }
 
         private void customButton4_Click(object sender, EventArgs e)
         {
+            CustomSound.PlayClick();
             Playground_KeyPress(this, new KeyPressEventArgs('\r'));
         }
     }
