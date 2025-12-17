@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using WordleClient.libraries.CustomControls;
 using WordleClient.libraries.ingame;
 using WordleClient.libraries.lowlevel;
@@ -41,6 +42,7 @@ namespace WordleClient.views
         private bool GameEnded = false;
         private int HintRemaining;
         private int GameSeed;
+        private bool inputLocked = false;
 
         // Tracks current cursor position
         private int currentRow = 0;
@@ -372,6 +374,7 @@ namespace WordleClient.views
         // ============================
         private async void Playground_KeyPress(object? sender, KeyPressEventArgs e)
         {
+            if (inputLocked) return;
             if (GameEnded) return;
 
             // ENTER
@@ -383,6 +386,7 @@ namespace WordleClient.views
 
                     if (dictionaryChecker.TokenExists(currentString))
                     {
+                        inputLocked = true;
                         var result = gameInstance.EvaluateGuess(currentString);
 
                         await FlipRow(currentRow, result);
@@ -405,7 +409,6 @@ namespace WordleClient.views
                             ));
 
                             await Task.Delay(1500);
-
                             if (initialDifficulty == "HARD")
                                 ResetHardGame();
                             else
@@ -460,6 +463,7 @@ namespace WordleClient.views
 
                             return;
                         }
+                        inputLocked = false;
                     }
                     else
                     {
@@ -525,8 +529,12 @@ namespace WordleClient.views
                 if (c is CharBox cb)
                     cb.ShowCursor(false);
 
-            CharBox? cursor = GetBox(currentRow, currentCol);
+            CharBox? cursor = (currentCol < cols)
+                ? GetBox(currentRow, currentCol)
+                : GetBox(currentRow, cols - 1);
+
             cursor?.ShowCursor(true);
+
         }
 
         // ============================
@@ -587,6 +595,8 @@ namespace WordleClient.views
             WordDatabaseReader wdr = new();
             WDBRecord? newWord;
 
+            inputLocked = false;
+
             do newWord = wdr.ReadRandomWord(initialTopic, initialDifficulty);
             while (newWord != null && newWord.TOKEN == lastToken);
 
@@ -637,6 +647,8 @@ namespace WordleClient.views
         {
             WordDatabaseReader wdr = new();
             WDBRecord? newWord;
+
+            inputLocked = false;
 
             if (hardTopic == null || hardLevel == null)
             {
