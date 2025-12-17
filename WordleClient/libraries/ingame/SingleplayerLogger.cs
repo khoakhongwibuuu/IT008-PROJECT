@@ -84,13 +84,19 @@ namespace WordleClient.libraries.ingame
                 cmd.ExecuteNonQuery();
             }
         }
-        public List<SingleplayerPlayLog> LoadFromDatabase()
+        public List<SingleplayerPlayLog> LoadFromDatabase(string? GROUP_NAME)
         {
             List<SingleplayerPlayLog> playLogs = [];
 
             using (SqliteCommand cmd = sql_con.CreateCommand())
             {
-                cmd.CommandText = "SELECT TIMESTAMP, TOKEN, TOPIC, DIFFICULTY, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS FROM SINGLEPLAYER_PLAYLOG;";
+                if (GROUP_NAME != null)
+                {
+                    cmd.CommandText = "SELECT TIMESTAMP, TOKEN, TOPIC, DIFFICULTY, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS FROM SINGLEPLAYER_PLAYLOG WHERE TOPIC = @groupName;";
+                    cmd.Parameters.AddWithValue("@groupName", GROUP_NAME);
+                }
+                else
+                    cmd.CommandText = "SELECT TIMESTAMP, TOKEN, TOPIC, DIFFICULTY, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS FROM SINGLEPLAYER_PLAYLOG;";
                 using (SqliteDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -108,6 +114,23 @@ namespace WordleClient.libraries.ingame
                 }
             }
             return playLogs;
+        }
+        public List<string> LoadAllGroups()
+        {
+            List<string> groups = [];
+            using (SqliteCommand cmd = sql_con.CreateCommand())
+            {
+                cmd.CommandText = "SELECT DISTINCT TOPIC FROM SINGLEPLAYER_PLAYLOG;";
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string group = reader.GetString(0);
+                        groups.Add(group);
+                    }
+                }
+            }
+            return groups;
         }
         public void ClearDatabase()
         {

@@ -66,8 +66,8 @@ namespace WordleClient
         private void btn_Stats_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            CustomDgv customDgv = new CustomDgv();
-            customDgv.ShowDialog();
+            Statistic statistic = new Statistic();
+            statistic.ShowDialog();
         }
         private void FormOption_FormClosed(object? sender, FormClosedEventArgs e)
         {
