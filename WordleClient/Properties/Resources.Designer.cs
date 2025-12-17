@@ -63,6 +63,16 @@ namespace WordleClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Avatar0 {
+            get {
+                object obj = ResourceManager.GetObject("Avatar0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Avatar1 {
             get {
                 object obj = ResourceManager.GetObject("Avatar1", resourceCulture);
@@ -126,26 +136,6 @@ namespace WordleClient.Properties {
         internal static System.Drawing.Bitmap Avatar7 {
             get {
                 object obj = ResourceManager.GetObject("Avatar7", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Avatar8 {
-            get {
-                object obj = ResourceManager.GetObject("Avatar8", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Avatar9 {
-            get {
-                object obj = ResourceManager.GetObject("Avatar9", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

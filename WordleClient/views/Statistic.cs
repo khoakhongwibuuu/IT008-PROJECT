@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using WordleClient.libraries.math;
 using WordleClient.libraries.lowlevel;
 using WordleClient.libraries.ingame;
@@ -23,17 +17,6 @@ namespace WordleClient.views
         public Statistic()
         {
             InitializeComponent();
-            var groups = spl.LoadAllGroups();
-            comboBox1.Items.Add("All Groups");
-            foreach (var group in groups)
-            {
-                comboBox1.Items.Add(group);
-            }
-            comboBox1.SelectedIndex = 0;
-            int itemHeight = comboBox1.ItemHeight;
-            int visibleItems = 7;
-            comboBox1.DropDownHeight = itemHeight * visibleItems;
-            comboBox1.IntegralHeight = false;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -79,6 +62,25 @@ namespace WordleClient.views
         {
             CustomSound.PlayClick();
             this.Close();
+        }
+
+        private void Statistic_Load(object sender, EventArgs e)
+        {
+            List<String> groups = spl.LoadAllGroups();
+            if (groups.Count > 0)
+            {
+                comboBox1.Items.Add("All Games");
+                foreach (var group in groups)
+                {
+                    comboBox1.Items.Add(group);
+                }
+                comboBox1.SelectedIndex = 0;
+            }
+            else
+            {
+                MessageBox.Show("No game logs found. Play some games to see statistics!", "No Logs", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
+            }
         }
     }
 }
