@@ -111,6 +111,7 @@ namespace WordleClient.views
             btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
 
             UpdateCustomGroupBoxTheme();
+            customPictureBox1.Image = ProfileState.GetAvatar();
 
             string nickname = (ProfileState.Current == null) ? "Player" : ProfileState.Current.Nickname ?? "Player";
             AlertBox alertBox = new AlertBox(3000);
@@ -357,16 +358,6 @@ namespace WordleClient.views
         {
             CustomSound.PlayClick();
             Playground_KeyPress(this, new KeyPressEventArgs(c));
-        }
-
-        private void OnVirtualEnter()
-        {
-            Playground_KeyPress(this, new KeyPressEventArgs('\r'));
-        }
-
-        private void OnVirtualBackspace()
-        {
-            Playground_KeyPress(this, new KeyPressEventArgs('\b'));
         }
 
         // ============================
@@ -789,6 +780,26 @@ namespace WordleClient.views
             gameStats.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
             revealedHints.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
             playerInfo.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+
+            customButton1.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            customButton2.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            customButton3.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            customButton4.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+
+            customButton1.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            customButton2.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            customButton3.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            customButton4.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+
+            customButton1.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            customButton2.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            customButton3.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            customButton4.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+
+            customButton1.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            customButton2.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            customButton3.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            customButton4.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
         }
         private void LoadHearts()
         {
@@ -861,6 +872,16 @@ namespace WordleClient.views
                 }
                 await Task.Delay(600);
             }
+        }
+
+        private void customButton3_Click(object sender, EventArgs e)
+        {
+            Playground_KeyPress(this, new KeyPressEventArgs('\b'));
+        }
+
+        private void customButton4_Click(object sender, EventArgs e)
+        {
+            Playground_KeyPress(this, new KeyPressEventArgs('\r'));
         }
     }
 }
