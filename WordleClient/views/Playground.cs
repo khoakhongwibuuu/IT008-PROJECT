@@ -116,7 +116,7 @@ namespace WordleClient.views
             string nickname = (ProfileState.Current == null) ? "Player" : ProfileState.Current.Nickname ?? "Player";
             AlertBox alertBox = new AlertBox(3000);
             CustomSound.PlayClickAlert();
-            alertBox.ShowAlert(this, "Welcome", $"Welcome to Playground, {nickname}!");
+            alertBox.ShowAlert(this, "Welcome", $"Welcome to Playground, {nickname}!", MessageBoxIcon.None);
             label8.Text = nickname;
         }
 
@@ -124,7 +124,7 @@ namespace WordleClient.views
         {
             if (GameEnded) return;
 
-            if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Question) == DialogResult.No)
+            if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Warning) == DialogResult.No)
             {
                 e.Cancel = true;
             }
@@ -330,7 +330,7 @@ namespace WordleClient.views
 
                 CustomSound.PlayClickAlert();
                 AlertBox alert = new AlertBox(1500);
-                alert.ShowAlert(this, "Hint", literalHint);
+                alert.ShowAlert(this, "Hint", literalHint, MessageBoxIcon.Information);
 
                 HintRemaining--;
 
@@ -390,7 +390,7 @@ namespace WordleClient.views
                             lbl_Streak.Text = streak.ToString();
 
                             CustomSound.PlayClickAlert();
-                            new AlertBox(1500).ShowAlert(this, "Success", "You found the hidden word!");
+                            new AlertBox(1500).ShowAlert(this, "Success", "You found the hidden word!", MessageBoxIcon.None);
                             logger.SaveToDatabase(new SingleplayerPlayLog(
                                 DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                                 gameInstance.GetToken(),

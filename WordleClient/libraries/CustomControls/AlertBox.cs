@@ -62,6 +62,9 @@ namespace WordleClient.libraries.CustomControls
                 case MessageBoxIcon.Question:
                     customPictureBox1.Image = Properties.Resources.Quest;
                     break;
+                case MessageBoxIcon.None:
+                    customPictureBox1.Image = Properties.Resources.Tick;
+                    break;
                 default:
                     customPictureBox1.Image = null;
                     break;
