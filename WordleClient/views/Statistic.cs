@@ -75,6 +75,10 @@ namespace WordleClient.views
                     comboBox1.Items.Add(group);
                 }
                 comboBox1.SelectedIndex = 0;
+                int itemHeight = comboBox1.ItemHeight;
+                int visibleItems = 7;
+                comboBox1.DropDownHeight = itemHeight * visibleItems;
+                comboBox1.IntegralHeight = false;
             }
             else
             {
