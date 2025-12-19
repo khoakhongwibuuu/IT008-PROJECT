@@ -2,138 +2,129 @@
 {
     partial class CustomMessageBoxYesNo
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
             base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            customPictureBox1 = new CustomPictureBox();
-            customButton1 = new CustomButton();
-            customButton2 = new CustomButton();
+            customGroupBox1 = new CustomGroupBox();
             lbl_Content = new Label();
-            customPanel1 = new CustomPanel();
+            customButtonNo = new CustomButton();
+            customButtonYes = new CustomButton();
+            customPictureBox1 = new CustomPictureBox();
+            customGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)customPictureBox1).BeginInit();
             SuspendLayout();
             // 
-            // customPictureBox1
+            // customGroupBox1
             // 
-            customPictureBox1.boderGradientBottom1 = Color.SlateBlue;
-            customPictureBox1.boderGradientTop1 = Color.MediumSlateBlue;
-            customPictureBox1.boderRadius1 = 40;
-            customPictureBox1.boderSize1 = 2;
-            customPictureBox1.gradientAngle1 = 90F;
-            customPictureBox1.Location = new Point(209, 12);
-            customPictureBox1.Name = "customPictureBox1";
-            customPictureBox1.Size = new Size(68, 59);
-            customPictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            customPictureBox1.TabIndex = 0;
-            customPictureBox1.TabStop = false;
-            // 
-            // customButton1
-            // 
-            customButton1.BackgroundColor = Color.White;
-            customButton1.BorderColor = Color.FromArgb(153, 214, 214);
-            customButton1.BorderRadius = 20;
-            customButton1.BorderSize = 2;
-            customButton1.ButtonImage = null;
-            customButton1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold | FontStyle.Italic);
-            customButton1.ImageSize = 24;
-            customButton1.Location = new Point(43, 217);
-            customButton1.Name = "customButton1";
-            customButton1.Size = new Size(126, 60);
-            customButton1.TabIndex = 1;
-            customButton1.Text = "Yes";
-            customButton1.TextAlign = ContentAlignment.MiddleCenter;
-            customButton1.TextColor = Color.Black;
-            // 
-            // customButton2
-            // 
-            customButton2.BackgroundColor = Color.White;
-            customButton2.BorderColor = Color.FromArgb(153, 214, 214);
-            customButton2.BorderRadius = 20;
-            customButton2.BorderSize = 2;
-            customButton2.ButtonImage = null;
-            customButton2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold | FontStyle.Italic);
-            customButton2.ImageSize = 24;
-            customButton2.Location = new Point(312, 217);
-            customButton2.Name = "customButton2";
-            customButton2.Size = new Size(126, 60);
-            customButton2.TabIndex = 1;
-            customButton2.Text = "No";
-            customButton2.TextAlign = ContentAlignment.MiddleCenter;
-            customButton2.TextColor = Color.Black;
+            customGroupBox1.BackColor = Color.Transparent;
+            customGroupBox1.BackgroundColor = Color.White;
+            customGroupBox1.BorderColor = Color.Black;
+            customGroupBox1.BorderRadius = 15;
+            customGroupBox1.BorderSize = 2;
+            customGroupBox1.Controls.Add(lbl_Content);
+            customGroupBox1.Controls.Add(customButtonNo);
+            customGroupBox1.Controls.Add(customButtonYes);
+            customGroupBox1.Controls.Add(customPictureBox1);
+            customGroupBox1.Location = new Point(0, 0);
+            customGroupBox1.Name = "customGroupBox1";
+            customGroupBox1.Size = new Size(486, 300);
+            customGroupBox1.TabIndex = 0;
+            customGroupBox1.TabStop = false;
+            customGroupBox1.TextColor = Color.Black;
+            customGroupBox1.TitleAlign = ContentAlignment.TopLeft;
+            customGroupBox1.TitlePadding = 10;
             // 
             // lbl_Content
             // 
-            lbl_Content.Anchor = AnchorStyles.None;
-            lbl_Content.AutoSize = true;
-            lbl_Content.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold | FontStyle.Italic);
-            lbl_Content.Location = new Point(196, 125);
+            lbl_Content.BackColor = Color.White;
+            lbl_Content.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            lbl_Content.ForeColor = Color.Black;
+            lbl_Content.Location = new Point(40, 110);
             lbl_Content.Name = "lbl_Content";
-            lbl_Content.Size = new Size(81, 31);
-            lbl_Content.TabIndex = 2;
-            lbl_Content.Text = "label1";
+            lbl_Content.Size = new Size(406, 60);
+            lbl_Content.TabIndex = 9;
+            lbl_Content.Text = "Are you sure?";
             lbl_Content.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // customPanel1
+            // customButtonNo
             // 
-            customPanel1.BackColor = Color.White;
-            customPanel1.BorderRadius = 30;
-            customPanel1.Dock = DockStyle.Fill;
-            customPanel1.ForeColor = Color.Black;
-            customPanel1.GradientAngle = 90F;
-            customPanel1.GradientBottomColor = Color.FromArgb(192, 255, 255);
-            customPanel1.GradientTopColor = Color.Red;
-            customPanel1.Location = new Point(0, 0);
-            customPanel1.Name = "customPanel1";
-            customPanel1.Size = new Size(486, 305);
-            customPanel1.TabIndex = 3;
+            customButtonNo.BackgroundColor = Color.White;
+            customButtonNo.BorderColor = Color.Black;
+            customButtonNo.BorderRadius = 14;
+            customButtonNo.BorderSize = 1;
+            customButtonNo.ButtonImage = null;
+            customButtonNo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            customButtonNo.ImageSize = 24;
+            customButtonNo.Location = new Point(287, 210);
+            customButtonNo.Name = "customButtonNo";
+            customButtonNo.Size = new Size(130, 50);
+            customButtonNo.TabIndex = 10;
+            customButtonNo.Text = "NO";
+            customButtonNo.TextAlign = ContentAlignment.MiddleCenter;
+            customButtonNo.TextColor = Color.Black;
+            // 
+            // customButtonYes
+            // 
+            customButtonYes.BackgroundColor = Color.Black;
+            customButtonYes.BorderColor = Color.Black;
+            customButtonYes.BorderRadius = 14;
+            customButtonYes.BorderSize = 1;
+            customButtonYes.ButtonImage = null;
+            customButtonYes.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            customButtonYes.ImageSize = 24;
+            customButtonYes.Location = new Point(70, 210);
+            customButtonYes.Name = "customButtonYes";
+            customButtonYes.Size = new Size(130, 50);
+            customButtonYes.TabIndex = 11;
+            customButtonYes.Text = "YES";
+            customButtonYes.TextAlign = ContentAlignment.MiddleCenter;
+            customButtonYes.TextColor = Color.White;
+            // 
+            // customPictureBox1
+            // 
+            customPictureBox1.BackColor = Color.White;
+            customPictureBox1.boderGradientBottom1 = Color.Transparent;
+            customPictureBox1.boderGradientTop1 = Color.Transparent;
+            customPictureBox1.boderRadius1 = 28;
+            customPictureBox1.boderSize1 = 1;
+            customPictureBox1.gradientAngle1 = 90F;
+            customPictureBox1.Location = new Point(209, 36);
+            customPictureBox1.Name = "customPictureBox1";
+            customPictureBox1.Size = new Size(68, 68);
+            customPictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            customPictureBox1.TabIndex = 8;
+            customPictureBox1.TabStop = false;
             // 
             // CustomMessageBoxYesNo
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(486, 305);
-            Controls.Add(lbl_Content);
-            Controls.Add(customButton2);
-            Controls.Add(customButton1);
-            Controls.Add(customPictureBox1);
-            Controls.Add(customPanel1);
-            FormBorderStyle = FormBorderStyle.None;
+            BackColor = Color.Black;
+            ClientSize = new Size(486, 300);
+            Controls.Add(customGroupBox1);
             Name = "CustomMessageBoxYesNo";
-            Text = "CustomMessageBoxYesNo";
+            Padding = new Padding(2);
+            customGroupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)customPictureBox1).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private CustomPictureBox customPictureBox1;
-        private CustomButton customButton1;
-        private CustomButton customButton2;
+        private CustomGroupBox customGroupBox1;
         private Label lbl_Content;
-        private CustomPanel customPanel1;
+        private CustomButton customButtonNo;
+        private CustomButton customButtonYes;
+        private CustomPictureBox customPictureBox1;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using WordleClient.libraries.CustomControls;
 using WordleClient.libraries.ingame;
 using WordleClient.libraries.lowlevel;
@@ -41,6 +42,7 @@ namespace WordleClient.views
         private bool GameEnded = false;
         private int HintRemaining;
         private int GameSeed;
+        private bool inputLocked = false;
 
         // Tracks current cursor position
         private int currentRow = 0;
@@ -109,11 +111,12 @@ namespace WordleClient.views
             btn_DarkLight.boderGradientTop1 = CustomDarkLight.IsDark ? Color.FromArgb(40, 40, 40) : Color.FromArgb(240, 240, 240);
 
             UpdateCustomGroupBoxTheme();
+            customPictureBox1.Image = ProfileState.GetAvatar();
 
             string nickname = (ProfileState.Current == null) ? "Player" : ProfileState.Current.Nickname ?? "Player";
             AlertBox alertBox = new AlertBox(3000);
             CustomSound.PlayClickAlert();
-            alertBox.ShowAlert(this, "Welcome", $"Welcome to Playground, {nickname}!");
+            alertBox.ShowAlert(this, "Welcome", $"Welcome to Playground, {nickname}!", MessageBoxIcon.None);
             label8.Text = nickname;
         }
 
@@ -121,7 +124,7 @@ namespace WordleClient.views
         {
             if (GameEnded) return;
 
-            if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Question) == DialogResult.No)
+            if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Warning) == DialogResult.No)
             {
                 e.Cancel = true;
             }
@@ -327,7 +330,7 @@ namespace WordleClient.views
 
                 CustomSound.PlayClickAlert();
                 AlertBox alert = new AlertBox(1500);
-                alert.ShowAlert(this, "Hint", literalHint);
+                alert.ShowAlert(this, "Hint", literalHint, MessageBoxIcon.Information);
 
                 HintRemaining--;
 
@@ -357,21 +360,12 @@ namespace WordleClient.views
             Playground_KeyPress(this, new KeyPressEventArgs(c));
         }
 
-        private void OnVirtualEnter()
-        {
-            Playground_KeyPress(this, new KeyPressEventArgs('\r'));
-        }
-
-        private void OnVirtualBackspace()
-        {
-            Playground_KeyPress(this, new KeyPressEventArgs('\b'));
-        }
-
         // ============================
         // KEY INPUT LOGIC
         // ============================
         private async void Playground_KeyPress(object? sender, KeyPressEventArgs e)
         {
+            if (inputLocked) return;
             if (GameEnded) return;
 
             // ENTER
@@ -383,6 +377,7 @@ namespace WordleClient.views
 
                     if (dictionaryChecker.TokenExists(currentString))
                     {
+                        inputLocked = true;
                         var result = gameInstance.EvaluateGuess(currentString);
 
                         await FlipRow(currentRow, result);
@@ -395,7 +390,7 @@ namespace WordleClient.views
                             lbl_Streak.Text = streak.ToString();
 
                             CustomSound.PlayClickAlert();
-                            new AlertBox(1500).ShowAlert(this, "Success", "You found the hidden word!");
+                            new AlertBox(1500).ShowAlert(this, "Success", "You found the hidden word!", MessageBoxIcon.None);
                             logger.SaveToDatabase(new SingleplayerPlayLog(
                                 DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                                 gameInstance.GetToken(),
@@ -405,7 +400,6 @@ namespace WordleClient.views
                             ));
 
                             await Task.Delay(1500);
-
                             if (initialDifficulty == "HARD")
                                 ResetHardGame();
                             else
@@ -460,6 +454,7 @@ namespace WordleClient.views
 
                             return;
                         }
+                        inputLocked = false;
                     }
                     else
                     {
@@ -525,8 +520,12 @@ namespace WordleClient.views
                 if (c is CharBox cb)
                     cb.ShowCursor(false);
 
-            CharBox? cursor = GetBox(currentRow, currentCol);
+            CharBox? cursor = (currentCol < cols)
+                ? GetBox(currentRow, currentCol)
+                : GetBox(currentRow, cols - 1);
+
             cursor?.ShowCursor(true);
+
         }
 
         // ============================
@@ -587,6 +586,8 @@ namespace WordleClient.views
             WordDatabaseReader wdr = new();
             WDBRecord? newWord;
 
+            inputLocked = false;
+
             do newWord = wdr.ReadRandomWord(initialTopic, initialDifficulty);
             while (newWord != null && newWord.TOKEN == lastToken);
 
@@ -637,6 +638,8 @@ namespace WordleClient.views
         {
             WordDatabaseReader wdr = new();
             WDBRecord? newWord;
+
+            inputLocked = false;
 
             if (hardTopic == null || hardLevel == null)
             {
@@ -777,6 +780,26 @@ namespace WordleClient.views
             gameStats.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
             revealedHints.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
             playerInfo.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+
+            customButton1.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            customButton2.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            customButton3.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            customButton4.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+
+            customButton1.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            customButton2.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            customButton3.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            customButton4.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+
+            customButton1.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            customButton2.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            customButton3.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            customButton4.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+
+            customButton1.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            customButton2.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            customButton3.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            customButton4.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
         }
         private void LoadHearts()
         {
@@ -849,6 +872,18 @@ namespace WordleClient.views
                 }
                 await Task.Delay(600);
             }
+        }
+
+        private void customButton3_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            Playground_KeyPress(this, new KeyPressEventArgs('\b'));
+        }
+
+        private void customButton4_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            Playground_KeyPress(this, new KeyPressEventArgs('\r'));
         }
     }
 }

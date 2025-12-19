@@ -42,7 +42,7 @@ namespace WordleClient.views
                 btn_search.Enabled = true;
             }
         }
-        private async void btn_JoinRequest_Click(object sender, EventArgs e)
+        private void btn_JoinRequest_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
 

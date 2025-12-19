@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using WordleClient.libraries.CustomControls;
+using WordleClient.libraries.StateFrom;
 
 namespace WordleClient.libraries.CustomControls
 {
@@ -62,6 +63,9 @@ namespace WordleClient.libraries.CustomControls
                 case MessageBoxIcon.Question:
                     customPictureBox1.Image = Properties.Resources.Quest;
                     break;
+                case MessageBoxIcon.None:
+                    customPictureBox1.Image = Properties.Resources.Tick;
+                    break;
                 default:
                     customPictureBox1.Image = null;
                     break;
@@ -75,6 +79,11 @@ namespace WordleClient.libraries.CustomControls
             this.Show();
 
             autoCloseTimer.Start();
+        }
+
+        private void AlertBox_Load(object sender, EventArgs e)
+        {
+            ThemeManager.ApplyTheme(this);
         }
     }
 }

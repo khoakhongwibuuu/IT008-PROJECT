@@ -18,15 +18,15 @@ namespace WordleClient.libraries.CustomControls
             InitializeComponent();
 
 
-            customButton1.Click += (s, e) => { CustomSound.PlayClick(); result = DialogResult.Yes; this.Close(); };
-            customButton2.Click += (s, e) => {CustomSound.PlayClick(); result = DialogResult.No; this.Close(); };
+            customButtonYes.Click += (s, e) => { CustomSound.PlayClick(); result = DialogResult.Yes; this.Close(); };
+            customButtonNo.Click += (s, e) => { CustomSound.PlayClick(); result = DialogResult.No; this.Close(); };
 
             // Timer cho hiệu ứng lắc lư
             timeAnimation = new System.Windows.Forms.Timer();
             timeAnimation.Interval = 50;
             timeAnimation.Tick += TimeAnimation_Tick;
         }
-        
+
         private void TimeAnimation_Tick(object? sender, EventArgs e)
         {
             int offset = 5;
@@ -37,10 +37,10 @@ namespace WordleClient.libraries.CustomControls
 
             moveLeft = !moveLeft;
             shakeCount += 1;
-            if (shakeCount >= 10) 
+            if (shakeCount >= 10)
             {
                 timeAnimation.Stop();
-                this.Location = originalLocation; 
+                this.Location = originalLocation;
             }
         }
 
@@ -52,7 +52,7 @@ namespace WordleClient.libraries.CustomControls
             msgBox.lbl_Content.Text = content;
 
             // Center
-          msgBox.lbl_Content.Left = (msgBox.ClientSize.Width - msgBox.lbl_Content.Width) / 2;
+            msgBox.lbl_Content.Left = (msgBox.ClientSize.Width - msgBox.lbl_Content.Width) / 2;
 
             // Option Icon
             switch (icon)

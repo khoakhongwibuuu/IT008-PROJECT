@@ -22,8 +22,9 @@
             customButton2 = new WordleClient.libraries.CustomControls.CustomButton();
             panel1 = new Panel();
             playerInfo = new WordleClient.libraries.CustomControls.CustomGroupBox();
-            label4 = new Label();
+            customPictureBox1 = new WordleClient.libraries.CustomControls.CustomPictureBox();
             label8 = new Label();
+            flp_Hearts = new FlowLayoutPanel();
             revealedHints = new WordleClient.libraries.CustomControls.CustomGroupBox();
             label5 = new Label();
             lbl_Hint1_Placeholder = new Label();
@@ -38,14 +39,15 @@
             lbl_Diff = new Label();
             label3 = new Label();
             label1 = new Label();
-            flp_Hearts = new FlowLayoutPanel();
-            label9 = new Label();
             panel2 = new Panel();
             panel3 = new Panel();
+            customButton3 = new WordleClient.libraries.CustomControls.CustomButton();
+            customButton4 = new WordleClient.libraries.CustomControls.CustomButton();
             btn_DarkLight = new WordleClient.libraries.CustomControls.CustomPictureBox();
             MasterPanel = new Panel();
             panel1.SuspendLayout();
             playerInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)customPictureBox1).BeginInit();
             revealedHints.SuspendLayout();
             gameStats.SuspendLayout();
             panel3.SuspendLayout();
@@ -55,26 +57,28 @@
             // 
             // customButton1
             // 
-            customButton1.BackgroundColor = Color.FromArgb(122, 178, 211);
-            customButton1.BorderColor = Color.FromArgb(122, 178, 211);
+            customButton1.BackColor = Color.White;
+            customButton1.BackgroundColor = Color.White;
+            customButton1.BorderColor = Color.Black;
             customButton1.BorderRadius = 20;
             customButton1.BorderSize = 2;
             customButton1.ButtonImage = null;
             customButton1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             customButton1.ImageSize = 24;
-            customButton1.Location = new Point(6, 702);
+            customButton1.Location = new Point(6, 651);
             customButton1.Name = "customButton1";
             customButton1.Size = new Size(282, 45);
             customButton1.TabIndex = 0;
             customButton1.Text = "💡 Get Hint";
             customButton1.TextAlign = ContentAlignment.MiddleCenter;
-            customButton1.TextColor = Color.White;
+            customButton1.TextColor = Color.Black;
             customButton1.Click += GetHintBtn_Click;
             // 
             // customButton2
             // 
-            customButton2.BackgroundColor = Color.FromArgb(255, 116, 108);
-            customButton2.BorderColor = Color.FromArgb(255, 116, 108);
+            customButton2.BackColor = Color.White;
+            customButton2.BackgroundColor = Color.White;
+            customButton2.BorderColor = Color.Black;
             customButton2.BorderRadius = 20;
             customButton2.BorderSize = 2;
             customButton2.ButtonImage = null;
@@ -86,7 +90,7 @@
             customButton2.TabIndex = 0;
             customButton2.Text = "❌ Exit game";
             customButton2.TextAlign = ContentAlignment.MiddleCenter;
-            customButton2.TextColor = Color.White;
+            customButton2.TextColor = Color.Black;
             customButton2.Click += ExitBtn_Click;
             // 
             // panel1
@@ -106,12 +110,13 @@
             playerInfo.BorderColor = Color.Black;
             playerInfo.BorderRadius = 15;
             playerInfo.BorderSize = 2;
-            playerInfo.Controls.Add(label4);
+            playerInfo.Controls.Add(customPictureBox1);
             playerInfo.Controls.Add(label8);
+            playerInfo.Controls.Add(flp_Hearts);
             playerInfo.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            playerInfo.Location = new Point(3, 702);
+            playerInfo.Location = new Point(3, 12);
             playerInfo.Name = "playerInfo";
-            playerInfo.Size = new Size(294, 100);
+            playerInfo.Size = new Size(294, 130);
             playerInfo.TabIndex = 20;
             playerInfo.TabStop = false;
             playerInfo.Text = "Player info";
@@ -119,27 +124,39 @@
             playerInfo.TitleAlign = ContentAlignment.TopLeft;
             playerInfo.TitlePadding = 10;
             // 
-            // label4
+            // customPictureBox1
             // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label4.Location = new Point(10, 54);
-            label4.Margin = new Padding(1, 0, 1, 0);
-            label4.Name = "label4";
-            label4.Size = new Size(96, 21);
-            label4.TabIndex = 16;
-            label4.Text = "Nickname: ";
+            customPictureBox1.boderGradientBottom1 = Color.Black;
+            customPictureBox1.boderGradientTop1 = Color.Black;
+            customPictureBox1.boderRadius1 = 40;
+            customPictureBox1.boderSize1 = 2;
+            customPictureBox1.gradientAngle1 = 90F;
+            customPictureBox1.Location = new Point(23, 50);
+            customPictureBox1.Name = "customPictureBox1";
+            customPictureBox1.Size = new Size(60, 60);
+            customPictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            customPictureBox1.TabIndex = 18;
+            customPictureBox1.TabStop = false;
             // 
             // label8
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label8.Location = new Point(107, 54);
+            label8.ImageAlign = ContentAlignment.BottomCenter;
+            label8.Location = new Point(86, 51);
             label8.Margin = new Padding(1, 0, 1, 0);
             label8.Name = "label8";
             label8.Size = new Size(84, 21);
             label8.TabIndex = 17;
             label8.Text = "Unknown";
+            label8.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // flp_Hearts
+            // 
+            flp_Hearts.Location = new Point(86, 75);
+            flp_Hearts.Name = "flp_Hearts";
+            flp_Hearts.Size = new Size(176, 35);
+            flp_Hearts.TabIndex = 17;
             // 
             // revealedHints
             // 
@@ -153,7 +170,7 @@
             revealedHints.Controls.Add(label7);
             revealedHints.Controls.Add(lbl_Hint2_Placeholder);
             revealedHints.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            revealedHints.Location = new Point(3, 248);
+            revealedHints.Location = new Point(3, 648);
             revealedHints.Name = "revealedHints";
             revealedHints.Size = new Size(294, 159);
             revealedHints.TabIndex = 19;
@@ -218,12 +235,10 @@
             gameStats.Controls.Add(lbl_Diff);
             gameStats.Controls.Add(label3);
             gameStats.Controls.Add(label1);
-            gameStats.Controls.Add(flp_Hearts);
-            gameStats.Controls.Add(label9);
             gameStats.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            gameStats.Location = new Point(3, 8);
+            gameStats.Location = new Point(3, 148);
             gameStats.Name = "gameStats";
-            gameStats.Size = new Size(294, 234);
+            gameStats.Size = new Size(294, 148);
             gameStats.TabIndex = 18;
             gameStats.TabStop = false;
             gameStats.Text = "Game statistics";
@@ -316,23 +331,6 @@
             label1.TabIndex = 2;
             label1.Text = "CEFR Level:";
             // 
-            // flp_Hearts
-            // 
-            flp_Hearts.Location = new Point(10, 183);
-            flp_Hearts.Name = "flp_Hearts";
-            flp_Hearts.Size = new Size(219, 35);
-            flp_Hearts.TabIndex = 17;
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label9.Location = new Point(10, 159);
-            label9.Name = "label9";
-            label9.Size = new Size(52, 21);
-            label9.TabIndex = 16;
-            label9.Text = "Lives:";
-            // 
             // panel2
             // 
             panel2.Location = new Point(300, 0);
@@ -342,6 +340,8 @@
             // 
             // panel3
             // 
+            panel3.Controls.Add(customButton3);
+            panel3.Controls.Add(customButton4);
             panel3.Controls.Add(btn_DarkLight);
             panel3.Controls.Add(customButton2);
             panel3.Controls.Add(customButton1);
@@ -349,6 +349,44 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(300, 810);
             panel3.TabIndex = 2;
+            // 
+            // customButton3
+            // 
+            customButton3.BackColor = Color.White;
+            customButton3.BackgroundColor = Color.White;
+            customButton3.BorderColor = Color.Black;
+            customButton3.BorderRadius = 20;
+            customButton3.BorderSize = 2;
+            customButton3.ButtonImage = null;
+            customButton3.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            customButton3.ImageSize = 24;
+            customButton3.Location = new Point(6, 702);
+            customButton3.Name = "customButton3";
+            customButton3.Size = new Size(138, 45);
+            customButton3.TabIndex = 13;
+            customButton3.Text = "← Backspace";
+            customButton3.TextAlign = ContentAlignment.MiddleCenter;
+            customButton3.TextColor = Color.Black;
+            customButton3.Click += customButton3_Click;
+            // 
+            // customButton4
+            // 
+            customButton4.BackColor = Color.White;
+            customButton4.BackgroundColor = Color.White;
+            customButton4.BorderColor = Color.Black;
+            customButton4.BorderRadius = 20;
+            customButton4.BorderSize = 2;
+            customButton4.ButtonImage = null;
+            customButton4.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            customButton4.ImageSize = 24;
+            customButton4.Location = new Point(150, 702);
+            customButton4.Name = "customButton4";
+            customButton4.Size = new Size(138, 45);
+            customButton4.TabIndex = 14;
+            customButton4.Text = "↵ Enter";
+            customButton4.TextAlign = ContentAlignment.MiddleCenter;
+            customButton4.TextColor = Color.Black;
+            customButton4.Click += customButton4_Click;
             // 
             // btn_DarkLight
             // 
@@ -359,7 +397,7 @@
             btn_DarkLight.Cursor = Cursors.Hand;
             btn_DarkLight.gradientAngle1 = 90F;
             btn_DarkLight.Image = Properties.Resources.Light;
-            btn_DarkLight.Location = new Point(228, 637);
+            btn_DarkLight.Location = new Point(228, 586);
             btn_DarkLight.Margin = new Padding(3, 2, 3, 2);
             btn_DarkLight.Name = "btn_DarkLight";
             btn_DarkLight.Size = new Size(60, 60);
@@ -396,6 +434,7 @@
             panel1.ResumeLayout(false);
             playerInfo.ResumeLayout(false);
             playerInfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)customPictureBox1).EndInit();
             revealedHints.ResumeLayout(false);
             revealedHints.PerformLayout();
             gameStats.ResumeLayout(false);
@@ -425,7 +464,6 @@
         private Label label7;
         private Label lbl_Streak;
         private Label label6;
-        private Label label4;
         private Label label8;
         private libraries.CustomControls.CustomPictureBox btn_DarkLight;
         private libraries.CustomControls.CustomGroupBox gameStats;
@@ -433,6 +471,8 @@
         private Label label5;
         private libraries.CustomControls.CustomGroupBox playerInfo;
         private FlowLayoutPanel flp_Hearts;
-        private Label label9;
+        private libraries.CustomControls.CustomPictureBox customPictureBox1;
+        private libraries.CustomControls.CustomButton customButton3;
+        private libraries.CustomControls.CustomButton customButton4;
     }
 }

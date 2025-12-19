@@ -14,9 +14,11 @@ namespace WordleClient
             //CustomSound.ToggleMute();
             ProfileState.Load();
             customPictureBox1.Image = ProfileState.GetAvatar();
+
             if (!CustomSound.IsMuted()) CustomSound.PlayBackgroundLoop();
-            btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
-            //ThemeManager.ApplyTheme(this);
+            btn_Sound.Image = CustomSound.IsMuted() 
+                ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) 
+                : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
         }
         private void Exit_Click(object sender, EventArgs e)
         {
@@ -66,8 +68,10 @@ namespace WordleClient
         private void btn_Stats_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            CustomDgv customDgv = new CustomDgv();
-            customDgv.ShowDialog();
+            this.Hide();
+            Statistic statistic = new Statistic();
+            statistic.ShowDialog();
+            this.Show();
         }
         private void FormOption_FormClosed(object? sender, FormClosedEventArgs e)
         {
