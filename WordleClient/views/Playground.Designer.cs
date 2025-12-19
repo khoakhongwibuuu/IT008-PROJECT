@@ -193,10 +193,10 @@
             // lbl_Hint1_Placeholder
             // 
             lbl_Hint1_Placeholder.AutoSize = true;
-            lbl_Hint1_Placeholder.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lbl_Hint1_Placeholder.Font = new Font("Segoe UI", 12F);
             lbl_Hint1_Placeholder.Location = new Point(9, 71);
             lbl_Hint1_Placeholder.Name = "lbl_Hint1_Placeholder";
-            lbl_Hint1_Placeholder.Size = new Size(84, 21);
+            lbl_Hint1_Placeholder.Size = new Size(77, 21);
             lbl_Hint1_Placeholder.TabIndex = 11;
             lbl_Hint1_Placeholder.Text = "Unknown";
             // 
@@ -213,10 +213,10 @@
             // lbl_Hint2_Placeholder
             // 
             lbl_Hint2_Placeholder.AutoSize = true;
-            lbl_Hint2_Placeholder.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lbl_Hint2_Placeholder.Font = new Font("Segoe UI", 12F);
             lbl_Hint2_Placeholder.Location = new Point(9, 122);
             lbl_Hint2_Placeholder.Name = "lbl_Hint2_Placeholder";
-            lbl_Hint2_Placeholder.Size = new Size(84, 21);
+            lbl_Hint2_Placeholder.Size = new Size(77, 21);
             lbl_Hint2_Placeholder.TabIndex = 13;
             lbl_Hint2_Placeholder.Text = "Unknown";
             // 

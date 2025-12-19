@@ -287,35 +287,58 @@ namespace WordleClient.views
             PositionKeyboard();
         }
 
-        private void UpdateKeyboardColors(StateArray result)
+        private void UpdateKeyboardColors(StateArray? result, Hint? hintData)
         {
-            for (int col = 0; col < cols; col++)
+            if (result == null && hintData == null) return;
+            if (result != null && hintData == null)
             {
-                char c = currentString[col];
-                char up = char.ToUpper(c);
-
-                if (!keyboardKeys.ContainsKey(up)) continue;
-
-                var key = keyboardKeys[up];
-
-                switch (result.Get(col))
+                for (int col = 0; col < result.Length; col++)
                 {
-                    case TriState.MATCH:
-                        // MATCH has highest priority
-                        key.SetBackgroundColor(Color.FromArgb(0x53, 0x8D, 0x4E));
-                        break;
+                    char c = currentString[col];
+                    char up = char.ToUpper(c);
 
-                    case TriState.INVALID_ORDER:
-                        // MATCH has priority over INVALID_ORDER
-                        if (key.BackColor != Color.FromArgb(0x53, 0x8D, 0x4E))
-                            key.SetBackgroundColor(Color.FromArgb(0xB5, 0x9F, 0x3B));
-                        break;
+                    if (!keyboardKeys.ContainsKey(up)) continue;
 
-                    case TriState.NOT_EXIST:
-                        // MATCH and INVALID_ORDER have priority over NOT_EXIST
-                        if (key.BackColor != Color.FromArgb(0x53, 0x8D, 0x4E) && key.BackColor != Color.FromArgb(0xB5, 0x9F, 0x3B))
-                            key.SetBackgroundColor(Color.FromArgb(0x3A, 0x3A, 0x3C));
-                        break;
+                    var key = keyboardKeys[up];
+
+                    switch (result.Get(col))
+                    {
+                        case TriState.MATCH:
+                            // MATCH has highest priority
+                            key.SetBackgroundColor(Color.FromArgb(0x53, 0x8D, 0x4E));
+                            break;
+
+                        case TriState.INVALID_ORDER:
+                            // MATCH has priority over INVALID_ORDER
+                            if (key.BackColor != Color.FromArgb(0x53, 0x8D, 0x4E))
+                                key.SetBackgroundColor(Color.FromArgb(0xB5, 0x9F, 0x3B));
+                            break;
+
+                        case TriState.NOT_EXIST:
+                            // MATCH and INVALID_ORDER have priority over NOT_EXIST
+                            if (key.BackColor != Color.FromArgb(0x53, 0x8D, 0x4E) && key.BackColor != Color.FromArgb(0xB5, 0x9F, 0x3B))
+                                key.SetBackgroundColor(Color.FromArgb(0x3A, 0x3A, 0x3C));
+                            break;
+                    }
+                }
+            }
+            else if (result == null && hintData != null)
+            {
+                if (hintData.h_type == HintType.Present && hintData.pre_letter != null)
+                {
+                    char c = (char)hintData.pre_letter;
+                    char up = char.ToUpper(c);
+                    var key = keyboardKeys[up];
+                    if (key.BackColor != Color.FromArgb(0x53, 0x8D, 0x4E))
+                        key.SetBackgroundColor(Color.FromArgb(0xB5, 0x9F, 0x3B));
+                }
+                else
+                {
+                    char[] greyedOut = (hintData.abs_type == AbsentType.VOWEL)
+                        ? ['A', 'E', 'I', 'O', 'U']
+                        : ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'];
+                    foreach (char c in greyedOut)
+                        keyboardKeys[c].SetBackgroundColor(Color.FromArgb(0x3A, 0x3A, 0x3C));
                 }
             }
         }
@@ -326,6 +349,7 @@ namespace WordleClient.views
             {
                 CustomSound.PlayClick();
                 Hint hintObject = HintGetter.GetHint(gameInstance.GetToken(), HintRemaining + GameSeed);
+                UpdateKeyboardColors(null, hintObject);
                 String literalHint = HintGetter.HintTranslator(hintObject);
 
                 CustomSound.PlayClickAlert();
@@ -381,7 +405,7 @@ namespace WordleClient.views
                         var result = gameInstance.EvaluateGuess(currentString);
 
                         await FlipRow(currentRow, result);
-                        UpdateKeyboardColors(result);
+                        UpdateKeyboardColors(result, null);
 
                         if (result.IsFullValue(TriState.MATCH))
                         {
