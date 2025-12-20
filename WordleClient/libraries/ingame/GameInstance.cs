@@ -8,25 +8,16 @@ namespace WordleClient.libraries.ingame
 
         // GI Params
         private readonly WDBRecord targetRecord;
-        private List<string> previousGuesses;
-        private List<Hint> previousHints;
-        private Dictionary<char, TriState> keyboardLetterStates;
 
         public GameInstance(WDBRecord targetRecord)
         {
             WordDatabaseReader wdr = new();
             this.targetRecord = targetRecord;
-            this.previousGuesses = [];
-            this.previousHints = [];
-            this.keyboardLetterStates = new Dictionary<char, TriState>();
             wdr.Close();
         }
         public GameInstance(string testWord)
         {
             this.targetRecord = new WDBRecord { TOKEN = testWord, GROUP_NAME = "undefined" };
-            this.previousGuesses = [];
-            this.previousHints = [];
-            this.keyboardLetterStates = new Dictionary<char, TriState>();
         }
         public StateArray EvaluateGuess(string guess)
         {
@@ -62,7 +53,6 @@ namespace WordleClient.libraries.ingame
                 }
                 result.Set(i, found ? TriState.INVALID_ORDER : TriState.NOT_EXIST);
             }
-            previousGuesses.Add(guess);
             return result;
         }
         public string GetToken()
@@ -82,7 +72,7 @@ namespace WordleClient.libraries.ingame
             // Destructor
             targetRecord.TOKEN = string.Empty;
             targetRecord.GROUP_NAME = string.Empty;
-            previousGuesses.Clear();
+            targetRecord.LEVEL = string.Empty;
         }
     }
 }
