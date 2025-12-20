@@ -7,69 +7,52 @@ namespace WordleClient.views
 {
     public partial class ClientLobby : CustomForm
     {
-        public bool ReturnToMainOnClose { get; set; } = true;
-
         private const int ServerPort = 5000;
+        public bool ReturnToMainOnClose { get; set; } = true;
+        private string? serverUsername;
 
         public ClientLobby()
         {
             InitializeComponent();
         }
+
         private async void btn_search_Click(object sender, EventArgs e)
         {
-            string ip = textBox1.Text.Trim();
-
-            if (!System.Net.IPAddress.TryParse(ip, out _))
-            {
-                MessageBox.Show("Invalid IP Address");
-                return;
-            }
-
             btn_search.Enabled = false;
-            lblStatus.Text = "Connecting...";
+            lblStatus.Text = "Searching...";
 
             try
             {
-                await ConnectionManager.Connection.ConnectAsync(ip, ServerPort);
-                lblStatus.Text = "Connected to server ✅";
+                PacketConnectionManager.PacketReceived += OnPacketReceived;
+                PacketConnectionManager.Disconnected += OnDisconnected;
+
+                await PacketConnectionManager.ConnectAsync(
+                    textBox1.Text.Trim(), ServerPort);
+
+                lblStatus.Text = "Server found. Ready to join.";
+                btn_JoinRequest.Visible = true;
+                btn_JoinRequest.Enabled = true;
             }
             catch
             {
-                lblStatus.Text = "Server not reachable ❌";
+                MessageBox.Show("No room found at this IP");
+                lblStatus.Text = "Standby";
             }
             finally
             {
                 btn_search.Enabled = true;
             }
         }
-        private void btn_JoinRequest_Click(object sender, EventArgs e)
+
+        private async void btn_JoinRequest_Click(object sender, EventArgs e)
         {
-            CustomSound.PlayClick();
+            btn_JoinRequest.Enabled = false;
+            lblStatus.Text = "Waiting for host approval...";
 
-            if (!ConnectionManager.IsConnected)
-            {
-                MessageBox.Show("Not connected to server");
-                return;
-            }
+            string username = ProfileState.GetPlayername();
 
-            //var joinPacket = new JOIN_REQUEST_Packet(
-            //    username: txtUsername.Text,
-            //    sender: "client",
-            //    recipient: "server");
-
-            //await ConnectionManager.Connection.SendAsync(joinPacket);
-        }
-
-        private void btn_Exit_Click(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
-            ConnectionManager.Connection.Disconnect();
-
-            // When re-direct to Client-Playground, call these 2 lines b4 redirecting
-            ConnectionManager.Connection.PacketReceived -= OnPacketReceived;
-            ConnectionManager.Connection.Disconnected -= OnDisconnected;
-
-            this.Close();
+            await PacketConnectionManager.SendAsync(
+                new JOIN_REQUEST_Packet(username, username, "Server"));
         }
 
         private void OnPacketReceived(Packet packet)
@@ -78,15 +61,67 @@ namespace WordleClient.views
             {
                 switch (packet)
                 {
-                    case JOIN_RESPONSE_Packet join:
-                        lblStatus.Text = join.Success
-                            ? "Joined server successfully"
-                            : "Join failed";
-                        break;
+                    case JOIN_APPROVAL_RESPONSE_Packet res:
+                        {
+                            string[] parts = res.Username.Split('|');
+                            string name = parts[0];
+                            string? reason = parts.Length > 1 ? parts[1] : null;
 
-                    case GENERAL_MESSAGE_Packet msg:
-                        //listBoxLog.Items.Add(msg.Message);
-                        break;
+                            if (!res.Approved)
+                            {
+                                MessageBox.Show(
+                                    reason ?? "Join request denied",
+                                    "Denied",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
+
+                                btn_JoinRequest.Enabled = true;
+                                btn_JoinRequest.Visible = true;
+                                lblStatus.Text = "Standby";
+                                return;
+                            }
+
+                            lblStatus.Text = $"Joined {name}'s room";
+                            btn_JoinRequest.Visible = false;
+                            break;
+                        }
+
+                    case PLAYER_LIST_SYNC_Packet list:
+                        {
+                            listBoxPlayers.Items.Clear();
+
+                            foreach (string raw in list.Players)
+                            {
+                                Player p = Player.Parse(raw);
+
+                                serverUsername ??= p.Username;
+
+                                if (p.Username == serverUsername)
+                                    listBoxPlayers.Items.Add($"HOST: {p.Username}");
+                                else
+                                    listBoxPlayers.Items.Add(p.Username);
+                            }
+                            break;
+                        }
+
+                    case PLAYER_DISCONNECT_Packet:
+                        {
+                            listBoxPlayers.Items.Clear();
+                            lblStatus.Text = "You have been kicked";
+
+                            MessageBox.Show(
+                                "You have been kicked from the room by the host.",
+                                "Kicked",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+
+                            btn_search.Enabled = true;
+                            btn_JoinRequest.Visible = false;
+
+                            PacketConnectionManager.Disconnect();
+                            lblStatus.Text = "Standby";
+                            break;
+                        }
                 }
             });
         }
@@ -95,14 +130,15 @@ namespace WordleClient.views
         {
             BeginInvoke(() =>
             {
-                lblStatus.Text = "Disconnected from server";
+                lblStatus.Text = "Disconnected";
+                listBoxPlayers.Items.Clear();
+                btn_JoinRequest.Visible = false;
             });
         }
-
-        private void ClientLobby_Load(object sender, EventArgs e)
+        private void btn_Exit_Click(object sender, EventArgs e)
         {
-            ConnectionManager.Connection.PacketReceived += OnPacketReceived;
-            ConnectionManager.Connection.Disconnected += OnDisconnected;
+            CustomSound.PlayClick();
+            Close();
         }
     }
 }

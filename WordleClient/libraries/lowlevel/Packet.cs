@@ -20,7 +20,13 @@ namespace WordleClient.libraries.lowlevel
         HINT_RESPONSE = 7,
         GENERAL_MESSAGE = 8,
         PLAYER_DISCONNECT = 9,
-        SERVER_SHUTDOWN = 10
+        SERVER_SHUTDOWN = 10,
+        PING = 11,
+        PONG = 12,
+        PLAYER_LIST_SYNC = 13,
+        JOIN_APPROVAL_REQUEST = 14,
+        JOIN_APPROVAL_RESPONSE = 15
+
     }
 
     /* ============================================================
@@ -60,7 +66,6 @@ namespace WordleClient.libraries.lowlevel
             Username = username;
         }
     }
-
     public sealed class JOIN_RESPONSE_Packet : Packet
     {
         public bool Success { get; init; }
@@ -71,7 +76,6 @@ namespace WordleClient.libraries.lowlevel
             Success = success;
         }
     }
-
     public sealed class START_GAME_Packet : Packet
     {
         public int WordLength { get; init; }
@@ -90,7 +94,6 @@ namespace WordleClient.libraries.lowlevel
             MaxAttempts = maxAttempts;
         }
     }
-
     public sealed class SEND_GUESS_Packet : Packet
     {
         public string Guess { get; init; }
@@ -101,7 +104,6 @@ namespace WordleClient.libraries.lowlevel
             Guess = guess;
         }
     }
-
     public sealed class SEND_HINT_REQUEST_Packet : Packet
     {
         public string PlayerName { get; init; }
@@ -115,7 +117,6 @@ namespace WordleClient.libraries.lowlevel
             Seed = seed;
         }
     }
-
     public sealed class HINT_RESPONSE_Packet : Packet
     {
         public Hint Hint { get; init; }
@@ -126,7 +127,6 @@ namespace WordleClient.libraries.lowlevel
             Hint = hint;
         }
     }
-
     public sealed class GENERAL_MESSAGE_Packet : Packet
     {
         public string Message { get; init; }
@@ -137,7 +137,6 @@ namespace WordleClient.libraries.lowlevel
             Message = message;
         }
     }
-
     public sealed class PLAYER_DISCONNECT_Packet : Packet
     {
         public string PlayerName { get; init; }
@@ -148,12 +147,68 @@ namespace WordleClient.libraries.lowlevel
             PlayerName = playerName;
         }
     }
-
     public sealed class SERVER_SHUTDOWN_Packet : Packet
     {
         public SERVER_SHUTDOWN_Packet(string sender, string recipient)
             : base(PacketType.SERVER_SHUTDOWN, sender, recipient)
         {
+        }
+    }
+    public sealed class PING_Packet : Packet
+    {
+        public long Timestamp { get; init; }
+
+        public PING_Packet(string sender, string recipient)
+            : base(PacketType.PING, sender, recipient)
+        {
+            Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        }
+    }
+    public sealed class PONG_Packet : Packet
+    {
+        public long Timestamp { get; init; }
+
+        public PONG_Packet(long timestamp, string sender, string recipient)
+            : base(PacketType.PONG, sender, recipient)
+        {
+            Timestamp = timestamp;
+        }
+    }
+    public sealed class PLAYER_LIST_SYNC_Packet : Packet
+    {
+        public List<string> Players { get; init; }
+
+        public PLAYER_LIST_SYNC_Packet(
+            List<string> players,
+            string sender,
+            string recipient)
+            : base(PacketType.PLAYER_LIST_SYNC, sender, recipient)
+        {
+            Players = players;
+        }
+    }
+
+    public sealed class JOIN_APPROVAL_REQUEST_Packet : Packet
+    {
+        public string Username { get; init; }
+
+        public JOIN_APPROVAL_REQUEST_Packet(string username, string sender)
+            : base(PacketType.JOIN_APPROVAL_REQUEST, sender, "Host")
+        {
+            Username = username;
+        }
+    }
+    public sealed class JOIN_APPROVAL_RESPONSE_Packet : Packet
+    {
+        public string Username { get; init; }
+        public bool Approved { get; init; }
+
+        public JOIN_APPROVAL_RESPONSE_Packet(
+            string username, bool approved, string sender)
+            : base(PacketType.JOIN_APPROVAL_RESPONSE, sender, "Server")
+        {
+            Username = username;
+            Approved = approved;
         }
     }
 
@@ -211,6 +266,23 @@ namespace WordleClient.libraries.lowlevel
 
                     PacketType.SERVER_SHUTDOWN =>
                         JsonSerializer.Deserialize<SERVER_SHUTDOWN_Packet>(json),
+
+                    PacketType.PING =>
+                        JsonSerializer.Deserialize<PING_Packet>(json),
+
+                    PacketType.PONG =>
+                        JsonSerializer.Deserialize<PONG_Packet>(json),
+
+                    PacketType.PLAYER_LIST_SYNC =>
+                        JsonSerializer.Deserialize<PLAYER_LIST_SYNC_Packet>(json),
+
+                    PacketType.JOIN_APPROVAL_REQUEST =>
+                        JsonSerializer.Deserialize<JOIN_APPROVAL_REQUEST_Packet>(json),
+
+                    PacketType.JOIN_APPROVAL_RESPONSE =>
+                        JsonSerializer.Deserialize<JOIN_APPROVAL_RESPONSE_Packet>(json),
+
+
 
                     _ => null
                 };
