@@ -12,9 +12,9 @@ namespace WordleClient.views
         private string? serverUsername;
 
         // GUARDS
-        private bool _handledKick = false;
         private bool _sessionEnded = false;
         private bool _eventsSubscribed = false;
+        private bool _connectionReady = false;
 
         public ClientLobby()
         {
@@ -23,7 +23,7 @@ namespace WordleClient.views
 
         private async void btn_search_Click(object sender, EventArgs e)
         {
-            _handledKick = false;
+            _connectionReady = false;
             _sessionEnded = false;
 
             btn_search.Enabled = false;
@@ -47,18 +47,29 @@ namespace WordleClient.views
                 await PacketConnectionManager.ConnectAsync(
                     textBox1.Text.Trim(), ServerPort);
 
+                _connectionReady = true;
                 lblStatus.Text = "Server found. Ready to join.";
                 btn_JoinRequest.Visible = true;
             }
             catch
             {
                 MessageBox.Show("No room found at this IP");
+                btn_search.Enabled = true;
                 lblStatus.Text = "Standby";
             }
         }
 
         private async void btn_JoinRequest_Click(object sender, EventArgs e)
         {
+            CustomSound.PlayClick();
+
+            if (!_connectionReady || !PacketConnectionManager.IsConnected)
+            {
+                lblStatus.Text = "Connection lost. Please search again.";
+                btn_JoinRequest.Visible = false;
+                return;
+            }
+
             btn_JoinRequest.Visible = false;
             lblStatus.Text = "Waiting for host approval...";
 
@@ -113,7 +124,7 @@ namespace WordleClient.views
 
                     case PLAYER_LIST_SYNC_Packet list:
                         {
-                            if (_handledKick) 
+                            if (_sessionEnded)
                                 return;
 
                             listBoxPlayers.Items.Clear();
@@ -137,10 +148,8 @@ namespace WordleClient.views
                         {
                             listBoxPlayers.Items.Clear();
 
-                            if (_handledKick || _sessionEnded)
+                            if (_sessionEnded)
                                 return;
-
-                            _handledKick = true;
 
                             listBoxPlayers.Items.Clear();
                             lblStatus.Text = "You have been kicked";
@@ -175,17 +184,20 @@ namespace WordleClient.views
         {
             BeginInvoke(() =>
             {
-                if (_handledKick)
+                _connectionReady = false;
+                if (_sessionEnded)
                     return;
 
                 lblStatus.Text = "Disconnected";
                 listBoxPlayers.Items.Clear();
                 btn_JoinRequest.Visible = false;
+                btn_search.Enabled = true;
             });
         }
         private void btn_Exit_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
+            _connectionReady = false;
 
             // CRITICAL: fully reset static connection state
             PacketConnectionManager.PacketReceived -= OnPacketReceived;
