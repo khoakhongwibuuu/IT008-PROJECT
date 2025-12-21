@@ -11,14 +11,10 @@ namespace WordleClient
         }
         private void MainMenu_Load(object sender, EventArgs e)
         {
-            //CustomSound.ToggleMute();
             ProfileState.Load();
             customPictureBox1.Image = ProfileState.GetAvatar();
-
             if (!CustomSound.IsMuted()) CustomSound.PlayBackgroundLoop();
-            btn_Sound.Image = CustomSound.IsMuted() 
-                ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) 
-                : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
+            btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
         }
         private void Exit_Click(object sender, EventArgs e)
         {
@@ -55,7 +51,6 @@ namespace WordleClient
             clientLobby.Show();
             this.Hide();
         }
-
         private void btn_Server_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
@@ -64,7 +59,6 @@ namespace WordleClient
             serverLobby.Show();
             this.Hide();
         }
-
         private void btn_Stats_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
@@ -75,7 +69,6 @@ namespace WordleClient
         }
         private void FormOption_FormClosed(object? sender, FormClosedEventArgs e)
         {
-            // Only show MainMenu again when FormOption indicates it should return to main.
             if (sender is FormOption fo && fo.ReturnToMainOnClose)
             {
                 this.Show();
@@ -83,7 +76,6 @@ namespace WordleClient
         }
         private void ClientLobby_FormClosed(object? sender, FormClosedEventArgs e)
         {
-            // Only show MainMenu again when ClientLobby indicates it should return to main.
             if (sender is ClientLobby cl && cl.ReturnToMainOnClose)
             {
                 this.Show();
@@ -91,7 +83,6 @@ namespace WordleClient
         }
         private void ServerLobby_FormClosed(object? sender, FormClosedEventArgs e)
         {
-            // Only show MainMenu again when ServerLobby indicates it should return to main.
             if (sender is ServerLobby sl && sl.ReturnToMainOnClose)
             {
                 this.Show();
@@ -102,7 +93,11 @@ namespace WordleClient
             CustomSound.PlayClick();
             FormProfile formProfile = new FormProfile();
             formProfile.ShowDialog();
-            customPictureBox1.Image = ProfileState.GetAvatar();
+            if (formProfile.RequireRestart)
+            {
+                MessageBox.Show("Changes will take effect after restarting the application.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Application.Restart();
+            }
         }
         private void btn_Guide_Click(object sender, EventArgs e)
         {
