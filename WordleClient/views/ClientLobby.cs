@@ -7,9 +7,13 @@ namespace WordleClient.views
 {
     public partial class ClientLobby : CustomForm
     {
-        private const int ServerPort = 5000;
+        private const int ServerPort = 12880;
         public bool ReturnToMainOnClose { get; set; } = true;
         private string? serverUsername;
+
+        // GUARDS
+        private bool _handledKick = false;
+        private bool _sessionEnded = false;
 
         public ClientLobby()
         {
@@ -18,6 +22,9 @@ namespace WordleClient.views
 
         private async void btn_search_Click(object sender, EventArgs e)
         {
+            _handledKick = false;
+            _sessionEnded = false;
+
             btn_search.Enabled = false;
             lblStatus.Text = "Searching...";
 
@@ -31,22 +38,17 @@ namespace WordleClient.views
 
                 lblStatus.Text = "Server found. Ready to join.";
                 btn_JoinRequest.Visible = true;
-                btn_JoinRequest.Enabled = true;
             }
             catch
             {
                 MessageBox.Show("No room found at this IP");
                 lblStatus.Text = "Standby";
             }
-            finally
-            {
-                btn_search.Enabled = true;
-            }
         }
 
         private async void btn_JoinRequest_Click(object sender, EventArgs e)
         {
-            btn_JoinRequest.Enabled = false;
+            btn_JoinRequest.Visible = false;
             lblStatus.Text = "Waiting for host approval...";
 
             string username = ProfileState.GetPlayername();
@@ -64,30 +66,45 @@ namespace WordleClient.views
                     case JOIN_APPROVAL_RESPONSE_Packet res:
                         {
                             string[] parts = res.Username.Split('|');
-                            string name = parts[0];
-                            string? reason = parts.Length > 1 ? parts[1] : null;
 
                             if (!res.Approved)
                             {
+                                if (_sessionEnded)
+                                    return;
+
+                                _sessionEnded = true;
+
+                                string reason = parts.Length > 1
+                                    ? parts[1]
+                                    : "Join request denied";
+
                                 MessageBox.Show(
-                                    reason ?? "Join request denied",
+                                    reason,
                                     "Denied",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Warning);
 
                                 btn_JoinRequest.Enabled = true;
                                 btn_JoinRequest.Visible = true;
+                                btn_search.Enabled = true;
+
                                 lblStatus.Text = "Standby";
+                                PacketConnectionManager.Disconnect();
                                 return;
                             }
 
-                            lblStatus.Text = $"Joined {name}'s room";
+                            // approved case stays unchanged
+                            lblStatus.Text = $"Joined {parts[0]}'s room";
                             btn_JoinRequest.Visible = false;
                             break;
                         }
 
+
                     case PLAYER_LIST_SYNC_Packet list:
                         {
+                            if (_handledKick) 
+                                return;
+
                             listBoxPlayers.Items.Clear();
 
                             foreach (string raw in list.Players)
@@ -95,6 +112,7 @@ namespace WordleClient.views
                                 Player p = Player.Parse(raw);
 
                                 serverUsername ??= p.Username;
+                                lblStatus.Text = $"Joined {serverUsername}'s room successfully.";
 
                                 if (p.Username == serverUsername)
                                     listBoxPlayers.Items.Add($"HOST: {p.Username}");
@@ -106,6 +124,13 @@ namespace WordleClient.views
 
                     case PLAYER_DISCONNECT_Packet:
                         {
+                            listBoxPlayers.Items.Clear();
+
+                            if (_handledKick || _sessionEnded)
+                                return;
+
+                            _handledKick = true;
+
                             listBoxPlayers.Items.Clear();
                             lblStatus.Text = "You have been kicked";
 
@@ -122,14 +147,26 @@ namespace WordleClient.views
                             lblStatus.Text = "Standby";
                             break;
                         }
+
+                    case START_GAME_Packet start_pkg:
+                        {
+                            MessageBox.Show(
+                                $"{start_pkg.WordLength}-{start_pkg.MaxAttempts}-{start_pkg.Level}-{start_pkg.Topic}",
+                                "Packet Received",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                            break;
+                        }
                 }
             });
         }
-
         private void OnDisconnected()
         {
             BeginInvoke(() =>
             {
+                if (_handledKick)
+                    return;
+
                 lblStatus.Text = "Disconnected";
                 listBoxPlayers.Items.Clear();
                 btn_JoinRequest.Visible = false;

@@ -84,11 +84,12 @@ namespace WordleClient.views
             // 
             // listBoxPlayers
             // 
+            listBoxPlayers.BorderStyle = BorderStyle.None;
             listBoxPlayers.FormattingEnabled = true;
             listBoxPlayers.ItemHeight = 25;
             listBoxPlayers.Location = new Point(31, 45);
             listBoxPlayers.Name = "listBoxPlayers";
-            listBoxPlayers.Size = new Size(411, 254);
+            listBoxPlayers.Size = new Size(411, 250);
             listBoxPlayers.TabIndex = 0;
             // 
             // customGroupBox2

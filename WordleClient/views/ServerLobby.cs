@@ -8,7 +8,7 @@ namespace WordleClient.views
 {
     public partial class ServerLobby : CustomForm
     {
-        private const int ServerPort = 5000;
+        private const int ServerPort = 12880;
         public bool ReturnToMainOnClose { get; set; } = true;
 
         // Pending approval UI
@@ -32,7 +32,7 @@ namespace WordleClient.views
 
         private void ServerLobby_Load(object sender, EventArgs e)
         {
-            btn_StartGame.Enabled = false;
+            btn_StartGame.Visible = false;
             btn_StartGame.Text = "At least 2 players is needed";
 
             panelRequests = CreateInnerPanel(GB_PlayerWaitForApproval);
@@ -131,18 +131,36 @@ namespace WordleClient.views
                 Width = panelRequests.ClientSize.Width - 5,
                 Height = 50,
                 BorderStyle = BorderStyle.FixedSingle,
-                Tag = player
+                Tag = player,
+                BackColor = Color.Transparent
             };
 
             Label lbl = new()
             {
                 Text = $"{player.Username} ({player.IPAddress})",
                 Location = new Point(10, 15),
-                AutoSize = true
+                AutoSize = true,
+                ForeColor = Color.Black
             };
 
-            Button btnAccept = new() { Text = "Accept", Width = 70, Left = panel.Width - 160, Top = 10 };
-            Button btnDeny = new() { Text = "Deny", Width = 70, Left = panel.Width - 80, Top = 10 };
+            Button btnAccept = new()
+            {
+                Text = "✓",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point),
+                Size = new Size(40, 40),
+                Left = panel.Width - 120,
+                Top = 5,
+                ForeColor = Color.Black
+            };
+            Button btnDeny = new()
+            {
+                Text = "✘",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point),
+                Size = new Size(40, 40),
+                Left = panel.Width - 60,
+                Top = 5,
+                ForeColor = Color.Black
+            };
 
             btnAccept.Click += (_, _) => HandleApproval(player, true);
             btnDeny.Click += (_, _) => Deny(player, "Denied by host");
@@ -238,10 +256,17 @@ namespace WordleClient.views
             {
                 Text = player.Username,
                 Location = new Point(10, 12),
-                AutoSize = true
+                AutoSize = true,
+                ForeColor = Color.Black
             };
 
-            Button btnKick = new() { Text = "Kick", Width = 70, Left = panel.Width - 80, Top = 8 };
+            Button btnKick = new() { 
+                Text = "Kick",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point),
+                ForeColor = Color.Black,
+                Size = new Size(60, 30),
+                Location = new Point(panel.Width - 80, 8)
+            };
             btnKick.Click += (_, _) => KickPlayer(player);
 
             panel.Controls.Add(lbl);
@@ -254,7 +279,8 @@ namespace WordleClient.views
 
         private void KickPlayer(Player player)
         {
-            GameRoom.RemoveClient(player);
+            if (!GameRoom.RemoveClient(player))
+                return; 
 
             ServerManager.SendTo(
                 player.IPAddress,
@@ -304,12 +330,12 @@ namespace WordleClient.views
         {
             if (_approvedPlayers.Count + 1 >= 2)
             {
-                btn_StartGame.Enabled = true;
+                btn_StartGame.Visible = true;
                 btn_StartGame.Text = "Start Game";
             }
             else
             {
-                btn_StartGame.Enabled = false;
+                btn_StartGame.Visible = false;
                 btn_StartGame.Text = "At least 2 players is needed";
             }
         }
@@ -329,12 +355,25 @@ namespace WordleClient.views
         private void btn_StartGame_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-
-            var startPacket = new START_GAME_Packet(
-                5, "General", "Normal", 6,
-                "Server", "All");
+            WordDatabaseReader wdr = new();
+            WDBRecord? TheChosenOne = wdr.ReadRandomWord(null, null);
+            if (TheChosenOne == null)
+            {
+                MessageBox.Show("Failed to select a word from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            var startPacket = new START_GAME_Packet
+                (
+                TheChosenOne.TOKEN.Length,
+                TheChosenOne.GROUP_NAME,
+                TheChosenOne.LEVEL,
+                trackBarGuess.Value,
+                "Server",
+                "All"
+                );
 
             ServerManager.Broadcast(startPacket);
+
         }
     }
 }

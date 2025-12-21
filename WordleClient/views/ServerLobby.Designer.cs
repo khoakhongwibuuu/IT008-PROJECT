@@ -219,7 +219,6 @@ namespace WordleClient.views
             btn_StartGame.Name = "btn_StartGame";
             btn_StartGame.Size = new Size(469, 65);
             btn_StartGame.TabIndex = 8;
-            btn_StartGame.Text = "At least 2 players is needed";
             btn_StartGame.TextAlign = ContentAlignment.MiddleCenter;
             btn_StartGame.TextColor = Color.White;
             btn_StartGame.Click += btn_StartGame_Click;
