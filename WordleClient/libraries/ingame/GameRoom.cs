@@ -1,18 +1,14 @@
 ﻿using WordleClient.libraries.lowlevel;
-
 namespace WordleClient.libraries.ingame
 {
     public static class GameRoom
     {
-        private const int MaxPlayers = 4;
-
+        private
+        const int MaxPlayers = 4;
         private static Player? host;
         private static readonly List<Player> clients = new();
-
-        public static bool HasSpace =>
-            host != null && clients.Count + 1 < MaxPlayers;
+        public static bool HasSpace => host != null && clients.Count + 1 < MaxPlayers;
         public static Player? Host => host;
-
         public static void SetHost(Player player)
         {
             host = player;

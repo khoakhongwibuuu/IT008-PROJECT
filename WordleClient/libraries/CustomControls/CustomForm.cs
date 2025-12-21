@@ -1,20 +1,21 @@
-﻿
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Drawing.Drawing2D;
-
 namespace WordleClient.libraries.CustomControls
 {
     public class CustomForm : Form
     {
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll")] 
         public static extern bool ReleaseCapture();
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll")] 
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         private int borderRadius = 40;
         private GraphicsPath? roundedPath;
         public int BorderRadius
         {
-            get { return borderRadius; }
+            get
+            {
+                return borderRadius;
+            }
             set
             {
                 borderRadius = value;
@@ -25,17 +26,15 @@ namespace WordleClient.libraries.CustomControls
         {
             this.FormBorderStyle = FormBorderStyle.None;
             this.BackColor = Color.White;
-            //Turn on double buffering
             this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
             this.UpdateStyles();
             this.Resize += CustomForm_Resize;
-            UpdateRegion(); //Create initial region
+            UpdateRegion();
         }
         private void CustomForm_Resize(object? sender, EventArgs e)
         {
-            UpdateRegion(); //Update region on resize
+            UpdateRegion();
         }
-        //Update the region when border radius or size changes
         private void UpdateRegion()
         {
             if (roundedPath != null)
@@ -65,6 +64,5 @@ namespace WordleClient.libraries.CustomControls
                 SendMessage(this.Handle, 0x112, 0xf012, 0);
             }
         }
-
     }
 }

@@ -6,19 +6,27 @@ namespace WordleClient.libraries.StateFrom
 {
     internal class ProfileState
     {
-        // User profile fields
-        public string Nickname { get; set; } = Environment.UserName;
-        public string? AvatarPath { get; set; } = null;
+        public string Nickname
+        {
+            get;
+            set;
+        } = Environment.UserName;
+        public string? AvatarPath
+        {
+            get;
+            set;
+        } = null;
         private static readonly string saveFile = "profile.json";
         private static readonly string configFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WordleClient", "userdata");
-        public static ProfileState? Current { get; private set; } = new ProfileState();
-        
-        // Cached options for JSON serialization
+        public static ProfileState? Current
+        {
+            get;
+            private set;
+        } = new ProfileState();
         private static readonly JsonSerializerOptions jsonOptions = new()
         {
             WriteIndented = true
         };
-
         public static void Load()
         {
             string filepath = Path.Combine(configFolder, saveFile);
@@ -34,9 +42,7 @@ namespace WordleClient.libraries.StateFrom
         }
         public static void Save()
         {
-            if (!Directory.Exists(configFolder))
-                Directory.CreateDirectory(configFolder);
-            
+            if (!Directory.Exists(configFolder)) Directory.CreateDirectory(configFolder);
             string filePath = Path.Combine(configFolder, saveFile);
             string json = JsonSerializer.Serialize(Current, jsonOptions);
             File.WriteAllText(filePath, json);

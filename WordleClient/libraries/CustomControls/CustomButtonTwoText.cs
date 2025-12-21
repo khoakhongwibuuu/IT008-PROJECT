@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Drawing.Drawing2D;
-
 namespace WordleClient.libraries.CustomControls
 {
     public class CustomButtonTwoText : Control
     {
-        // Fields
         private string leftText = "Left";
         private string rightText = "Right";
         private Color leftBackColor = Color.MediumSlateBlue;
@@ -13,28 +11,76 @@ namespace WordleClient.libraries.CustomControls
         private Color borderColor = Color.DarkSlateBlue;
         private int borderSize = 2;
         private int borderRadius = 20;
-        // Properties
         [Category("Custom")]
-        public string LeftText { get => leftText; set { leftText = value; Invalidate(); } }
-
+        public string LeftText
+        {
+            get => leftText;
+            set
+            {
+                leftText = value;
+                Invalidate();
+            }
+        }
         [Category("Custom")]
-        public string RightText { get => rightText; set { rightText = value; Invalidate(); } }
-
+        public string RightText
+        {
+            get => rightText;
+            set
+            {
+                rightText = value;
+                Invalidate();
+            }
+        }
         [Category("Custom")]
-        public Color LeftBackColor { get => leftBackColor; set { leftBackColor = value; Invalidate(); } }
-
+        public Color LeftBackColor
+        {
+            get => leftBackColor;
+            set
+            {
+                leftBackColor = value;
+                Invalidate();
+            }
+        }
         [Category("Custom")]
-        public Color RightBackColor { get => rightBackColor; set { rightBackColor = value; Invalidate(); } }
-
+        public Color RightBackColor
+        {
+            get => rightBackColor;
+            set
+            {
+                rightBackColor = value;
+                Invalidate();
+            }
+        }
         [Category("Custom")]
-        public Color BorderColor { get => borderColor; set { borderColor = value; Invalidate(); } }
-
+        public Color BorderColor
+        {
+            get => borderColor;
+            set
+            {
+                borderColor = value;
+                Invalidate();
+            }
+        }
         [Category("Custom")]
-        public int BorderSize { get => borderSize; set { borderSize = value; Invalidate(); } }
-
+        public int BorderSize
+        {
+            get => borderSize;
+            set
+            {
+                borderSize = value;
+                Invalidate();
+            }
+        }
         [Category("Custom")]
-        public int BorderRadius { get => borderRadius; set { borderRadius = value; Invalidate(); } }
-        // Constructor
+        public int BorderRadius
+        {
+            get => borderRadius;
+            set
+            {
+                borderRadius = value;
+                Invalidate();
+            }
+        }
         public CustomButtonTwoText()
         {
             this.DoubleBuffered = true;
@@ -45,7 +91,6 @@ namespace WordleClient.libraries.CustomControls
             this.Size = new Size(200, 50);
             this.Cursor = Cursors.Hand;
         }
-        //Create round rectangle path
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)
         {
             GraphicsPath path = new GraphicsPath();
@@ -58,7 +103,6 @@ namespace WordleClient.libraries.CustomControls
             path.CloseFigure();
             return path;
         }
-        //Paint event
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -67,37 +111,29 @@ namespace WordleClient.libraries.CustomControls
             Rectangle rectSurface = this.ClientRectangle;
             Rectangle rectBorder = Rectangle.Inflate(rectSurface, -borderSize, -borderSize);
             int midX = rectSurface.Width / 2;
-            //Paint left half
             Rectangle leftRect = new Rectangle(rectSurface.X, rectSurface.Y, midX, rectSurface.Height);
-            using (GraphicsPath pathLeft = GetFigurePath(leftRect, borderRadius))
-            using (SolidBrush brushLeft = new SolidBrush(leftBackColor))
+            using (GraphicsPath pathLeft = GetFigurePath(leftRect, borderRadius)) using (SolidBrush brushLeft = new SolidBrush(leftBackColor))
             {
                 e.Graphics.FillRectangle(brushLeft, leftRect);
             }
-            //Paint right half
             Rectangle rightRect = new Rectangle(rectSurface.X + midX, rectSurface.Y, midX, rectSurface.Height);
             using (SolidBrush brushRight = new SolidBrush(rightBackColor))
             {
                 e.Graphics.FillRectangle(brushRight, rightRect);
             }
-            //Paint border
-            using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius - borderSize))
-            using (Pen penBorder = new Pen(borderColor, borderSize))
+            using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius - borderSize)) using (Pen penBorder = new Pen(borderColor, borderSize))
             {
                 penBorder.Alignment = PenAlignment.Inset;
                 e.Graphics.DrawPath(penBorder, pathBorder);
             }
-            //Paint center line
             using (Pen linePen = new Pen(borderColor, 1))
             {
                 int lineX = midX;
                 e.Graphics.DrawLine(linePen, lineX, 4, lineX, rectSurface.Height - 4);
             }
-            //Paint texts
-            TextRenderer.DrawText(e.Graphics, leftText, this.Font, leftRect, Color.White,TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-            TextRenderer.DrawText(e.Graphics, rightText, this.Font, rightRect, Color.White,TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+            TextRenderer.DrawText(e.Graphics, leftText, this.Font, leftRect, Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+            TextRenderer.DrawText(e.Graphics, rightText, this.Font, rightRect, Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
         }
-        //Animate on mouse down
         private Color originalLeft, originalRight;
         protected override void OnMouseDown(MouseEventArgs e)
         {

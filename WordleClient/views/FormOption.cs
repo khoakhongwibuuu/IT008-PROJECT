@@ -3,7 +3,6 @@ using WordleClient.libraries.StateFrom;
 using WordleClient.libraries.ingame;
 using WordleClient.libraries.lowlevel;
 using System.Diagnostics;
-
 namespace WordleClient.views
 {
     public partial class FormOption : CustomForm
@@ -11,11 +10,11 @@ namespace WordleClient.views
         private List<string> topics = new List<string>();
         private string? selectedTopic;
         private string? selectedDifficulty;
-
-        // When true MainMenu should be shown when this form closes.
-        // When false (e.g. we opened Playground) MainMenu will be shown by Playground's closed handler.
-        public bool ReturnToMainOnClose { get; set; } = true;
-
+        public bool ReturnToMainOnClose
+        {
+            get;
+            set;
+        } = true;
         public FormOption()
         {
             InitializeComponent();
@@ -27,18 +26,13 @@ namespace WordleClient.views
                 cbbTopic.Items.Add(topics[i]);
             }
             cbbTopic.Items.Add("(Random)");
-
-            // choose Random topic by default
             cbbTopic.SelectedIndex = topics.Count;
             int itemHeight = cbbTopic.ItemHeight;
             int visibleItems = 7;
             cbbTopic.DropDownHeight = itemHeight * visibleItems;
             cbbTopic.IntegralHeight = false;
-
-
             customGroupBox1.TabIndex = 0;
             selectedDifficulty = null;
-            //ThemeManager.ApplyTheme(this);
         }
         private void btn_Exit_Click(object sender, EventArgs e)
         {
@@ -50,20 +44,15 @@ namespace WordleClient.views
             CustomSound.PlayClick();
             int MaxGuessCount = trackBarGuess.Value;
             Debug.WriteLine($"START_BTN_OUTPUT: Param1={selectedTopic}, Param2={selectedDifficulty}");
-
             WordDatabaseReader wdr = new();
             WDBRecord? TheChosenOne = wdr.ReadRandomWord(selectedTopic, selectedDifficulty);
             wdr.Close();
             if (TheChosenOne == null)
             {
-                MessageBox.Show(
-                    "No word found for the selected topic and difficulty. Please with another criteria.",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error
-                );
+                MessageBox.Show("No word found for the selected topic and difficulty. Please with another criteria.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                // Create playground and ensure MainMenu will be shown when playground closes.
                 Playground pg = new(TheChosenOne, MaxGuessCount, selectedTopic, selectedDifficulty);
                 pg.FormClosed += (s, ev) =>
                 {
@@ -74,13 +63,8 @@ namespace WordleClient.views
                         CustomSound.PlayBackgroundLoop();
                     }
                 };
-
-                // Indicate that closing this FormOption should NOT return to MainMenu
                 this.ReturnToMainOnClose = false;
-
-                // Close this options form and show playground
                 this.Close();
-
                 CustomSound.StopBackground();
                 pg.Show();
             }
@@ -110,13 +94,11 @@ namespace WordleClient.views
         {
             selectedDifficulty = "EASY";
         }
-
         private void customLabel1_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
             trackBarGuess.Value = 6;
         }
-
         private void customLabel2_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
@@ -132,6 +114,5 @@ namespace WordleClient.views
             CustomSound.PlayClick();
             trackBarGuess.Value = 9;
         }
-
     }
 }

@@ -1,37 +1,97 @@
 ﻿using System.ComponentModel;
 using System.Drawing.Drawing2D;
-
 namespace WordleClient.libraries.CustomControls
 {
     public partial class CustomButton : Control
     {
-        // Fields
         private int borderSize = 2;
         private int borderRadius = 20;
         private Color borderColor = Color.FromArgb(153, 214, 214);
         private Color backgroundColor = Color.FromArgb(153, 214, 214);
         private Color textColor = Color.White;
         private Image? buttonImage;
-        private int imageSize = 24; //Size of the image
+        private int imageSize = 24;
         private ContentAlignment textAlign = ContentAlignment.MiddleCenter;
-        // Properties
         [Category("CustomControl")]
-        public int BorderSize { get => borderSize; set { borderSize = value; Invalidate(); } }
+        public int BorderSize
+        {
+            get => borderSize;
+            set
+            {
+                borderSize = value;
+                Invalidate();
+            }
+        }
         [Category("CustomControl")]
-        public int BorderRadius { get => borderRadius; set { borderRadius = value; Invalidate(); } }
+        public int BorderRadius
+        {
+            get => borderRadius;
+            set
+            {
+                borderRadius = value;
+                Invalidate();
+            }
+        }
         [Category("CustomControl")]
-        public Color BorderColor { get => borderColor; set { borderColor = value; Invalidate(); } }
+        public Color BorderColor
+        {
+            get => borderColor;
+            set
+            {
+                borderColor = value;
+                Invalidate();
+            }
+        }
         [Category("CustomControl")]
-        public Color BackgroundColor { get => backgroundColor; set { backgroundColor = value; Invalidate(); } }
+        public Color BackgroundColor
+        {
+            get => backgroundColor;
+            set
+            {
+                backgroundColor = value;
+                Invalidate();
+            }
+        }
         [Category("CustomControl")]
-        public Color TextColor { get => textColor; set { textColor = value; Invalidate(); } }
+        public Color TextColor
+        {
+            get => textColor;
+            set
+            {
+                textColor = value;
+                Invalidate();
+            }
+        }
         [Category("CustomControl")]
-        public Image? ButtonImage { get => buttonImage; set { buttonImage = value; Invalidate(); } }
+        public Image? ButtonImage
+        {
+            get => buttonImage;
+            set
+            {
+                buttonImage = value;
+                Invalidate();
+            }
+        }
         [Category("CustomControl")]
-        public int ImageSize { get => imageSize; set { imageSize = value; Invalidate(); } }
+        public int ImageSize
+        {
+            get => imageSize;
+            set
+            {
+                imageSize = value;
+                Invalidate();
+            }
+        }
         [Category("CustomControl")]
-        public ContentAlignment TextAlign { get => textAlign; set { textAlign = value; Invalidate(); } }
-        // Constructor
+        public ContentAlignment TextAlign
+        {
+            get => textAlign;
+            set
+            {
+                textAlign = value;
+                Invalidate();
+            }
+        }
         public CustomButton()
         {
             this.DoubleBuffered = true;
@@ -50,7 +110,6 @@ namespace WordleClient.libraries.CustomControls
                 borderRadius = this.Height;
             }
         }
-        //Create round rectangle path
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)
         {
             GraphicsPath path = new GraphicsPath();
@@ -63,32 +122,25 @@ namespace WordleClient.libraries.CustomControls
             path.CloseFigure();
             return path;
         }
-        //Start paint
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            //Fields
             Rectangle rectSurface = this.ClientRectangle;
             Rectangle rectBorder = Rectangle.Inflate(rectSurface, -borderSize, -borderSize);
-            //Paint surface
-            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius))
-            using (SolidBrush brush = new SolidBrush(backgroundColor))
+            using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius)) using (SolidBrush brush = new SolidBrush(backgroundColor))
             {
                 e.Graphics.FillPath(brush, pathSurface);
                 this.Region = new Region(pathSurface);
             }
-            //Paint border
             if (borderSize > 0)
             {
-                using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius - borderSize))
-                using (Pen penBorder = new Pen(borderColor, borderSize))
+                using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius - borderSize)) using (Pen penBorder = new Pen(borderColor, borderSize))
                 {
                     penBorder.Alignment = PenAlignment.Inset;
                     e.Graphics.DrawPath(penBorder, pathBorder);
                 }
             }
-            //Pain text and image
             int padding = 8;
             Rectangle textRect = rectSurface;
             if (buttonImage != null)
@@ -97,24 +149,39 @@ namespace WordleClient.libraries.CustomControls
                 e.Graphics.DrawImage(buttonImage, imageRect);
                 textRect = new Rectangle(imageRect.Right + padding, 0, this.Width - imageRect.Right - 2 * padding, this.Height);
             }
-            //Text alignment
             TextFormatFlags flags = TextFormatFlags.SingleLine;
             switch (textAlign)
             {
-                case ContentAlignment.TopLeft: flags |= TextFormatFlags.Top | TextFormatFlags.Left; break;
-                case ContentAlignment.TopCenter: flags |= TextFormatFlags.Top | TextFormatFlags.HorizontalCenter; break;
-                case ContentAlignment.TopRight: flags |= TextFormatFlags.Top | TextFormatFlags.Right; break;
-                case ContentAlignment.MiddleLeft: flags |= TextFormatFlags.VerticalCenter | TextFormatFlags.Left; break;
-                case ContentAlignment.MiddleCenter: flags |= TextFormatFlags.VerticalCenter | TextFormatFlags.HorizontalCenter; break;
-                case ContentAlignment.MiddleRight: flags |= TextFormatFlags.VerticalCenter | TextFormatFlags.Right; break;
-                case ContentAlignment.BottomLeft: flags |= TextFormatFlags.Bottom | TextFormatFlags.Left; break;
-                case ContentAlignment.BottomCenter: flags |= TextFormatFlags.Bottom | TextFormatFlags.HorizontalCenter; break;
-                case ContentAlignment.BottomRight: flags |= TextFormatFlags.Bottom | TextFormatFlags.Right; break;
+                case ContentAlignment.TopLeft:
+                    flags |= TextFormatFlags.Top | TextFormatFlags.Left;
+                    break;
+                case ContentAlignment.TopCenter:
+                    flags |= TextFormatFlags.Top | TextFormatFlags.HorizontalCenter;
+                    break;
+                case ContentAlignment.TopRight:
+                    flags |= TextFormatFlags.Top | TextFormatFlags.Right;
+                    break;
+                case ContentAlignment.MiddleLeft:
+                    flags |= TextFormatFlags.VerticalCenter | TextFormatFlags.Left;
+                    break;
+                case ContentAlignment.MiddleCenter:
+                    flags |= TextFormatFlags.VerticalCenter | TextFormatFlags.HorizontalCenter;
+                    break;
+                case ContentAlignment.MiddleRight:
+                    flags |= TextFormatFlags.VerticalCenter | TextFormatFlags.Right;
+                    break;
+                case ContentAlignment.BottomLeft:
+                    flags |= TextFormatFlags.Bottom | TextFormatFlags.Left;
+                    break;
+                case ContentAlignment.BottomCenter:
+                    flags |= TextFormatFlags.Bottom | TextFormatFlags.HorizontalCenter;
+                    break;
+                case ContentAlignment.BottomRight:
+                    flags |= TextFormatFlags.Bottom | TextFormatFlags.Right;
+                    break;
             }
-            //Draw text
             TextRenderer.DrawText(e.Graphics, this.Text, this.Font, textRect, textColor, flags);
         }
-        //Animation on mouse down
         private Color originalBack;
         protected override void OnMouseDown(MouseEventArgs e)
         {

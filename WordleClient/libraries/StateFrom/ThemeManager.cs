@@ -1,17 +1,13 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-using System.Text;
-using WordleClient.libraries.CustomControls;
+﻿using WordleClient.libraries.CustomControls;
+
 namespace WordleClient.libraries.StateFrom
 {
     public static class ThemeManager
     {
         public static void ApplyTheme(Control parent)
         {
-            // Define background and foreground based on dark/light mode
             Color backcolor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
             Color forecolor = CustomDarkLight.IsDark ? Color.White : Color.Black;
-            // Handle CharBox controls and their children
             if (parent is CharBox || parent.Parent is CharBox)
             {
                 if (parent is CharBox)
@@ -24,14 +20,12 @@ namespace WordleClient.libraries.StateFrom
                     {
                         parent.BackColor = Color.LightGray;
                     }
-                    // Recurse into CharBox children
                     foreach (Control c in parent.Controls)
                     {
                         ApplyTheme(c);
                     }
                     return;
                 }
-                // Handle CharBox children 
                 if (parent.Parent is CharBox)
                 {
                     if (CustomDarkLight.IsDark)
@@ -45,10 +39,30 @@ namespace WordleClient.libraries.StateFrom
                     return;
                 }
             }
-            // Apply theme to other controls
+            else if (parent.Parent is AlertBox)
+            {
+                if (parent is CustomGroupBox customGroup)
+                {
+                    customGroup.BackgroundColor = backcolor;
+                    customGroup.BorderColor = forecolor;
+                    Color labelColorForGroup = CustomDarkLight.IsDark ? Color.LightGray : Color.Black;
+                    customGroup.TextColor = labelColorForGroup;
+                    foreach (Control c in customGroup.Controls)
+                    {
+                        if (c is Label)
+                        {
+                            c.ForeColor = labelColorForGroup;
+                        }
+                        else
+                        {
+                            ApplyTheme(c);
+                        }
+                    }
+                    return;
+                }
+            }
             parent.BackColor = backcolor;
             parent.ForeColor = forecolor;
-            // Recursively apply theme to children of generic controls
             foreach (Control c in parent.Controls)
             {
                 ApplyTheme(c);

@@ -1,16 +1,13 @@
 ﻿using System.Drawing.Drawing2D;
-
 namespace WordleClient.libraries.CustomControls
 {
-    public class CustomPictureBox: PictureBox
+    public class CustomPictureBox : PictureBox
     {
-        //Fields
         private int boderSize = 2;
         private int boderRadius = 40;
         private float gradientAngle = 90f;
         private Color boderGradientTop = Color.MediumSlateBlue;
         private Color boderGradientBottom = Color.SlateBlue;
-        //Constructor
         public CustomPictureBox()
         {
             this.DoubleBuffered = true;
@@ -19,12 +16,14 @@ namespace WordleClient.libraries.CustomControls
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             this.UpdateStyles();
             SizeMode = PictureBoxSizeMode.StretchImage;
-           Size = new Size(120, 120);
+            Size = new Size(120, 120);
         }
-        //Properties
         public int boderSize1
         {
-            get { return boderSize; }
+            get
+            {
+                return boderSize;
+            }
             set
             {
                 boderSize = value;
@@ -32,8 +31,11 @@ namespace WordleClient.libraries.CustomControls
             }
         }
         public int boderRadius1
+        {
+            get
             {
-            get { return boderRadius; }
+                return boderRadius;
+            }
             set
             {
                 boderRadius = value;
@@ -42,7 +44,10 @@ namespace WordleClient.libraries.CustomControls
         }
         public float gradientAngle1
         {
-            get { return gradientAngle; }
+            get
+            {
+                return gradientAngle;
+            }
             set
             {
                 gradientAngle = value;
@@ -51,7 +56,10 @@ namespace WordleClient.libraries.CustomControls
         }
         public Color boderGradientTop1
         {
-            get { return boderGradientTop; }
+            get
+            {
+                return boderGradientTop;
+            }
             set
             {
                 boderGradientTop = value;
@@ -60,34 +68,33 @@ namespace WordleClient.libraries.CustomControls
         }
         public Color boderGradientBottom1
         {
-            get { return boderGradientBottom; }
+            get
+            {
+                return boderGradientBottom;
+            }
             set
             {
                 boderGradientBottom = value;
                 Invalidate();
             }
         }
-        //Methods
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
             Size = new Size(Width, Height);
         }
-        //Start Paint
         protected override void OnPaint(PaintEventArgs pe)
         {
             base.OnPaint(pe);
             var graphics = pe.Graphics;
             var rectangleSmooth = Rectangle.Inflate(ClientRectangle, -1, -1);
             var rectangleBorder = Rectangle.Inflate(ClientRectangle, -boderSize, -boderSize);
-            var smoothSize = boderSize > 0 ? boderSize * 3  : 1;
-            using (var BoderGadientColor = new LinearGradientBrush(rectangleBorder,boderGradientTop, boderGradientBottom, gradientAngle))
+            var smoothSize = boderSize > 0 ? boderSize * 3 : 1;
+            using (var BoderGadientColor = new LinearGradientBrush(rectangleBorder, boderGradientTop, boderGradientBottom, gradientAngle))
             {
                 if (Parent != null)
                 {
-                    using (var pathSmooth = new Pen(Parent.BackColor, smoothSize))
-                    using (var pathRegion = new GraphicsPath())
-                    using (var pathBorder = new Pen(BoderGadientColor, smoothSize))
+                    using (var pathSmooth = new Pen(Parent.BackColor, smoothSize)) using (var pathRegion = new GraphicsPath()) using (var pathBorder = new Pen(BoderGadientColor, smoothSize))
                     {
                         pathRegion.AddEllipse(rectangleSmooth);
                         Region = new Region(pathRegion);
