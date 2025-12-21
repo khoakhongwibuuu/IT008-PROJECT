@@ -38,7 +38,7 @@ namespace WordleClient
         private void btn_SinglePlayer_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            FormOption formOption = new FormOption();
+            FormOption formOption = new();
             formOption.FormClosed += FormOption_FormClosed;
             formOption.Show();
             this.Hide();
@@ -46,7 +46,7 @@ namespace WordleClient
         private void btn_Client_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            ClientLobby clientLobby = new ClientLobby();
+            ClientLobby clientLobby = new();
             clientLobby.FormClosed += ClientLobby_FormClosed;
             clientLobby.Show();
             this.Hide();
@@ -54,7 +54,7 @@ namespace WordleClient
         private void btn_Server_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            ServerLobby serverLobby = new ServerLobby();
+            ServerLobby serverLobby = new();
             serverLobby.FormClosed += ServerLobby_FormClosed;
             serverLobby.Show();
             this.Hide();
@@ -63,9 +63,15 @@ namespace WordleClient
         {
             CustomSound.PlayClick();
             this.Hide();
-            Statistic statistic = new Statistic();
+            Statistic statistic = new();
             statistic.ShowDialog();
             this.Show();
+        }
+        private void btn_Guide_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            FormHelp help = new();
+            help.ShowDialog();
         }
         private void FormOption_FormClosed(object? sender, FormClosedEventArgs e)
         {
@@ -91,19 +97,13 @@ namespace WordleClient
         private void customPictureBox1_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            FormProfile formProfile = new FormProfile();
+            FormProfile formProfile = new();
             formProfile.ShowDialog();
             if (formProfile.RequireRestart)
             {
                 MessageBox.Show("Changes will take effect after restarting the application.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Application.Restart();
             }
-        }
-        private void btn_Guide_Click(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
-            FormHelp help = new FormHelp();
-            help.ShowDialog();
         }
     }
 }
