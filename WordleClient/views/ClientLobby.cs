@@ -14,6 +14,7 @@ namespace WordleClient.views
         // GUARDS
         private bool _handledKick = false;
         private bool _sessionEnded = false;
+        private bool _eventsSubscribed = false;
 
         public ClientLobby()
         {
@@ -28,10 +29,20 @@ namespace WordleClient.views
             btn_search.Enabled = false;
             lblStatus.Text = "Searching...";
 
+            // Ensure clean state when re-entering ClientLobby
+            if (PacketConnectionManager.IsConnected)
+            {
+                PacketConnectionManager.Disconnect();
+            }
+
             try
             {
-                PacketConnectionManager.PacketReceived += OnPacketReceived;
-                PacketConnectionManager.Disconnected += OnDisconnected;
+                if (!_eventsSubscribed)
+                {
+                    PacketConnectionManager.PacketReceived += OnPacketReceived;
+                    PacketConnectionManager.Disconnected += OnDisconnected;
+                    _eventsSubscribed = true;
+                }
 
                 await PacketConnectionManager.ConnectAsync(
                     textBox1.Text.Trim(), ServerPort);
@@ -175,7 +186,14 @@ namespace WordleClient.views
         private void btn_Exit_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
+
+            // CRITICAL: fully reset static connection state
+            PacketConnectionManager.PacketReceived -= OnPacketReceived;
+            PacketConnectionManager.Disconnected -= OnDisconnected;
+            PacketConnectionManager.Disconnect();
+
             Close();
         }
+
     }
 }
