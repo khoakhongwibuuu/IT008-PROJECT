@@ -3,10 +3,9 @@ namespace WordleClient.libraries.ingame
 {
     public static class GameRoom
     {
-        private
-        const int MaxPlayers = 4;
+        private const int MaxPlayers = 3;
         private static Player? host;
-        private static readonly List<Player> clients = new();
+        private static readonly List<Player> clients = [];
         public static bool HasSpace => host != null && clients.Count + 1 < MaxPlayers;
         public static Player? Host => host;
         public static void SetHost(Player player)
@@ -33,6 +32,7 @@ namespace WordleClient.libraries.ingame
                 return list;
             }
         }
+        public static int NumPlayers => clients.Count + 1;
         public static Player? GetPlayerByIP(string ip)
         {
             return AllPlayers.FirstOrDefault(p => p.IPAddress == ip);
@@ -41,10 +41,7 @@ namespace WordleClient.libraries.ingame
         {
             return AllPlayers.FirstOrDefault(p => p.Username == username);
         }
-        public static List<string> SerializePlayers()
-        {
-            return AllPlayers.Select(p => p.Serialize()).ToList();
-        }
+        public static List<string> SerializePlayers() => [.. AllPlayers.Select(p => p.Serialize())];
         public static void Dispose()
         {
             host = null;
