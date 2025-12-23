@@ -7,7 +7,7 @@ namespace WordleClient.views
 {
     public partial class FormOption : CustomForm
     {
-        private List<string> topics = new List<string>();
+        private readonly List<string> topics = [];
         private string? selectedTopic;
         private string? selectedDifficulty;
         public bool ReturnToMainOnClose
@@ -54,15 +54,6 @@ namespace WordleClient.views
             else
             {
                 Playground pg = new(TheChosenOne, MaxGuessCount, selectedTopic, selectedDifficulty);
-                pg.FormClosed += (s, ev) =>
-                {
-                    var main = Application.OpenForms.OfType<MainMenu>().FirstOrDefault();
-                    if (main != null)
-                    {
-                        main.Show();
-                        CustomSound.PlayBackgroundLoop();
-                    }
-                };
                 this.ReturnToMainOnClose = false;
                 this.Close();
                 CustomSound.StopBackground();

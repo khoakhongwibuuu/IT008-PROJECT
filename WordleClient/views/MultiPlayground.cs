@@ -1,23 +1,24 @@
-﻿using System.Text;
+﻿using System.Net.Sockets;
+using System.Text;
 using WordleClient.libraries.CustomControls;
 using WordleClient.libraries.ingame;
 using WordleClient.libraries.lowlevel;
+using WordleClient.libraries.network;
 using WordleClient.libraries.StateFrom;
 namespace WordleClient.views
 {
-    public partial class Playground : Form
+    public partial class MultiPlayground : Form
     {
-        private readonly int rows;
-        private int cols;
+        /* ============================================================
+         * SHARED ATTRIBUTES
+         * ============================================================ */
+        private int rows; // literally readonly
+        private int cols; // literally readonly
         private int streak = 0;
         private int lives = 3;
-        private readonly Panel matrixPanel;
+        private Panel matrixPanel; // literally readonly
         private Panel? keyboardPanel;
-        private Dictionary<char, CharBox> keyboardKeys = new();
-        private readonly string? initialTopic;
-        private readonly string? initialDifficulty;
-        private string? hardTopic = null;
-        private string? hardLevel = null;
+        private readonly Dictionary<char, CharBox> keyboardKeys = [];
         private const int boxSize = 60;
         private const int spacing = 6;
         private string currentString = string.Empty;
@@ -27,23 +28,161 @@ namespace WordleClient.views
         private bool inputLocked = false;
         private int currentRow = 0;
         private int currentCol = 0;
-        private GameInstance gameInstance;
         private DictionaryChecker dictionaryChecker;
-        private readonly SingleplayerLogger logger = new();
-        private string? lastToken = null;
-        public Playground(WDBRecord TheChosenOne, int MaxGuessCount, string? topic, string? difficulty)
+        private readonly bool isServer;
+        private int NumOfPlayers;
+        private int NumOfPlayerFinished = 0;
+        private readonly string PlayerName;
+
+        /* ============================================================
+         * CLIENT-USAGE ONLY ATTRIBUTES
+         * ============================================================ */
+        private TaskCompletionSource<Hint>? _hintWaiter;
+        private TaskCompletionSource<StateArray>? _resultWaiter;
+
+
+        /* ============================================================
+         * SERVER-USAGE ONLY ATTRIBUTES
+         * ============================================================ */
+        private readonly GameInstance? gameInstance = null;
+        private string? LastToken = null;
+        private string? LastLevel = null;
+        private string? LastTopic = null;
+
+        /* ============================================================
+         * CLIENT-USAGE ONLY METHODS
+         * ============================================================*/
+        private Hint RequestHint(int GameSeed)
         {
-            Random rd = new();
-            this.rows = MaxGuessCount;
-            this.cols = TheChosenOne.TOKEN.Length;
-            this.gameInstance = new GameInstance(TheChosenOne);
-            this.initialTopic = topic;
-            this.initialDifficulty = difficulty;
-            this.dictionaryChecker = new DictionaryChecker(TheChosenOne.TOKEN.Length);
-            this.GameSeed = rd.Next(0, 2);
-            this.HintRemaining = 2;
-            this.lastToken = TheChosenOne.TOKEN;
+            _hintWaiter = new TaskCompletionSource<Hint>();
+
+            SEND_HINT_REQUEST_Packet packet =
+                new(PlayerName, GameSeed, PlayerName, "Server");
+
+            PacketConnectionManager.SendAsync(packet);
+
+            // BLOCK until server replies
+            return _hintWaiter.Task.Result;
+        }
+        private StateArray RequestResult(string SubmitedString)
+        {
+            _resultWaiter = new TaskCompletionSource<StateArray>();
+
+            SEND_GUESS_Packet packet
+                = new(SubmitedString, PlayerName, "Server");
+
+            PacketConnectionManager.SendAsync(packet);
+
+            // Block until server replies
+            return _resultWaiter.Task.Result;
+        }
+
+        /* ============================================================
+         * SERVER-USAGE ONLY NETWORK EVENT HANDLERS
+         * ============================================================ */
+        private void OnServerPacket(Packet packet)
+        {
+            if (!isServer || gameInstance == null)
+                return;
+
+            BeginInvoke(() =>
+            {
+                switch (packet)
+                {
+                    case SEND_HINT_REQUEST_Packet req:
+                        {
+                            Hint hint = HintGetter.GetHint(
+                                gameInstance.GetToken(),
+                                req.Seed);
+
+                            ServerManager.SendTo(
+                                req.Sender,
+                                new HINT_RESPONSE_Packet(
+                                    hint,
+                                    "Server",
+                                    req.Sender));
+                            break;
+                        }
+                    case SEND_GUESS_Packet req:
+                        {
+                            StateArray result = gameInstance.EvaluateGuess(req.Guess);
+
+                            ServerManager.SendTo(
+                                req.Sender,
+                                new GUESS_RESULT_Packet(
+                                    result,
+                                    "Server",
+                                    req.Sender));
+                            break;
+                        }
+
+                    default:
+                        // Optional: ignore or log unhandled packets
+                        break;
+                }
+            });
+        }
+        private void OnClientDisconnectedUI(string ip)
+        {
+            NumOfPlayers--;
+            BeginInvoke(() =>
+            {
+                // Handle disconnected clients here
+            });
+        }
+
+        /* ============================================================
+         * CLIENT-USAGE ONLY NETWORK EVENT HANDLERS
+         * ============================================================ */
+        private void OnPacketReceived(Packet packet)
+        {
+            BeginInvoke(() =>
+            {
+                BeginInvoke(() =>
+                {
+                    switch (packet)
+                    {
+                        case HINT_RESPONSE_Packet resp:
+                            {
+                                _hintWaiter?.TrySetResult(resp.Hint);
+                                break;
+                            }
+
+                        case GUESS_RESULT_Packet resp:
+                            {
+                                _resultWaiter?.TrySetResult(resp.SA);
+                                break;
+                            }
+                        case SERVER_SHUTDOWN_Packet:
+                            {
+                                Close();
+                                break;
+                            }
+                    }
+                });
+            });
+        }
+        private void OnDisconnected()
+        {
+            BeginInvoke(() =>
+            {
+                Close();
+            });
+        }
+
+        /* ============================================================
+         * SHARED BASE CONSTRUCTOR
+         * ============================================================ */
+        private void BaseConstructor(WDBRecord_Simplified TheChosenOne, int MaxGuessCount, int GameSeed)
+        {
             InitializeComponent();
+
+            this.rows = MaxGuessCount;
+            this.cols = TheChosenOne.TOKEN_LENGTH;
+            this.GameSeed = GameSeed;
+            lbl_Diff.Text = TheChosenOne.LEVEL;
+            lbl_Tpc.Text = TheChosenOne.GROUP_NAME;
+            this.HintRemaining = 2;
             LoadHearts();
             StartHeartAnimation();
             this.matrixPanel = new Panel
@@ -72,9 +211,12 @@ namespace WordleClient.views
                 CenterMatrix();
                 PositionKeyboard();
             };
-            this.FormClosing += Playground_FormClosing;
             this.Load += Playground_Load;
         }
+
+        /* ============================================================
+         * SHARED FORM LOADING EVENT
+         * ============================================================ */
         private void Playground_Load(object? sender, EventArgs e)
         {
             ThemeManager.ApplyTheme(this);
@@ -88,7 +230,11 @@ namespace WordleClient.views
             CustomSound.PlayClickAlert();
             label8.Text = nickname;
         }
-        private void Playground_FormClosing(object? sender, FormClosingEventArgs e)
+
+        /* ============================================================
+         * CLEANUPS BEFORE FORM CLOSING
+         * ============================================================ */
+        private void Playground_FormClosing_Client(object? sender, FormClosingEventArgs e)
         {
             if (GameEnded) return;
             if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Warning) == DialogResult.No)
@@ -98,11 +244,83 @@ namespace WordleClient.views
             else
             {
                 dictionaryChecker.Dispose();
-                logger.SaveToDatabase(new SingleplayerPlayLog(DateTimeOffset.UtcNow.ToUnixTimeSeconds(), gameInstance.GetToken(), gameInstance.GetGroupName(), gameInstance.GetDifficulty(), false, rows, currentRow));
-                gameInstance.Dispose();
-                logger.Close();
+                PacketConnectionManager.PacketReceived -= OnPacketReceived;
+                PacketConnectionManager.Disconnected -= OnDisconnected;
+                PacketConnectionManager.Disconnect();
             }
         }
+        private void Playground_FormClosing_Server(object? sender, FormClosingEventArgs e)
+        {
+            if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to close this room? Everyone else will be kicked.", MessageBoxIcon.Warning) == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                dictionaryChecker.Dispose();
+
+                // Request all clients to close their MultiPlayground windows
+                ServerManager.Broadcast(new SERVER_SHUTDOWN_Packet("Server", "All"));
+
+                // Event unsubscribe
+                ServerManager.ServerPacketReceived -= OnServerPacket;
+                ServerManager.ClientDisconnected -= OnClientDisconnectedUI;
+                ServerManager.Stop();
+                GameRoom.Dispose();
+            }
+        }
+
+        /* ============================================================
+         * CONSTRUCTORS FOR CLIENTS
+         * ============================================================ */
+        public MultiPlayground(WDBRecord_Simplified TheChosenOne, int MaxGuessCount, int GameSeed, int NumPlayers)
+        {
+            isServer = false;
+            this.dictionaryChecker = new(TheChosenOne.TOKEN_LENGTH);
+            this.NumOfPlayers = NumPlayers;
+            this.PlayerName = ProfileState.GetPlayername();
+            BaseConstructor(TheChosenOne, MaxGuessCount, GameSeed);
+            this.FormClosing += Playground_FormClosing_Client;
+
+            PacketConnectionManager.PacketReceived += OnPacketReceived;
+            PacketConnectionManager.Disconnected += OnDisconnected;
+        }
+
+        /* ============================================================
+         * CONSTRUCTORS FOR SERVER
+         * ============================================================ */
+        public MultiPlayground(WDBRecord TheChosenOne, int MaxGuessCount, int GameSeed, int NumPlayers)
+        {
+            isServer = true;
+            this.dictionaryChecker = new(TheChosenOne.TOKEN.Length);
+            this.NumOfPlayers = NumPlayers;
+            this.PlayerName = ProfileState.GetPlayername();
+            BaseConstructor(new WDBRecord_Simplified(TheChosenOne.TOKEN.Length, TheChosenOne.GROUP_NAME, TheChosenOne.LEVEL), MaxGuessCount, GameSeed);
+            this.FormClosing += Playground_FormClosing_Server;
+            this.LastToken = TheChosenOne.TOKEN;
+            this.LastTopic = TheChosenOne.GROUP_NAME;
+            this.LastLevel = TheChosenOne.LEVEL;
+
+            ServerManager.ServerPacketReceived += OnServerPacket;
+            ServerManager.ClientDisconnected += OnClientDisconnectedUI;
+        }
+
+        /* ============================================================
+         * REDIRECT TO MAINMENU
+         * ============================================================ */
+        private void MultiPlayground_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            var main = Application.OpenForms.OfType<MainMenu>().FirstOrDefault();
+            if (main != null)
+            {
+                main.Show();
+                CustomSound.PlayBackgroundLoop();
+            }
+        }
+
+        /* ============================================================
+         * GUI INITIALISE
+         * ============================================================ */
         private void CreateMatrix()
         {
             matrixPanel.Controls.Clear();
@@ -130,11 +348,54 @@ namespace WordleClient.views
             int panelHeight = rows * (boxSize + spacing) - spacing;
             matrixPanel.Location = new Point((panel2.Width - panelWidth) / 2, (panel2.Height - panelHeight) / 2 - 80);
         }
+        private void BuildKeyboard()
+        {
+            if (keyboardPanel != null) panel2.Controls.Remove(keyboardPanel);
+            keyboardPanel = new Panel
+            {
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink
+            };
+            panel2.Controls.Add(keyboardPanel);
+            keyboardKeys.Clear();
+            string[] keyRows = [
+                "QWERTYUIOP",
+                "ASDFGHJKL",
+                "ZXCVBNM"
+            ];
+            int keySize = 40;
+            int keySpace = 6;
+            int top = 0;
+            foreach (string row in keyRows)
+            {
+                int left = (panel2.Width - (row.Length * (keySize + keySpace))) / 2;
+                foreach (char c in row)
+                {
+                    CharBox key = new()
+                    {
+                        Size = new Size((int)(keySize * 1), keySize),
+                        Location = new Point(left, top),
+                        BackColor = Color.LightGray
+                    };
+                    key.SetCharacter(c);
+                    key.Click += (s, e) => OnVirtualKeyPress(c);
+                    keyboardPanel.Controls.Add(key);
+                    keyboardKeys[c] = key;
+                    left += keySize + keySpace;
+                }
+                top += keySize + keySpace;
+            }
+            PositionKeyboard();
+        }
         private void PositionKeyboard()
         {
             if (keyboardPanel == null) return;
             keyboardPanel.Location = new Point((panel2.Width - keyboardPanel.Width) / 2, matrixPanel.Bottom + 30);
         }
+
+        /* ============================================================
+         * MISCELLANEOUS UI GETTERS AND SETTERS
+         * ============================================================ */
         private CharBox? GetBox(int r, int c)
         {
             int index = r * cols + c;
@@ -153,7 +414,7 @@ namespace WordleClient.views
             }
             return sb.ToString();
         }
-        private bool IsBoxEmpty(CharBox box)
+        private static bool IsBoxEmpty(CharBox box)
         {
             if (box == null) return true;
             return string.IsNullOrEmpty(box.Character) || box.Character == "-" || box.Character == "\0";
@@ -166,45 +427,6 @@ namespace WordleClient.views
                 if (b == null || IsBoxEmpty(b)) return false;
             }
             return true;
-        }
-        private void BuildKeyboard()
-        {
-            if (keyboardPanel != null) panel2.Controls.Remove(keyboardPanel);
-            keyboardPanel = new Panel
-            {
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink
-            };
-            panel2.Controls.Add(keyboardPanel);
-            keyboardKeys.Clear();
-            string[] keyRows = {
-                "QWERTYUIOP",
-                "ASDFGHJKL",
-                "ZXCVBNM"
-            };
-            int keySize = 40;
-            int keySpace = 6;
-            int top = 0;
-            foreach (string row in keyRows)
-            {
-                int left = (panel2.Width - (row.Length * (keySize + keySpace))) / 2;
-                foreach (char c in row)
-                {
-                    CharBox key = new CharBox
-                    {
-                        Size = new Size((int)(keySize * 1), keySize),
-                        Location = new Point(left, top),
-                        BackColor = Color.LightGray
-                    };
-                    key.SetCharacter(c);
-                    key.Click += (s, e) => OnVirtualKeyPress(c);
-                    keyboardPanel.Controls.Add(key);
-                    keyboardKeys[c] = key;
-                    left += keySize + keySpace;
-                }
-                top += keySize + keySpace;
-            }
-            PositionKeyboard();
         }
         private void UpdateKeyboardColors(StateArray? result, Hint? hintData)
         {
@@ -242,19 +464,34 @@ namespace WordleClient.views
                 }
                 else
                 {
-                    char[] greyedOut = (hintData.abs_type == AbsentType.VOWEL) ? ['A', 'E', 'I', 'O', 'U'] : ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'];
+                    char[] greyedOut = (hintData.abs_type == AbsentType.VOWEL)
+                        ? ['A', 'E', 'I', 'O', 'U']
+                        : ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'];
                     foreach (char c in greyedOut) keyboardKeys[c].SetBackgroundColor(Color.FromArgb(0x3A, 0x3A, 0x3C));
                 }
             }
         }
+
+        /* ============================================================
+         * PLAYER INPUTS
+         * ============================================================ */
         private void GetHintBtn_Click(object sender, EventArgs e)
         {
             if (HintRemaining > 0 && !GameEnded)
             {
                 CustomSound.PlayClick();
-                Hint hintObject = HintGetter.GetHint(gameInstance.GetToken(), HintRemaining + GameSeed);
+
+                Hint hintObject = (isServer && gameInstance != null)
+                // if you are the server, you can just call HintGetter to get Hints
+                ? HintGetter.GetHint(gameInstance.GetToken(), HintRemaining + GameSeed)
+                // else you have to send your request to the server and wait for them to send back Hints
+                : RequestHint(HintRemaining + GameSeed);
+
                 UpdateKeyboardColors(null, hintObject);
+
+                // Translate Hint to literal string 
                 String literalHint = HintGetter.HintTranslator(hintObject);
+
                 CustomSound.PlayClickAlert();
                 new AlertBox(1500, CustomDarkLight.IsDark).ShowAlert(this, "Hint", literalHint, MessageBoxIcon.Information);
                 HintRemaining--;
@@ -289,7 +526,12 @@ namespace WordleClient.views
                     if (dictionaryChecker.TokenExists(currentString))
                     {
                         inputLocked = true;
-                        var result = gameInstance.EvaluateGuess(currentString);
+                        var result = (isServer && gameInstance != null)
+                        // if you are the server, you can just call EvaluateGuess to get result
+                        ? gameInstance.EvaluateGuess(currentString)
+                        // else you have to send your answer to the server and wait for them to send back result
+                        : RequestResult(currentString);
+
                         await FlipRow(currentRow, result);
                         UpdateKeyboardColors(result, null);
                         if (result.IsFullValue(TriState.MATCH))
@@ -299,11 +541,7 @@ namespace WordleClient.views
                             lbl_Streak.Text = streak.ToString();
                             CustomSound.PlayClickAlert();
                             new AlertBox(1500, CustomDarkLight.IsDark).ShowAlert(this, "Success", "You found the hidden word!", MessageBoxIcon.None);
-                            logger.SaveToDatabase(new SingleplayerPlayLog(DateTimeOffset.UtcNow.ToUnixTimeSeconds(), gameInstance.GetToken(), gameInstance.GetGroupName(), gameInstance.GetDifficulty(), true, rows, currentRow + 1));
-                            await Task.Delay(1500);
-                            if (initialDifficulty == "HARD") ResetHardGame();
-                            else Resetnew_Game();
-                            ThemeManager.ApplyTheme(this);
+
                             return;
                         }
                         if (currentRow < rows - 1)
@@ -316,21 +554,7 @@ namespace WordleClient.views
                         {
                             GameEnded = true;
                             CustomSound.PlayClickGameOver();
-                            new AlertBox(1500, CustomDarkLight.IsDark).ShowAlert(this, "Failed", $"The hidden word was {gameInstance.GetToken()}", MessageBoxIcon.Information);
-                            logger.SaveToDatabase(new SingleplayerPlayLog(DateTimeOffset.UtcNow.ToUnixTimeSeconds(), gameInstance.GetToken(), gameInstance.GetGroupName(), gameInstance.GetDifficulty(), false, rows, currentRow + 1));
-                            await Task.Delay(2000);
-                            if (CustomMessageBoxYesNo.Show(this, "Start a new game?", MessageBoxIcon.Question) == DialogResult.Yes)
-                            {
-                                lives = 3;
-                                LoadHearts();
-                                StartHeartAnimation();
-                                streak = 0;
-                                lbl_Streak.Text = "0";
-                                if (initialDifficulty == "HARD") ResetHardGame();
-                                else Resetnew_Game();
-                                ThemeManager.ApplyTheme(this);
-                            }
-                            else this.Close();
+
                             return;
                         }
                         inputLocked = false;
@@ -352,12 +576,12 @@ namespace WordleClient.views
                 {
                     currentCol--;
                     var box = GetBox(currentRow, currentCol);
-                    if (box != null) box.SetCharacter('-');
+                    box?.SetCharacter('-');
                 }
                 else
                 {
                     var first = GetBox(currentRow, 0);
-                    if (first != null) first.SetCharacter('-');
+                    first?.SetCharacter('-');
                 }
                 UpdateCursorIndicator();
                 e.Handled = true;
@@ -425,93 +649,6 @@ namespace WordleClient.views
                         break;
                 }
             }
-        }
-        private void Resetnew_Game()
-        {
-            ThemeManager.ApplyTheme(this);
-            WordDatabaseReader wdr = new();
-            WDBRecord? newWord;
-            inputLocked = false;
-            do newWord = wdr.ReadRandomWord(initialTopic, initialDifficulty); while (newWord != null && newWord.TOKEN == lastToken);
-            wdr.Close();
-            if (newWord == null)
-            {
-                MessageBox.Show("Failed to load new word.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            lastToken = newWord.TOKEN;
-            gameInstance = new GameInstance(newWord);
-            dictionaryChecker = new DictionaryChecker(newWord.TOKEN.Length);
-            GameEnded = false;
-            currentRow = 0;
-            currentCol = 0;
-            Random rd = new();
-            GameSeed = rd.Next(0, 2);
-            HintRemaining = 2;
-            lives = 3;
-            LoadHearts();
-            lbl_HintRemaining.Text = "2";
-            lbl_Hint1_Placeholder.Text = "Unknown";
-            lbl_Hint2_Placeholder.Text = "Unknown";
-            customButton1.Visible = true;
-            lbl_Diff.Text = newWord.LEVEL;
-            lbl_Tpc.Text = newWord.GROUP_NAME.Replace("&", "And");
-            cols = newWord.TOKEN.Length;
-            CreateMatrix();
-            CenterMatrix();
-            BuildKeyboard();
-            matrixPanel.Refresh();
-            this.Refresh();
-            StartHeartAnimation();
-        }
-        private void ResetHardGame()
-        {
-            WordDatabaseReader wdr = new();
-            WDBRecord? newWord;
-            inputLocked = false;
-            if (hardTopic == null || hardLevel == null)
-            {
-                do newWord = wdr.ReadRandomWord(null, null); while (newWord != null && newWord.TOKEN == lastToken);
-                if (newWord != null)
-                {
-                    hardTopic = newWord.GROUP_NAME;
-                    hardLevel = newWord.LEVEL;
-                }
-            }
-            else
-            {
-                do newWord = wdr.ReadRandomWord(hardTopic, hardLevel); while (newWord != null && newWord.TOKEN == lastToken);
-            }
-            wdr.Close();
-            if (newWord == null)
-            {
-                MessageBox.Show("Failed to load new word.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            lastToken = newWord.TOKEN;
-            gameInstance = new GameInstance(newWord);
-            dictionaryChecker = new DictionaryChecker(newWord.TOKEN.Length);
-            GameEnded = false;
-            currentRow = 0;
-            currentCol = 0;
-            Random rd = new();
-            GameSeed = rd.Next(0, 2);
-            HintRemaining = 2;
-            lives = 3;
-            LoadHearts();
-            lbl_HintRemaining.Text = "2";
-            lbl_Hint1_Placeholder.Text = "Unknown";
-            lbl_Hint2_Placeholder.Text = "Unknown";
-            customButton1.Visible = true;
-            lbl_Diff.Text = newWord.LEVEL;
-            lbl_Tpc.Text = newWord.GROUP_NAME.Replace("&", "And");
-            cols = newWord.TOKEN.Length;
-            CreateMatrix();
-            CenterMatrix();
-            BuildKeyboard();
-            matrixPanel.Refresh();
-            this.Refresh();
-            StartHeartAnimation();
         }
         private void ExitBtn_Click(object sender, EventArgs e)
         {
@@ -596,7 +733,7 @@ namespace WordleClient.views
             flp_Hearts.Controls.Clear();
             for (int i = 0; i < lives; i++)
             {
-                PictureBox pictureBox = new PictureBox
+                PictureBox pictureBox = new()
                 {
                     Image = Properties.Resources.Heart,
                     SizeMode = PictureBoxSizeMode.Zoom,
@@ -621,21 +758,7 @@ namespace WordleClient.views
             {
                 GameEnded = true;
                 CustomSound.PlayClickGameOver();
-                new AlertBox(1700, CustomDarkLight.IsDark).ShowAlert(this, "Game Over", $"You lost all lives! The word was: {gameInstance.GetToken()}", MessageBoxIcon.Information);
-                logger.SaveToDatabase(new SingleplayerPlayLog(DateTimeOffset.UtcNow.ToUnixTimeSeconds(), gameInstance.GetToken(), gameInstance.GetGroupName(), gameInstance.GetDifficulty(), false, rows, currentRow + 1));
-                Task.Delay(1700).Wait();
-                if (CustomMessageBoxYesNo.Show(this, "Play again?", MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    lives = 3;
-                    streak = 0;
-                    lbl_Streak.Text = "0";
-                    LoadHearts();
-                    StartHeartAnimation();
-                    if (initialDifficulty == "HARD") ResetHardGame();
-                    else Resetnew_Game();
-                    ThemeManager.ApplyTheme(this);
-                }
-                else this.Close();
+                new AlertBox(1700, CustomDarkLight.IsDark).ShowAlert(this, "Game Over", $"You lost all lives!", MessageBoxIcon.Information);
             }
         }
         private async void StartHeartAnimation()
@@ -658,16 +781,6 @@ namespace WordleClient.views
         {
             CustomSound.PlayClick();
             Playground_KeyPress(this, new KeyPressEventArgs('\r'));
-        }
-
-        private void Playground_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            var main = Application.OpenForms.OfType<MainMenu>().FirstOrDefault();
-            if (main != null)
-            {
-                main.Show();
-                CustomSound.PlayBackgroundLoop();
-            }
         }
     }
 }

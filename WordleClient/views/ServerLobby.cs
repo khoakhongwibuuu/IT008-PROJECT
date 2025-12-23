@@ -29,7 +29,6 @@ namespace WordleClient.views
         /* ============================================================
          * LOAD / EXIT
          * ============================================================ */
-
         private void ServerLobby_Load(object sender, EventArgs e)
         {
             btn_StartGame.Visible = false;
@@ -40,12 +39,15 @@ namespace WordleClient.views
 
             try
             {
-                ServerManager.ServerPacketReceived += OnServerPacket;
-                ServerManager.ClientDisconnected += OnClientDisconnectedUI;
-
                 if (!ServerManager.IsRunning)
                 {
+
                     ServerManager.Start(ServerPort);
+
+                    // Event subscribe
+                    ServerManager.ServerPacketReceived += OnServerPacket;
+                    ServerManager.ClientDisconnected += OnClientDisconnectedUI;
+
                     GameRoom.Dispose();
                     GameRoom.SetHost(new Player(ServerUsername, "127.0.0.1"));
                 }
@@ -56,7 +58,6 @@ namespace WordleClient.views
                 Close();
             }
         }
-
         private static Panel CreateInnerPanel(Control groupBox)
         {
             Panel panel = new()
@@ -79,10 +80,15 @@ namespace WordleClient.views
 
             return panel;
         }
-
         private void btn_Exit_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
+
+            // Event unsubscribe on exit
+            ServerManager.ServerPacketReceived -= OnServerPacket;
+            ServerManager.ClientDisconnected -= OnClientDisconnectedUI;
+
+            // Close server
             ServerManager.Stop();
             Close();
         }
@@ -90,7 +96,6 @@ namespace WordleClient.views
         /* ============================================================
          * SERVER → UI
          * ============================================================ */
-
         private void OnServerPacket(Packet packet)
         {
             if (packet is not JOIN_APPROVAL_REQUEST_Packet req)
@@ -120,7 +125,6 @@ namespace WordleClient.views
         /* ============================================================
          * PENDING REQUESTS
          * ============================================================ */
-
         private void AddJoinRequestUI(Player player)
         {
             if (_pendingRequests.ContainsKey(player.IPAddress))
@@ -173,7 +177,6 @@ namespace WordleClient.views
             panelRequests.Controls.Add(panel);
             _pendingRequests[player.IPAddress] = panel;
         }
-
         private void UpdatePendingDuplicateStyles()
         {
             HashSet<string> seen = new(StringComparer.OrdinalIgnoreCase);
@@ -189,7 +192,6 @@ namespace WordleClient.views
         /* ============================================================
          * APPROVAL / DENY
          * ============================================================ */
-
         private void HandleApproval(Player player, bool approved)
         {
             RemoveJoinRequestUI(player.IPAddress);
@@ -213,13 +215,12 @@ namespace WordleClient.views
                 new JOIN_APPROVAL_RESPONSE_Packet(
                     $"{player.Username}|Approved",
                     true,
-                    "Server"));
+                    ServerUsername));
 
             AddApprovedPlayerUI(player);
             ServerManager.BroadcastPlayerList();
             UpdateStartGameState();
         }
-
         private void Deny(Player player, string reason)
         {
             RemoveJoinRequestUI(player.IPAddress);
@@ -229,7 +230,7 @@ namespace WordleClient.views
                 new JOIN_APPROVAL_RESPONSE_Packet(
                     $"{player.Username}|{reason}",
                     false,
-                    "Server"));
+                    ServerUsername));
 
             UpdatePendingDuplicateStyles();
         }
@@ -237,7 +238,6 @@ namespace WordleClient.views
         /* ============================================================
          * APPROVED PLAYERS
          * ============================================================ */
-
         private void AddApprovedPlayerUI(Player player)
         {
             if (_approvedPlayers.ContainsKey(player.IPAddress))
@@ -260,7 +260,8 @@ namespace WordleClient.views
                 ForeColor = Color.Black
             };
 
-            Button btnKick = new() { 
+            Button btnKick = new()
+            {
                 Text = "Kick",
                 Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point),
                 ForeColor = Color.Black,
@@ -276,11 +277,10 @@ namespace WordleClient.views
             panelPlayers.Controls.Add(panel);
             _approvedPlayers[player.IPAddress] = panel;
         }
-
         private void KickPlayer(Player player)
         {
             if (!GameRoom.RemoveClient(player))
-                return; 
+                return;
 
             ServerManager.SendTo(
                 player.IPAddress,
@@ -297,7 +297,6 @@ namespace WordleClient.views
         /* ============================================================
          * CLEANUP / STATE
          * ============================================================ */
-
         private void RemoveJoinRequestUI(string ip)
         {
             if (_pendingRequests.Remove(ip, out Panel? panel))
@@ -306,7 +305,6 @@ namespace WordleClient.views
                 panel.Dispose();
             }
         }
-
         private void RemoveApprovedPlayerUI(string ip)
         {
             if (_approvedPlayers.Remove(ip, out Panel? panel))
@@ -315,7 +313,6 @@ namespace WordleClient.views
                 panel.Dispose();
             }
         }
-
         private void OnClientDisconnectedUI(string ip)
         {
             BeginInvoke(() =>
@@ -325,7 +322,6 @@ namespace WordleClient.views
                 UpdateStartGameState();
             });
         }
-
         private void UpdateStartGameState()
         {
             if (_approvedPlayers.Count + 1 >= 2)
@@ -339,16 +335,17 @@ namespace WordleClient.views
                 btn_StartGame.Text = "At least 2 players is needed";
             }
         }
+
         /* ============================================================
          * USERNAME CHECKS
          * ============================================================ */
-
         private bool IsUsernameApproved(string username) =>
             _approvedPlayers.Values.Any(p =>
                 ((Player)p.Tag!).Username.Equals(username, StringComparison.OrdinalIgnoreCase));
 
         private bool IsUsernameServer(string username) =>
             username.Equals(ServerUsername, StringComparison.OrdinalIgnoreCase);
+
         /* ============================================================
          * START GAME
          * =========================================================== */
@@ -357,22 +354,39 @@ namespace WordleClient.views
             CustomSound.PlayClick();
             WordDatabaseReader wdr = new();
             WDBRecord? TheChosenOne = wdr.ReadRandomWord(null, null);
+
             if (TheChosenOne == null)
             {
+                //this is unlikely to happen
                 MessageBox.Show("Failed to select a word from the database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            var startPacket = new START_GAME_Packet
-                (
+
+            Random rd = new();
+            int GameSeed = rd.Next(0, 2);
+
+            START_GAME_Packet startPacket = new
+            (
                 TheChosenOne.TOKEN.Length,
                 TheChosenOne.GROUP_NAME,
                 TheChosenOne.LEVEL,
                 trackBarGuess.Value,
+                GameSeed,
+                GameRoom.NumPlayers,
                 "Server",
                 "All"
-                );
+            );
 
             ServerManager.Broadcast(startPacket);
+
+            ServerManager.ServerPacketReceived -= OnServerPacket;
+            ServerManager.ClientDisconnected -= OnClientDisconnectedUI;
+
+            MultiPlayground mp = new(TheChosenOne, trackBarGuess.Value, GameSeed, GameRoom.NumPlayers);
+            this.ReturnToMainOnClose = false;
+            this.Close();
+            CustomSound.StopBackground();
+            mp.Show();
 
         }
     }

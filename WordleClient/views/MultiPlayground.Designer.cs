@@ -1,6 +1,6 @@
 ﻿namespace WordleClient.views
 {
-    partial class Playground
+    partial class MultiPlayground
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -17,7 +17,7 @@
 
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Playground));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MultiPlayground));
             customButton1 = new WordleClient.libraries.CustomControls.CustomButton();
             customButton2 = new WordleClient.libraries.CustomControls.CustomButton();
             panel1 = new Panel();
@@ -416,7 +416,7 @@
             MasterPanel.Size = new Size(1080, 810);
             MasterPanel.TabIndex = 0;
             // 
-            // Playground
+            // MultiPlayground
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -428,10 +428,10 @@
             MaximizeBox = false;
             MaximumSize = new Size(1096, 849);
             MinimumSize = new Size(1096, 849);
-            Name = "Playground";
+            Name = "MultiPlayground";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Playground";
-            FormClosed += Playground_FormClosed;
+            Text = "Multiplayer Playground";
+            FormClosed += MultiPlayground_FormClosed;
             panel1.ResumeLayout(false);
             playerInfo.ResumeLayout(false);
             playerInfo.PerformLayout();

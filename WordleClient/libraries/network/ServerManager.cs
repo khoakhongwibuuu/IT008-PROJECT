@@ -124,7 +124,7 @@ namespace WordleClient.libraries.network
             }
 
             // Build pending player
-            Player pending = new Player(
+            Player pending = new(
                 join.Username,
                 conn.ConnectionId);
 

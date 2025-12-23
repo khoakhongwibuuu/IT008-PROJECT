@@ -25,26 +25,24 @@ namespace WordleClient.libraries.lowlevel
         PONG = 12,
         PLAYER_LIST_SYNC = 13,
         JOIN_APPROVAL_REQUEST = 14,
-        JOIN_APPROVAL_RESPONSE = 15
+        JOIN_APPROVAL_RESPONSE = 15,
 
+        // Clients send this packet to server when they finished their game (for both win and lose)
+        GAME_STATUS_UPDATE_REQUEST = 16,
+
+        // Server broadcasts this packets to all clients
+        GAME_STATUS_UPDATE_RESPONSE = 17
     }
 
     /* ============================================================
      * BASE PACKET
      * ============================================================ */
 
-    public abstract class Packet
+    public abstract class Packet(PacketType type, string sender, string recipient)
     {
-        public PacketType Type { get; init; }
-        public string Sender { get; init; }
-        public string Recipient { get; init; }
-
-        protected Packet(PacketType type, string sender, string recipient)
-        {
-            Type = type;
-            Sender = sender;
-            Recipient = recipient;
-        }
+        public PacketType Type { get; init; } = type;
+        public string Sender { get; init; } = sender;
+        public string Recipient { get; init; } = recipient;
 
         public string ToJson()
         {
@@ -53,169 +51,123 @@ namespace WordleClient.libraries.lowlevel
     }
 
     /* ============================================================
-     * PACKETS
+     * PACKETS POLYMORPHISM
      * ============================================================ */
-
-    public sealed class JOIN_REQUEST_Packet : Packet
+    public sealed class JOIN_REQUEST_Packet(
+        string username, string sender, string recipient)
+        : Packet(PacketType.JOIN_REQUEST, sender, recipient)
     {
-        public string Username { get; init; }
-
-        public JOIN_REQUEST_Packet(string username, string sender, string recipient)
-            : base(PacketType.JOIN_REQUEST, sender, recipient)
-        {
-            Username = username;
-        }
+        public string Username { get; init; } = username;
     }
-    public sealed class JOIN_RESPONSE_Packet : Packet
+    public sealed class JOIN_RESPONSE_Packet(
+        bool success, string sender, string recipient)
+        : Packet(PacketType.JOIN_RESPONSE, sender, recipient)
     {
-        public bool Success { get; init; }
-
-        public JOIN_RESPONSE_Packet(bool success, string sender, string recipient)
-            : base(PacketType.JOIN_RESPONSE, sender, recipient)
-        {
-            Success = success;
-        }
+        public bool Success { get; init; } = success;
     }
-    public sealed class START_GAME_Packet : Packet
+    public sealed class START_GAME_Packet(
+        int wordLength, string topic, string level,
+        int maxAttempts, int gameSeed, int numPlayers,
+        string sender, string recipient)
+        : Packet(PacketType.START_GAME, sender, recipient)
     {
-        public int WordLength { get; init; }
-        public string Topic { get; init; }
-        public string Level { get; init; }
-        public int MaxAttempts { get; init; }
-
-        public START_GAME_Packet(
-            int wordLength, string topic, string level, int maxAttempts,
-            string sender, string recipient)
-            : base(PacketType.START_GAME, sender, recipient)
-        {
-            WordLength = wordLength;
-            Topic = topic;
-            Level = level;
-            MaxAttempts = maxAttempts;
-        }
+        public int WordLength { get; init; } = wordLength;
+        public string Topic { get; init; } = topic;
+        public string Level { get; init; } = level;
+        public int MaxAttempts { get; init; } = maxAttempts;
+        public int GameSeed { get; init; } = gameSeed;
+        public int NumPlayers { get; init; } = numPlayers;
     }
-    public sealed class SEND_GUESS_Packet : Packet
+    public sealed class SEND_GUESS_Packet(
+        string guess, string sender, string recipient)
+        : Packet(PacketType.SEND_GUESS, sender, recipient)
     {
-        public string Guess { get; init; }
-
-        public SEND_GUESS_Packet(string guess, string sender, string recipient)
-            : base(PacketType.SEND_GUESS, sender, recipient)
-        {
-            Guess = guess;
-        }
+        public string Guess { get; init; } = guess;
     }
-    public sealed class SEND_HINT_REQUEST_Packet : Packet
+    public sealed class SEND_HINT_REQUEST_Packet(
+        string playerName, int seed,
+        string sender, string recipient)
+        : Packet(PacketType.SEND_HINT_REQUEST, sender, recipient)
     {
-        public string PlayerName { get; init; }
-        public int Seed { get; init; }
-
-        public SEND_HINT_REQUEST_Packet(string playerName, int seed,
-            string sender, string recipient)
-            : base(PacketType.SEND_HINT_REQUEST, sender, recipient)
-        {
-            PlayerName = playerName;
-            Seed = seed;
-        }
+        public string PlayerName { get; init; } = playerName;
+        public int Seed { get; init; } = seed;
     }
-    public sealed class HINT_RESPONSE_Packet : Packet
+    public sealed class HINT_RESPONSE_Packet(
+        Hint hint, string sender, string recipient)
+        : Packet(PacketType.HINT_RESPONSE, sender, recipient)
     {
-        public Hint Hint { get; init; }
-
-        public HINT_RESPONSE_Packet(Hint hint, string sender, string recipient)
-            : base(PacketType.HINT_RESPONSE, sender, recipient)
-        {
-            Hint = hint;
-        }
+        public Hint Hint { get; init; } = hint;
     }
-    public sealed class GENERAL_MESSAGE_Packet : Packet
+    public sealed class GUESS_RESULT_Packet(
+        StateArray sa, string sender, string recipient)
+        : Packet(PacketType.GUESS_RESULT, sender, recipient)
     {
-        public string Message { get; init; }
-
-        public GENERAL_MESSAGE_Packet(string message, string sender, string recipient)
-            : base(PacketType.GENERAL_MESSAGE, sender, recipient)
-        {
-            Message = message;
-        }
+        public StateArray SA { get; init; } = sa;
     }
-    public sealed class PLAYER_DISCONNECT_Packet : Packet
+    public sealed class GENERAL_MESSAGE_Packet(
+        string message, string sender, string recipient)
+        : Packet(PacketType.GENERAL_MESSAGE, sender, recipient)
     {
-        public string PlayerName { get; init; }
-
-        public PLAYER_DISCONNECT_Packet(string playerName, string sender, string recipient)
-            : base(PacketType.PLAYER_DISCONNECT, sender, recipient)
-        {
-            PlayerName = playerName;
-        }
+        public string Message { get; init; } = message;
     }
-    public sealed class SERVER_SHUTDOWN_Packet : Packet
+    public sealed class PLAYER_DISCONNECT_Packet(
+        string playerName, string sender, string recipient)
+        : Packet(PacketType.PLAYER_DISCONNECT, sender, recipient)
     {
-        public SERVER_SHUTDOWN_Packet(string sender, string recipient)
-            : base(PacketType.SERVER_SHUTDOWN, sender, recipient)
-        {
-        }
+        public string PlayerName { get; init; } = playerName;
     }
-    public sealed class PING_Packet : Packet
+    public sealed class SERVER_SHUTDOWN_Packet(
+        string sender, string recipient)
+        : Packet(PacketType.SERVER_SHUTDOWN, sender, recipient)
     {
-        public long Timestamp { get; init; }
-
-        public PING_Packet(string sender, string recipient)
-            : base(PacketType.PING, sender, recipient)
-        {
-            Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        }
     }
-    public sealed class PONG_Packet : Packet
+    public sealed class PING_Packet(
+        string sender, string recipient)
+        : Packet(PacketType.PING, sender, recipient)
     {
-        public long Timestamp { get; init; }
-
-        public PONG_Packet(long timestamp, string sender, string recipient)
-            : base(PacketType.PONG, sender, recipient)
-        {
-            Timestamp = timestamp;
-        }
+        public long Timestamp { get; init; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     }
-    public sealed class PLAYER_LIST_SYNC_Packet : Packet
+    public sealed class PONG_Packet(
+        long timestamp, string sender, string recipient)
+        : Packet(PacketType.PONG, sender, recipient)
     {
-        public List<string> Players { get; init; }
-
-        public PLAYER_LIST_SYNC_Packet(
-            List<string> players,
-            string sender,
-            string recipient)
-            : base(PacketType.PLAYER_LIST_SYNC, sender, recipient)
-        {
-            Players = players;
-        }
+        public long Timestamp { get; init; } = timestamp;
     }
-
-    public sealed class JOIN_APPROVAL_REQUEST_Packet : Packet
+    public sealed class PLAYER_LIST_SYNC_Packet(
+        List<string> players, string sender, string recipient)
+        : Packet(PacketType.PLAYER_LIST_SYNC, sender, recipient)
     {
-        public string Username { get; init; }
-
-        public JOIN_APPROVAL_REQUEST_Packet(string username, string sender)
-            : base(PacketType.JOIN_APPROVAL_REQUEST, sender, "Host")
-        {
-            Username = username;
-        }
+        public List<string> Players { get; init; } = players;
     }
-    public sealed class JOIN_APPROVAL_RESPONSE_Packet : Packet
+    public sealed class JOIN_APPROVAL_REQUEST_Packet(
+        string username, string sender)
+        : Packet(PacketType.JOIN_APPROVAL_REQUEST, sender, "Server")
     {
-        public string Username { get; init; }
-        public bool Approved { get; init; }
-
-        public JOIN_APPROVAL_RESPONSE_Packet(
-            string username, bool approved, string sender)
-            : base(PacketType.JOIN_APPROVAL_RESPONSE, sender, "Server")
-        {
-            Username = username;
-            Approved = approved;
-        }
+        public string Username { get; init; } = username;
+    }
+    public sealed class JOIN_APPROVAL_RESPONSE_Packet(
+        string username, bool approved, string sender)
+        : Packet(PacketType.JOIN_APPROVAL_RESPONSE, sender, username)
+    {
+        public string Username { get; init; } = username;
+        public bool Approved { get; init; } = approved;
+    }
+    public sealed class GAME_STATUS_UPDATE_REQUEST_Packet(
+        string sender, bool iswin)
+        : Packet(PacketType.GAME_STATUS_UPDATE_REQUEST, sender, "Server")
+    {
+        public string Username { get; init; } = sender;
+        public bool Iswin { get; init; } = iswin;
+    }
+    public sealed class GAME_STATUS_UPDATE_RESPONSE_Packet(
+        string sender, string recipient)
+        : Packet(PacketType.GAME_STATUS_UPDATE_RESPONSE, sender, recipient)
+    {
     }
 
     /* ============================================================
      * PACKET FACTORY (SAFE)
      * ============================================================ */
-
     public static class PacketFactory
     {
         public static bool TryParse(
@@ -258,6 +210,9 @@ namespace WordleClient.libraries.lowlevel
                     PacketType.HINT_RESPONSE =>
                         JsonSerializer.Deserialize<HINT_RESPONSE_Packet>(json),
 
+                    PacketType.GUESS_RESULT =>
+                        JsonSerializer.Deserialize<GUESS_RESULT_Packet>(json),
+
                     PacketType.GENERAL_MESSAGE =>
                         JsonSerializer.Deserialize<GENERAL_MESSAGE_Packet>(json),
 
@@ -282,10 +237,16 @@ namespace WordleClient.libraries.lowlevel
                     PacketType.JOIN_APPROVAL_RESPONSE =>
                         JsonSerializer.Deserialize<JOIN_APPROVAL_RESPONSE_Packet>(json),
 
+                    PacketType.GAME_STATUS_UPDATE_REQUEST =>
+                        JsonSerializer.Deserialize<GAME_STATUS_UPDATE_REQUEST_Packet>(json),
 
+                    PacketType.GAME_STATUS_UPDATE_RESPONSE =>
+                        JsonSerializer.Deserialize<GAME_STATUS_UPDATE_RESPONSE_Packet>(json),
 
                     _ => null
                 };
+
+
 
                 if (packet is null)
                 {

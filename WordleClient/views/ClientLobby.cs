@@ -1,4 +1,5 @@
 ﻿using WordleClient.libraries.CustomControls;
+using WordleClient.libraries.ingame;
 using WordleClient.libraries.lowlevel;
 using WordleClient.libraries.network;
 using WordleClient.libraries.StateFrom;
@@ -115,8 +116,7 @@ namespace WordleClient.views
                                 return;
                             }
 
-                            // approved case stays unchanged
-                            lblStatus.Text = $"Joined {parts[0]}'s room";
+                            lblStatus.Text = $"Joined {res.Sender}'s room successfully.";
                             btn_JoinRequest.Visible = false;
                             break;
                         }
@@ -134,7 +134,6 @@ namespace WordleClient.views
                                 Player p = Player.Parse(raw);
 
                                 serverUsername ??= p.Username;
-                                lblStatus.Text = $"Joined {serverUsername}'s room successfully.";
 
                                 if (p.Username == serverUsername)
                                     listBoxPlayers.Items.Add($"HOST: {p.Username}");
@@ -168,13 +167,25 @@ namespace WordleClient.views
                             break;
                         }
 
-                    case START_GAME_Packet start_pkg:
+                    case START_GAME_Packet pkg:
                         {
-                            MessageBox.Show(
-                                $"{start_pkg.WordLength}-{start_pkg.MaxAttempts}-{start_pkg.Level}-{start_pkg.Topic}",
-                                "Packet Received",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
+                            PacketConnectionManager.PacketReceived -= OnPacketReceived;
+                            PacketConnectionManager.Disconnected -= OnDisconnected;
+
+                            var mp = new MultiPlayground(
+                                new WDBRecord_Simplified(pkg.WordLength, pkg.Topic, pkg.Level),
+                                pkg.MaxAttempts,
+                                pkg.GameSeed,
+                                pkg.NumPlayers
+                            );
+
+                            ReturnToMainOnClose = false;
+
+                            Hide();
+                            CustomSound.StopBackground();
+                            mp.Show();
+
+                            Close();
                             break;
                         }
                 }
@@ -199,13 +210,11 @@ namespace WordleClient.views
             CustomSound.PlayClick();
             _connectionReady = false;
 
-            // CRITICAL: fully reset static connection state
             PacketConnectionManager.PacketReceived -= OnPacketReceived;
             PacketConnectionManager.Disconnected -= OnDisconnected;
             PacketConnectionManager.Disconnect();
 
             Close();
         }
-
     }
 }
