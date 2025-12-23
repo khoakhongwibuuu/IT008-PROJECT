@@ -1,14 +1,10 @@
 ﻿namespace WordleClient.libraries.lowlevel
 {
-    public class Player
+    public class Player(string username, string ipAddress)
     {
-        public string Username { get; set; }
-        public string IPAddress { get; set; }
-        public Player(string username, string ipAddress)
-        {
-            Username = username;
-            IPAddress = ipAddress;
-        }
+        public string Username { get; set; } = username;
+        public string IPAddress { get; set; } = ipAddress;
+
         public string Serialize()
         {
             return $"{Username}|{IPAddress}";

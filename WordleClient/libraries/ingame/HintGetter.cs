@@ -3,7 +3,7 @@ namespace WordleClient.libraries.ingame
 {
     public class HintGetter
     {
-        static Random _rand = new Random();
+        private static readonly Random _rand = new();
         private static readonly char[] Vowels = ['A', 'E', 'I', 'O', 'U'];
         private static readonly char[] Consonants = ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'];
         private static readonly HashSet<char> VowelSet = [.. Vowels];
