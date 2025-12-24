@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -36,6 +37,7 @@ namespace WordleClient.libraries.network
             try
             {
                 string json = packet.ToJson();
+                Debug.WriteLine(json);
                 byte[] payload = Encoding.UTF8.GetBytes(json);
                 byte[] len = BitConverter.GetBytes(payload.Length);
 
@@ -105,6 +107,20 @@ namespace WordleClient.libraries.network
             }
         }
 
+        //private async Task<Packet?> ReceiveAsync()
+        //{
+        //    byte[] lenBuf = new byte[4];
+        //    int read = await ReadExact(lenBuf, 4);
+        //    if (read == 0) return null;
+
+        //    int size = BitConverter.ToInt32(lenBuf, 0);
+        //    byte[] buf = new byte[size];
+        //    await ReadExact(buf, size);
+
+        //    string json = Encoding.UTF8.GetString(buf);
+        //    PacketFactory.TryParse(json, out Packet? packet, out _);
+        //    return packet;
+        //}
         private async Task<Packet?> ReceiveAsync()
         {
             byte[] lenBuf = new byte[4];
@@ -116,9 +132,20 @@ namespace WordleClient.libraries.network
             await ReadExact(buf, size);
 
             string json = Encoding.UTF8.GetString(buf);
-            PacketFactory.TryParse(json, out Packet? packet, out _);
+
+            Debug.WriteLine("=== RECEIVE JSON ===");
+            Debug.WriteLine(json);
+
+            if (!PacketFactory.TryParse(json, out Packet? packet, out string? error))
+            {
+                Debug.WriteLine("PACKET PARSE FAILED:");
+                Debug.WriteLine(error ?? "(no error info)");
+                return null;
+            }
+
             return packet;
         }
+
 
         private async Task<int> ReadExact(byte[] buffer, int size)
         {

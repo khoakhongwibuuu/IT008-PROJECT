@@ -203,7 +203,6 @@ namespace WordleClient.libraries.network
             if (_clients.TryGetValue(ip, out var conn))
                 _ = conn.SendAsync(packet);
         }
-
         public static void SendTo(PacketConnection conn, Packet packet)
         {
             _ = conn.SendAsync(packet);

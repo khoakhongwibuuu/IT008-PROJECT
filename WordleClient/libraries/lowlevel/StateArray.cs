@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Text.Json.Serialization;
 namespace WordleClient.libraries.lowlevel
 {
     public enum TriState : byte
@@ -7,52 +8,51 @@ namespace WordleClient.libraries.lowlevel
         INVALID_ORDER = 1,
         MATCH = 2
     }
-    [Serializable]
     public sealed class StateArray : IEnumerable<TriState>
     {
-        private byte[] _data;
-        public StateArray()
-        {
-            _data = Array.Empty<byte>();
-        }
+        // 🔑 JSON MUST SEE THIS
+        [JsonInclude]
+        public byte[] Data { get; private set; } = Array.Empty<byte>();
+
+        // REQUIRED for deserialization
+        public StateArray() { }
+
         public StateArray(int length)
         {
-            _data = new byte[length];
+            Data = new byte[length];
         }
-        public int Length => _data.Length;
+
+        public int Length => Data.Length;
+
+        /* ===== Required API ===== */
+
         public TriState Get(int index)
-        {
-            return (TriState)_data[index];
-        }
+            => (TriState)Data[index];
+
         public void Set(int index, TriState value)
-        {
-            _data[index] = (byte)value;
-        }
+            => Data[index] = (byte)value;
+
         public TriState this[int index]
         {
-            get => (TriState)_data[index];
-            set => _data[index] = (byte)value;
+            get => (TriState)Data[index];
+            set => Data[index] = (byte)value;
         }
+
         public bool IsFullValue(TriState value)
         {
             byte b = (byte)value;
-            for (int i = 0; i < _data.Length; i++)
-            {
-                if (_data[i] != b)
+            for (int i = 0; i < Data.Length; i++)
+                if (Data[i] != b)
                     return false;
-            }
             return true;
         }
+
         public IEnumerator<TriState> GetEnumerator()
         {
-            for (int i = 0; i < _data.Length; i++)
-                yield return (TriState)_data[i];
+            for (int i = 0; i < Data.Length; i++)
+                yield return (TriState)Data[i];
         }
-        IEnumerator IEnumerable.GetEnumerator()
-            => GetEnumerator();
-        public byte[] ToByteArray()
-        {
-            return (byte[])_data.Clone();
-        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
