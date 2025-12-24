@@ -32,6 +32,21 @@ namespace WordleClient.libraries.ingame
                 return list;
             }
         }
+        public static bool HasPlayer(string username)
+        {
+            if (Host == null) return false;
+            if (string.IsNullOrWhiteSpace(username))
+                return false;
+            if (Host.Username.Equals(username, StringComparison.OrdinalIgnoreCase))
+                return true;
+            foreach (Player p in clients)
+            {
+                if (p.Username.Equals(username, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
+
         public static int NumPlayers => clients.Count + 1;
         public static Player? GetPlayerByIP(string ip)
         {
