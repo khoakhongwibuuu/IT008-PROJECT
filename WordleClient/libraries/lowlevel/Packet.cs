@@ -7,7 +7,6 @@ namespace WordleClient.libraries.lowlevel
     /* ============================================================
      * ENUMS
      * ============================================================ */
-
     public enum PacketType
     {
         UNKNOWN = 0,
@@ -37,7 +36,6 @@ namespace WordleClient.libraries.lowlevel
     /* ============================================================
      * BASE PACKET
      * ============================================================ */
-
     public abstract class Packet(PacketType type, string sender, string recipient)
     {
         public PacketType Type { get; init; } = type;
@@ -46,8 +44,15 @@ namespace WordleClient.libraries.lowlevel
 
         public string ToJson()
         {
-            return JsonSerializer.Serialize(this, GetType());
+            return JsonSerializer.Serialize(this, GetType(), JsonOptions);
         }
+        public static readonly JsonSerializerOptions JsonOptions = new()
+        {
+            Converters =
+            {
+                new StateArrayJsonConverter()
+            }
+        };
     }
 
     /* ============================================================
@@ -211,7 +216,8 @@ namespace WordleClient.libraries.lowlevel
                         JsonSerializer.Deserialize<HINT_RESPONSE_Packet>(json),
 
                     PacketType.GUESS_RESULT =>
-                        JsonSerializer.Deserialize<GUESS_RESULT_Packet>(json),
+                    JsonSerializer.Deserialize<GUESS_RESULT_Packet>(json, Packet.JsonOptions),
+
 
                     PacketType.GENERAL_MESSAGE =>
                         JsonSerializer.Deserialize<GENERAL_MESSAGE_Packet>(json),
