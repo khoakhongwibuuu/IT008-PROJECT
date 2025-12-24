@@ -37,8 +37,10 @@ namespace WordleClient.views
         /* ============================================================
          * CLIENT-USAGE ONLY ATTRIBUTES
          * ============================================================ */
+        private readonly SemaphoreSlim _requestLock = new(1, 1);
         private TaskCompletionSource<Hint>? _hintWaiter;
         private TaskCompletionSource<StateArray>? _resultWaiter;
+        private CancellationTokenSource _disconnectCts = new();
 
 
         /* ============================================================
@@ -52,29 +54,63 @@ namespace WordleClient.views
         /* ============================================================
          * CLIENT-USAGE ONLY METHODS
          * ============================================================*/
-        private Hint RequestHint(int GameSeed)
+        private async Task<Hint> RequestHintAsync(int seed)
         {
-            _hintWaiter = new TaskCompletionSource<Hint>();
+            if (isServer)
+                throw new InvalidOperationException("Server should not call client async requests.");
 
-            SEND_HINT_REQUEST_Packet packet =
-                new(PlayerName, GameSeed, PlayerName, "Server");
+            await _requestLock.WaitAsync();
+            try
+            {
+                _hintWaiter = new TaskCompletionSource<Hint>();
 
-            PacketConnectionManager.SendAsync(packet);
+                SEND_HINT_REQUEST_Packet packet =
+                    new(PlayerName, seed, PlayerName, "Server");
 
-            // BLOCK until server replies
-            return _hintWaiter.Task.Result;
+                await PacketConnectionManager.SendAsync(packet);
+
+                var completed = await Task.WhenAny(
+                    _hintWaiter.Task,
+                    Task.Delay(3000, _disconnectCts.Token));
+
+                if (completed != _hintWaiter.Task)
+                    throw new TimeoutException("Hint request timed out.");
+
+                return await _hintWaiter.Task;
+            }
+            finally
+            {
+                _requestLock.Release();
+            }
         }
-        private StateArray RequestResult(string SubmitedString)
+        private async Task<StateArray> RequestResultAsync(string guess)
         {
-            _resultWaiter = new TaskCompletionSource<StateArray>();
+            if (isServer)
+                throw new InvalidOperationException("Server should not call client async requests.");
 
-            SEND_GUESS_Packet packet
-                = new(SubmitedString, PlayerName, "Server");
+            await _requestLock.WaitAsync();
+            try
+            {
+                _resultWaiter = new TaskCompletionSource<StateArray>();
 
-            PacketConnectionManager.SendAsync(packet);
+                SEND_GUESS_Packet packet =
+                    new(guess, PlayerName, "Server");
 
-            // Block until server replies
-            return _resultWaiter.Task.Result;
+                await PacketConnectionManager.SendAsync(packet);
+
+                var completed = await Task.WhenAny(
+                    _resultWaiter.Task,
+                    Task.Delay(3000, _disconnectCts.Token));
+
+                if (completed != _resultWaiter.Task)
+                    throw new TimeoutException("Result request timed out.");
+
+                return await _resultWaiter.Task;
+            }
+            finally
+            {
+                _requestLock.Release();
+            }
         }
 
         /* ============================================================
@@ -84,43 +120,42 @@ namespace WordleClient.views
         {
             if (!isServer || gameInstance == null)
                 return;
+            if (!GameRoom.HasPlayer(packet.Sender))
+                return;
 
-            BeginInvoke(() =>
+            switch (packet)
             {
-                switch (packet)
-                {
-                    case SEND_HINT_REQUEST_Packet req:
-                        {
-                            Hint hint = HintGetter.GetHint(
-                                gameInstance.GetToken(),
-                                req.Seed);
+                case SEND_HINT_REQUEST_Packet req:
+                    {
+                        Hint hint = HintGetter.GetHint(
+                            gameInstance.GetToken(),
+                            req.Seed);
 
-                            ServerManager.SendTo(
-                                req.Sender,
-                                new HINT_RESPONSE_Packet(
-                                    hint,
-                                    "Server",
-                                    req.Sender));
-                            break;
-                        }
-                    case SEND_GUESS_Packet req:
-                        {
-                            StateArray result = gameInstance.EvaluateGuess(req.Guess);
-
-                            ServerManager.SendTo(
-                                req.Sender,
-                                new GUESS_RESULT_Packet(
-                                    result,
-                                    "Server",
-                                    req.Sender));
-                            break;
-                        }
-
-                    default:
-                        // Optional: ignore or log unhandled packets
+                        ServerManager.SendTo(
+                            req.Sender,
+                            new HINT_RESPONSE_Packet(
+                                hint,
+                                "Server",
+                                req.Sender));
                         break;
-                }
-            });
+                    }
+
+                case SEND_GUESS_Packet req:
+                    {
+                        StateArray result = gameInstance.EvaluateGuess(req.Guess);
+
+                        ServerManager.SendTo(
+                            req.Sender,
+                            new GUESS_RESULT_Packet(
+                                result,
+                                "Server",
+                                req.Sender));
+                        break;
+                    }
+
+                default:
+                    break;
+            }
         }
         private void OnClientDisconnectedUI(string ip)
         {
@@ -138,34 +173,46 @@ namespace WordleClient.views
         {
             BeginInvoke(() =>
             {
-                BeginInvoke(() =>
+                switch (packet)
                 {
-                    switch (packet)
-                    {
-                        case HINT_RESPONSE_Packet resp:
-                            {
-                                _hintWaiter?.TrySetResult(resp.Hint);
-                                break;
-                            }
+                    case HINT_RESPONSE_Packet resp:
+                        {
+                            _hintWaiter?.TrySetResult(resp.Hint);
+                            break;
+                        }
 
-                        case GUESS_RESULT_Packet resp:
-                            {
-                                _resultWaiter?.TrySetResult(resp.SA);
-                                break;
-                            }
-                        case SERVER_SHUTDOWN_Packet:
-                            {
-                                Close();
-                                break;
-                            }
-                    }
-                });
+                    case GUESS_RESULT_Packet resp:
+                        {
+                            _resultWaiter?.TrySetResult(resp.SA);
+                            break;
+                        }
+                    case SERVER_SHUTDOWN_Packet:
+                        {
+                            Close();
+                            break;
+                        }
+                }
             });
         }
         private void OnDisconnected()
         {
             BeginInvoke(() =>
             {
+                var oldCts = _disconnectCts;
+                _disconnectCts = new CancellationTokenSource();
+
+                oldCts.Cancel();
+                oldCts.Dispose();
+
+                _hintWaiter?.TrySetCanceled();
+                _resultWaiter?.TrySetCanceled();
+
+                MessageBox.Show(
+                    "Disconnected from server.",
+                    "Disconnected",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 Close();
             });
         }
@@ -236,7 +283,6 @@ namespace WordleClient.views
          * ============================================================ */
         private void Playground_FormClosing_Client(object? sender, FormClosingEventArgs e)
         {
-            if (GameEnded) return;
             if (CustomMessageBoxYesNo.Show(this, "Are you sure you want to exit?", MessageBoxIcon.Warning) == DialogResult.No)
             {
                 e.Cancel = true;
@@ -477,39 +523,69 @@ namespace WordleClient.views
         /* ============================================================
          * PLAYER INPUTS
          * ============================================================ */
-        private void GetHintBtn_Click(object sender, EventArgs e)
+        private async void GetHintBtn_Click(object sender, EventArgs e)
         {
-            if (HintRemaining > 0 && !GameEnded)
+            CustomSound.PlayClick();
+            if (GameEnded)
             {
-                CustomSound.PlayClick();
-
-                Hint hintObject = (isServer && gameInstance != null)
-                // if you are the server, you can just call HintGetter to get Hints
-                ? HintGetter.GetHint(gameInstance.GetToken(), HintRemaining + GameSeed)
-                // else you have to send your request to the server and wait for them to send back Hints
-                : RequestHint(HintRemaining + GameSeed);
-
-                UpdateKeyboardColors(null, hintObject);
-
-                // Translate Hint to literal string 
-                String literalHint = HintGetter.HintTranslator(hintObject);
-
-                CustomSound.PlayClickAlert();
-                new AlertBox(1500, CustomDarkLight.IsDark).ShowAlert(this, "Hint", literalHint, MessageBoxIcon.Information);
-                HintRemaining--;
-                if (HintRemaining == 1) lbl_Hint1_Placeholder.Text = literalHint;
-                else if (HintRemaining == 0) lbl_Hint2_Placeholder.Text = literalHint;
-                lbl_HintRemaining.Text = HintRemaining.ToString();
-                if (HintRemaining == 0) customButton1.Visible = false;
+                new AlertBox(750, CustomDarkLight.IsDark)
+                    .ShowAlert(this, "Get Hint", "Your game has ended.", MessageBoxIcon.Warning);
+                return;
             }
-            else if (GameEnded)
+
+            if (HintRemaining <= 0)
             {
-                MessageBox.Show("The game has ended.", "Get Hint", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                new AlertBox(750, CustomDarkLight.IsDark)
+                    .ShowAlert(this, "Get Hint", "No more hints.", MessageBoxIcon.Warning);
+                return;
+            }
+
+            Hint? hintObject = null;
+
+            if (isServer && gameInstance != null)
+            {
+                hintObject = HintGetter.GetHint(
+                    gameInstance.GetToken(),
+                    HintRemaining + GameSeed);
             }
             else
             {
-                MessageBox.Show("No hints remaining.", "Get Hint", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                try
+                {
+                    hintObject = await RequestHintAsync(HintRemaining + GameSeed);
+                }
+                catch (TimeoutException)
+                {
+                    new AlertBox(1500, CustomDarkLight.IsDark)
+                        .ShowAlert(this, "Network Error", "Cannot get result from server. Please try again later.", MessageBoxIcon.Error);
+                }
+                catch (OperationCanceledException)
+                {
+                    // already handled on disconnect
+                }
             }
+
+            // ---- UI updates (safe, back on UI thread) ----
+            if (hintObject == null) return;
+            UpdateKeyboardColors(null, hintObject);
+
+            string literalHint = HintGetter.HintTranslator(hintObject);
+
+            CustomSound.PlayClickAlert();
+            new AlertBox(1500, CustomDarkLight.IsDark)
+                .ShowAlert(this, "Get Hint", literalHint, MessageBoxIcon.Information);
+
+            HintRemaining--;
+
+            if (HintRemaining == 1)
+                lbl_Hint1_Placeholder.Text = literalHint;
+            else if (HintRemaining == 0)
+                lbl_Hint2_Placeholder.Text = literalHint;
+
+            lbl_HintRemaining.Text = HintRemaining.ToString();
+
+            if (HintRemaining == 0)
+                customButton1.Visible = false;
         }
         private void OnVirtualKeyPress(char c)
         {
@@ -528,24 +604,48 @@ namespace WordleClient.views
                     if (dictionaryChecker.TokenExists(currentString))
                     {
                         inputLocked = true;
-                        var result = (isServer && gameInstance != null)
-                        // if you are the server, you can just call EvaluateGuess to get result
-                        ? gameInstance.EvaluateGuess(currentString)
-                        // else you have to send your answer to the server and wait for them to send back result
-                        : RequestResult(currentString);
+                        StateArray? result = null;
+                        if (isServer && gameInstance != null)
+                        {
+                            result = gameInstance.EvaluateGuess(currentString);
+                        }
+                        else
+                        {
+                            try
+                            {
+                                result = await RequestResultAsync(currentString);
+                            }
+                            catch (TimeoutException)
+                            {
+                                inputLocked = false;
+                                new AlertBox(1500, CustomDarkLight.IsDark)
+                                    .ShowAlert(this, "Network Error", "Cannot get result from server. Please try again later.", MessageBoxIcon.Error);
+                            }
+                            catch (OperationCanceledException)
+                            {
+                                // already handled on disconnect
+                            }
+                        }
+
+                        if (result == null) return;
 
                         await FlipRow(currentRow, result);
                         UpdateKeyboardColors(result, null);
+
                         if (result.IsFullValue(TriState.MATCH))
                         {
                             GameEnded = true;
                             streak++;
                             lbl_Streak.Text = streak.ToString();
-                            CustomSound.PlayClickAlert();
-                            new AlertBox(1500, CustomDarkLight.IsDark).ShowAlert(this, "Success", "You found the hidden word!", MessageBoxIcon.None);
 
+                            CustomSound.PlayClickAlert();
+                            new AlertBox(1500, CustomDarkLight.IsDark)
+                                .ShowAlert(this, "Success", "You found the hidden word!", MessageBoxIcon.None);
+
+                            inputLocked = false;
                             return;
                         }
+
                         if (currentRow < rows - 1)
                         {
                             currentRow++;
@@ -556,15 +656,17 @@ namespace WordleClient.views
                         {
                             GameEnded = true;
                             CustomSound.PlayClickGameOver();
-
+                            inputLocked = false;
                             return;
                         }
+
                         inputLocked = false;
                     }
                     else
                     {
                         CustomSound.PlayClickAlertError();
-                        new AlertBox(750, CustomDarkLight.IsDark).ShowAlert(this, "Invalid Word", "Word not in dictionary!", MessageBoxIcon.Warning);
+                        new AlertBox(750, CustomDarkLight.IsDark)
+                            .ShowAlert(this, "Invalid Word", "Word not in dictionary!", MessageBoxIcon.Warning);
                         await ShakeRow(currentRow);
                         Loselife();
                     }
