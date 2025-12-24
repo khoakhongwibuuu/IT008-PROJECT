@@ -96,7 +96,7 @@ namespace WordleClient.views
         /* ============================================================
          * SERVER → UI
          * ============================================================ */
-        private void OnServerPacket(Packet packet)
+        private void OnServerPacket(PacketConnection conn, Packet packet)
         {
             if (packet is not JOIN_APPROVAL_REQUEST_Packet req)
                 return;

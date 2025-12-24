@@ -23,7 +23,8 @@ namespace WordleClient.libraries.network
          * ============================================================ */
 
         // Fired ONLY for UI-related server events
-        public static event Action<Packet>? ServerPacketReceived;
+        //public static event Action<Packet>? ServerPacketReceived;
+        public static event Action<PacketConnection, Packet>? ServerPacketReceived;
         public static event Action<string>? ClientDisconnected;
 
         public static bool IsRunning => _running;
@@ -31,7 +32,6 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * START / STOP
          * ============================================================ */
-
         public static void Start(int port)
         {
             if (_running)
@@ -61,7 +61,6 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * ACCEPT LOOP
          * ============================================================ */
-
         private static async Task AcceptLoop()
         {
             while (_running)
@@ -82,7 +81,6 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * PACKET DISPATCH (NETWORK → SERVER)
          * ============================================================ */
-
         private static void OnPacketReceived(
             PacketConnection conn,
             Packet packet)
@@ -97,8 +95,12 @@ namespace WordleClient.libraries.network
                     HandleApprovalResponse(approval);
                     break;
 
+                case SEND_HINT_REQUEST_Packet hint_req:
+                case SEND_GUESS_Packet guess:
+                    ServerPacketReceived?.Invoke(conn, packet);
+                    break;
+
                 default:
-                    // Forward game packets, chat, etc.
                     Broadcast(packet);
                     break;
             }
@@ -107,7 +109,6 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * JOIN FLOW
          * ============================================================ */
-
         private static void HandleJoinRequest(
             PacketConnection conn,
             JOIN_REQUEST_Packet join)
@@ -131,6 +132,7 @@ namespace WordleClient.libraries.network
             // 🔥 IMPORTANT:
             // Notify SERVER UI directly (NOT over network)
             ServerPacketReceived?.Invoke(
+                conn,
                 new JOIN_APPROVAL_REQUEST_Packet(
                     pending.Serialize(),
                     "Server"));
@@ -161,7 +163,6 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * PLAYER LIST SYNC
          * ============================================================ */
-
         public static void BroadcastPlayerList()
         {
             Broadcast(
@@ -174,7 +175,6 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * DISCONNECT HANDLING
          * ============================================================ */
-
         private static void OnClientDisconnected(PacketConnection conn)
         {
             _clients.TryRemove(conn.ConnectionId, out _);
@@ -193,17 +193,20 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * SEND HELPERS (SERVER → CLIENTS)
          * ============================================================ */
-
         public static void Broadcast(Packet packet)
         {
             foreach (var c in _clients.Values)
                 _ = c.SendAsync(packet);
         }
-
         public static void SendTo(string ip, Packet packet)
         {
             if (_clients.TryGetValue(ip, out var conn))
                 _ = conn.SendAsync(packet);
+        }
+
+        public static void SendTo(PacketConnection conn, Packet packet)
+        {
+            _ = conn.SendAsync(packet);
         }
     }
 }

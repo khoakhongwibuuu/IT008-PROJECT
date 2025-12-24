@@ -1,5 +1,6 @@
 ﻿using System.Net.Sockets;
 using System.Text;
+using System.Diagnostics;
 using WordleClient.libraries.CustomControls;
 using WordleClient.libraries.ingame;
 using WordleClient.libraries.lowlevel;
@@ -116,10 +117,12 @@ namespace WordleClient.views
         /* ============================================================
          * SERVER-USAGE ONLY NETWORK EVENT HANDLERS
          * ============================================================ */
-        private void OnServerPacket(Packet packet)
+        private void OnServerPacket(PacketConnection conn, Packet packet)
         {
+
             if (!isServer || gameInstance == null)
                 return;
+
             if (!GameRoom.HasPlayer(packet.Sender))
                 return;
 
@@ -132,7 +135,7 @@ namespace WordleClient.views
                             req.Seed);
 
                         ServerManager.SendTo(
-                            req.Sender,
+                            conn,
                             new HINT_RESPONSE_Packet(
                                 hint,
                                 "Server",
@@ -145,16 +148,13 @@ namespace WordleClient.views
                         StateArray result = gameInstance.EvaluateGuess(req.Guess);
 
                         ServerManager.SendTo(
-                            req.Sender,
+                            conn,
                             new GUESS_RESULT_Packet(
                                 result,
                                 "Server",
                                 req.Sender));
                         break;
                     }
-
-                default:
-                    break;
             }
         }
         private void OnClientDisconnectedUI(string ip)
