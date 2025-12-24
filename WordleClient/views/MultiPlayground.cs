@@ -258,6 +258,7 @@ namespace WordleClient.views
             else
             {
                 dictionaryChecker.Dispose();
+                gameInstance?.Dispose();
 
                 // Request all clients to close their MultiPlayground windows
                 ServerManager.Broadcast(new SERVER_SHUTDOWN_Packet("Server", "All"));
@@ -295,6 +296,7 @@ namespace WordleClient.views
             this.dictionaryChecker = new(TheChosenOne.TOKEN.Length);
             this.NumOfPlayers = NumPlayers;
             this.PlayerName = ProfileState.GetPlayername();
+            this.gameInstance = new(TheChosenOne);
             BaseConstructor(new WDBRecord_Simplified(TheChosenOne.TOKEN.Length, TheChosenOne.GROUP_NAME, TheChosenOne.LEVEL), MaxGuessCount, GameSeed);
             this.FormClosing += Playground_FormClosing_Server;
             this.LastToken = TheChosenOne.TOKEN;
