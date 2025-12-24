@@ -21,12 +21,9 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * EVENTS (SERVER → UI)
          * ============================================================ */
-
         // Fired ONLY for UI-related server events
-        //public static event Action<Packet>? ServerPacketReceived;
         public static event Action<PacketConnection, Packet>? ServerPacketReceived;
         public static event Action<string>? ClientDisconnected;
-
         public static bool IsRunning => _running;
 
         /* ============================================================
@@ -43,7 +40,6 @@ namespace WordleClient.libraries.network
             _running = true;
             Task.Run(AcceptLoop);
         }
-
         public static void Stop()
         {
             _running = false;
@@ -129,7 +125,7 @@ namespace WordleClient.libraries.network
                 join.Username,
                 conn.ConnectionId);
 
-            // 🔥 IMPORTANT:
+            // IMPORTANT:
             // Notify SERVER UI directly (NOT over network)
             ServerPacketReceived?.Invoke(
                 conn,
@@ -137,7 +133,6 @@ namespace WordleClient.libraries.network
                     pending.Serialize(),
                     "Server"));
         }
-
         private static void HandleApprovalResponse(
             JOIN_APPROVAL_RESPONSE_Packet res)
         {
@@ -184,7 +179,7 @@ namespace WordleClient.libraries.network
             if (player != null)
                 GameRoom.RemoveClient(player);
 
-            // 🔥 notify UI
+            // notify UI
             ClientDisconnected?.Invoke(conn.ConnectionId);
 
             BroadcastPlayerList();

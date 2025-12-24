@@ -216,8 +216,7 @@ namespace WordleClient.libraries.lowlevel
                         JsonSerializer.Deserialize<HINT_RESPONSE_Packet>(json),
 
                     PacketType.GUESS_RESULT =>
-                    JsonSerializer.Deserialize<GUESS_RESULT_Packet>(json, Packet.JsonOptions),
-
+                        JsonSerializer.Deserialize<GUESS_RESULT_Packet>(json, Packet.JsonOptions),
 
                     PacketType.GENERAL_MESSAGE =>
                         JsonSerializer.Deserialize<GENERAL_MESSAGE_Packet>(json),

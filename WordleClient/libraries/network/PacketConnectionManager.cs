@@ -22,7 +22,6 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * CLIENT CONNECT
          * ============================================================ */
-
         public static async Task ConnectAsync(string host, int port)
         {
             if (_connection != null)
@@ -37,7 +36,6 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * ATTACH (CLIENT OR SERVER)
          * ============================================================ */
-
         public static void Attach(TcpClient client)
         {
             if (_connection != null)
@@ -55,7 +53,6 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * SEND
          * ============================================================ */
-
         public static Task SendAsync(Packet packet)
         {
             if (_connection == null)
@@ -67,12 +64,10 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * INTERNAL HANDLERS
          * ============================================================ */
-
         private static void OnPacketReceived(PacketConnection _, Packet packet)
         {
             PacketReceived?.Invoke(packet);
         }
-
         private static void OnDisconnected(PacketConnection _)
         {
             _connection = null;
@@ -82,7 +77,6 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * DISCONNECT
          * ============================================================ */
-
         public static void Disconnect()
         {
             _connection?.Dispose();

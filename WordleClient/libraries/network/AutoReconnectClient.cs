@@ -16,7 +16,6 @@ namespace WordleClient.libraries.network
             _port = port;
             await TryConnect();
         }
-
         private static async Task TryConnect()
         {
             while (_enabled)

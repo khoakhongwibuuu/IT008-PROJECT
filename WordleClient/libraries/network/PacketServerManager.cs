@@ -20,7 +20,6 @@ namespace WordleClient.libraries.network
         {
             _listener = new TcpListener(IPAddress.Any, port);
         }
-
         public async Task StartAsync()
         {
             _listener.Start();
@@ -40,18 +39,15 @@ namespace WordleClient.libraries.network
                 conn.Start();
             }
         }
-
         private void OnPacket(PacketConnection conn, Packet packet)
         {
             PacketReceived?.Invoke(conn, packet);
         }
-
         private void OnDisconnect(PacketConnection conn)
         {
             _clients.TryRemove(conn.ConnectionId, out _);
             ClientDisconnected?.Invoke(conn);
         }
-
         public Task BroadcastAsync(Packet packet)
         {
             foreach (var c in _clients.Values)
