@@ -96,6 +96,10 @@ namespace WordleClient.libraries.network
                     ServerPacketReceived?.Invoke(conn, packet);
                     break;
 
+                case GAME_STATUS_UPDATE_REQUEST_Packet gamestatusupdate:
+                    ServerPacketReceived?.Invoke(conn, packet);
+                    break;
+
                 default:
                     Broadcast(packet);
                     break;

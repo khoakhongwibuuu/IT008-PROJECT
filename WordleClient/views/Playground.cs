@@ -45,7 +45,6 @@ namespace WordleClient.views
             this.lastToken = TheChosenOne.TOKEN;
             InitializeComponent();
             LoadHearts();
-            StartHeartAnimation();
             this.matrixPanel = new Panel
             {
                 BackColor = Color.Transparent,
@@ -323,7 +322,6 @@ namespace WordleClient.views
                             {
                                 lives = 3;
                                 LoadHearts();
-                                StartHeartAnimation();
                                 streak = 0;
                                 lbl_Streak.Text = "0";
                                 if (initialDifficulty == "HARD") ResetHardGame();
@@ -462,7 +460,6 @@ namespace WordleClient.views
             BuildKeyboard();
             matrixPanel.Refresh();
             this.Refresh();
-            StartHeartAnimation();
         }
         private void ResetHardGame()
         {
@@ -511,7 +508,6 @@ namespace WordleClient.views
             BuildKeyboard();
             matrixPanel.Refresh();
             this.Refresh();
-            StartHeartAnimation();
         }
         private void ExitBtn_Click(object sender, EventArgs e)
         {
@@ -630,23 +626,11 @@ namespace WordleClient.views
                     streak = 0;
                     lbl_Streak.Text = "0";
                     LoadHearts();
-                    StartHeartAnimation();
                     if (initialDifficulty == "HARD") ResetHardGame();
                     else Resetnew_Game();
                     ThemeManager.ApplyTheme(this);
                 }
                 else this.Close();
-            }
-        }
-        private async void StartHeartAnimation()
-        {
-            while (!GameEnded)
-            {
-                foreach (Control c in flp_Hearts.Controls)
-                {
-                    if (c is PictureBox pb) await Animation.HeartAnimation(pb);
-                }
-                await Task.Delay(600);
             }
         }
         private void customButton3_Click(object sender, EventArgs e)

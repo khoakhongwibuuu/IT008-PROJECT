@@ -18,8 +18,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MultiPlayground));
-            customButton1 = new WordleClient.libraries.CustomControls.CustomButton();
-            customButton2 = new WordleClient.libraries.CustomControls.CustomButton();
+            GetHintBtn = new WordleClient.libraries.CustomControls.CustomButton();
+            ExitBtn = new WordleClient.libraries.CustomControls.CustomButton();
             panel1 = new Panel();
             playerInfo = new WordleClient.libraries.CustomControls.CustomGroupBox();
             customPictureBox1 = new WordleClient.libraries.CustomControls.CustomPictureBox();
@@ -39,65 +39,72 @@
             lbl_Diff = new Label();
             label3 = new Label();
             label1 = new Label();
+            btn_DarkLight = new WordleClient.libraries.CustomControls.CustomPictureBox();
             panel2 = new Panel();
             panel3 = new Panel();
+            playersFinished = new WordleClient.libraries.CustomControls.CustomGroupBox();
+            listFinishedPlayers = new ListBox();
+            playersInRoom = new WordleClient.libraries.CustomControls.CustomGroupBox();
+            listPlayers = new ListBox();
+            RestartGameBtn = new WordleClient.libraries.CustomControls.CustomButton();
             customButton3 = new WordleClient.libraries.CustomControls.CustomButton();
             customButton4 = new WordleClient.libraries.CustomControls.CustomButton();
-            btn_DarkLight = new WordleClient.libraries.CustomControls.CustomPictureBox();
             MasterPanel = new Panel();
             panel1.SuspendLayout();
             playerInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)customPictureBox1).BeginInit();
             revealedHints.SuspendLayout();
             gameStats.SuspendLayout();
-            panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)btn_DarkLight).BeginInit();
+            panel3.SuspendLayout();
+            playersFinished.SuspendLayout();
+            playersInRoom.SuspendLayout();
             MasterPanel.SuspendLayout();
             SuspendLayout();
             // 
-            // customButton1
+            // GetHintBtn
             // 
-            customButton1.BackColor = Color.White;
-            customButton1.BackgroundColor = Color.White;
-            customButton1.BorderColor = Color.Black;
-            customButton1.BorderRadius = 20;
-            customButton1.BorderSize = 2;
-            customButton1.ButtonImage = null;
-            customButton1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            customButton1.ImageSize = 24;
-            customButton1.Location = new Point(6, 651);
-            customButton1.Name = "customButton1";
-            customButton1.Size = new Size(282, 45);
-            customButton1.TabIndex = 0;
-            customButton1.Text = "💡 Get Hint";
-            customButton1.TextAlign = ContentAlignment.MiddleCenter;
-            customButton1.TextColor = Color.Black;
-            customButton1.Click += GetHintBtn_Click;
+            GetHintBtn.BackColor = Color.White;
+            GetHintBtn.BackgroundColor = Color.White;
+            GetHintBtn.BorderColor = Color.Black;
+            GetHintBtn.BorderRadius = 20;
+            GetHintBtn.BorderSize = 2;
+            GetHintBtn.ButtonImage = null;
+            GetHintBtn.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            GetHintBtn.ImageSize = 24;
+            GetHintBtn.Location = new Point(6, 651);
+            GetHintBtn.Name = "GetHintBtn";
+            GetHintBtn.Size = new Size(282, 45);
+            GetHintBtn.TabIndex = 0;
+            GetHintBtn.Text = "💡 Get Hint";
+            GetHintBtn.TextAlign = ContentAlignment.MiddleCenter;
+            GetHintBtn.TextColor = Color.Black;
+            GetHintBtn.Click += GetHintBtn_Click;
             // 
-            // customButton2
+            // ExitBtn
             // 
-            customButton2.BackColor = Color.White;
-            customButton2.BackgroundColor = Color.White;
-            customButton2.BorderColor = Color.Black;
-            customButton2.BorderRadius = 20;
-            customButton2.BorderSize = 2;
-            customButton2.ButtonImage = null;
-            customButton2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            customButton2.ImageSize = 24;
-            customButton2.Location = new Point(6, 753);
-            customButton2.Name = "customButton2";
-            customButton2.Size = new Size(282, 45);
-            customButton2.TabIndex = 0;
-            customButton2.Text = "❌ Exit game";
-            customButton2.TextAlign = ContentAlignment.MiddleCenter;
-            customButton2.TextColor = Color.Black;
-            customButton2.Click += ExitBtn_Click;
+            ExitBtn.BackColor = Color.White;
+            ExitBtn.BackgroundColor = Color.White;
+            ExitBtn.BorderColor = Color.Black;
+            ExitBtn.BorderRadius = 20;
+            ExitBtn.BorderSize = 2;
+            ExitBtn.ButtonImage = null;
+            ExitBtn.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            ExitBtn.ImageSize = 24;
+            ExitBtn.Location = new Point(6, 753);
+            ExitBtn.Name = "ExitBtn";
+            ExitBtn.Size = new Size(282, 45);
+            ExitBtn.TabIndex = 0;
+            ExitBtn.Text = "❌ Exit game";
+            ExitBtn.TextAlign = ContentAlignment.MiddleCenter;
+            ExitBtn.TextColor = Color.Black;
             // 
             // panel1
             // 
             panel1.Controls.Add(playerInfo);
             panel1.Controls.Add(revealedHints);
             panel1.Controls.Add(gameStats);
+            panel1.Controls.Add(btn_DarkLight);
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(300, 810);
@@ -170,7 +177,7 @@
             revealedHints.Controls.Add(label7);
             revealedHints.Controls.Add(lbl_Hint2_Placeholder);
             revealedHints.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            revealedHints.Location = new Point(3, 648);
+            revealedHints.Location = new Point(3, 302);
             revealedHints.Name = "revealedHints";
             revealedHints.Size = new Size(294, 159);
             revealedHints.TabIndex = 19;
@@ -331,6 +338,24 @@
             label1.TabIndex = 2;
             label1.Text = "CEFR Level:";
             // 
+            // btn_DarkLight
+            // 
+            btn_DarkLight.boderGradientBottom1 = Color.Gainsboro;
+            btn_DarkLight.boderGradientTop1 = SystemColors.ButtonFace;
+            btn_DarkLight.boderRadius1 = 40;
+            btn_DarkLight.boderSize1 = 2;
+            btn_DarkLight.Cursor = Cursors.Hand;
+            btn_DarkLight.gradientAngle1 = 90F;
+            btn_DarkLight.Image = Properties.Resources.Light;
+            btn_DarkLight.Location = new Point(12, 738);
+            btn_DarkLight.Margin = new Padding(3, 2, 3, 2);
+            btn_DarkLight.Name = "btn_DarkLight";
+            btn_DarkLight.Size = new Size(60, 60);
+            btn_DarkLight.SizeMode = PictureBoxSizeMode.StretchImage;
+            btn_DarkLight.TabIndex = 12;
+            btn_DarkLight.TabStop = false;
+            btn_DarkLight.Click += btn_DarkLight_Click;
+            // 
             // panel2
             // 
             panel2.Location = new Point(300, 0);
@@ -340,15 +365,96 @@
             // 
             // panel3
             // 
+            panel3.Controls.Add(playersFinished);
+            panel3.Controls.Add(playersInRoom);
+            panel3.Controls.Add(RestartGameBtn);
             panel3.Controls.Add(customButton3);
             panel3.Controls.Add(customButton4);
-            panel3.Controls.Add(btn_DarkLight);
-            panel3.Controls.Add(customButton2);
-            panel3.Controls.Add(customButton1);
+            panel3.Controls.Add(ExitBtn);
+            panel3.Controls.Add(GetHintBtn);
             panel3.Location = new Point(780, 0);
             panel3.Name = "panel3";
             panel3.Size = new Size(300, 810);
             panel3.TabIndex = 2;
+            // 
+            // playersFinished
+            // 
+            playersFinished.BackColor = Color.Transparent;
+            playersFinished.BackgroundColor = Color.White;
+            playersFinished.BorderColor = Color.Black;
+            playersFinished.BorderRadius = 15;
+            playersFinished.BorderSize = 2;
+            playersFinished.Controls.Add(listFinishedPlayers);
+            playersFinished.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playersFinished.Location = new Point(3, 302);
+            playersFinished.Name = "playersFinished";
+            playersFinished.Size = new Size(294, 159);
+            playersFinished.TabIndex = 21;
+            playersFinished.TabStop = false;
+            playersFinished.Text = "Players finished game";
+            playersFinished.TextColor = Color.Black;
+            playersFinished.TitleAlign = ContentAlignment.TopLeft;
+            playersFinished.TitlePadding = 10;
+            // 
+            // listFinishedPlayers
+            // 
+            listFinishedPlayers.BorderStyle = BorderStyle.None;
+            listFinishedPlayers.Font = new Font("Segoe UI", 12F);
+            listFinishedPlayers.FormattingEnabled = true;
+            listFinishedPlayers.ItemHeight = 21;
+            listFinishedPlayers.Location = new Point(14, 48);
+            listFinishedPlayers.Name = "listFinishedPlayers";
+            listFinishedPlayers.Size = new Size(253, 84);
+            listFinishedPlayers.TabIndex = 0;
+            // 
+            // playersInRoom
+            // 
+            playersInRoom.BackColor = Color.Transparent;
+            playersInRoom.BackgroundColor = Color.White;
+            playersInRoom.BorderColor = Color.Black;
+            playersInRoom.BorderRadius = 15;
+            playersInRoom.BorderSize = 2;
+            playersInRoom.Controls.Add(listPlayers);
+            playersInRoom.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            playersInRoom.Location = new Point(3, 137);
+            playersInRoom.Name = "playersInRoom";
+            playersInRoom.Size = new Size(294, 159);
+            playersInRoom.TabIndex = 20;
+            playersInRoom.TabStop = false;
+            playersInRoom.Text = "Players in room";
+            playersInRoom.TextColor = Color.Black;
+            playersInRoom.TitleAlign = ContentAlignment.TopLeft;
+            playersInRoom.TitlePadding = 10;
+            // 
+            // listPlayers
+            // 
+            listPlayers.BorderStyle = BorderStyle.None;
+            listPlayers.Font = new Font("Segoe UI", 12F);
+            listPlayers.FormattingEnabled = true;
+            listPlayers.ItemHeight = 21;
+            listPlayers.Location = new Point(14, 48);
+            listPlayers.Name = "listPlayers";
+            listPlayers.Size = new Size(253, 84);
+            listPlayers.TabIndex = 0;
+            // 
+            // RestartGameBtn
+            // 
+            RestartGameBtn.BackColor = Color.White;
+            RestartGameBtn.BackgroundColor = Color.White;
+            RestartGameBtn.BorderColor = Color.Black;
+            RestartGameBtn.BorderRadius = 20;
+            RestartGameBtn.BorderSize = 2;
+            RestartGameBtn.ButtonImage = null;
+            RestartGameBtn.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            RestartGameBtn.ImageSize = 24;
+            RestartGameBtn.Location = new Point(6, 601);
+            RestartGameBtn.Name = "RestartGameBtn";
+            RestartGameBtn.Size = new Size(282, 45);
+            RestartGameBtn.TabIndex = 15;
+            RestartGameBtn.Text = "⟲ Restart game";
+            RestartGameBtn.TextAlign = ContentAlignment.MiddleCenter;
+            RestartGameBtn.TextColor = Color.Black;
+            RestartGameBtn.Click += RestartGameBtn_Click;
             // 
             // customButton3
             // 
@@ -388,24 +494,6 @@
             customButton4.TextColor = Color.Black;
             customButton4.Click += customButton4_Click;
             // 
-            // btn_DarkLight
-            // 
-            btn_DarkLight.boderGradientBottom1 = Color.Gainsboro;
-            btn_DarkLight.boderGradientTop1 = SystemColors.ButtonFace;
-            btn_DarkLight.boderRadius1 = 40;
-            btn_DarkLight.boderSize1 = 2;
-            btn_DarkLight.Cursor = Cursors.Hand;
-            btn_DarkLight.gradientAngle1 = 90F;
-            btn_DarkLight.Image = Properties.Resources.Light;
-            btn_DarkLight.Location = new Point(228, 586);
-            btn_DarkLight.Margin = new Padding(3, 2, 3, 2);
-            btn_DarkLight.Name = "btn_DarkLight";
-            btn_DarkLight.Size = new Size(60, 60);
-            btn_DarkLight.SizeMode = PictureBoxSizeMode.StretchImage;
-            btn_DarkLight.TabIndex = 12;
-            btn_DarkLight.TabStop = false;
-            btn_DarkLight.Click += btn_DarkLight_Click;
-            // 
             // MasterPanel
             // 
             MasterPanel.Controls.Add(panel1);
@@ -425,6 +513,7 @@
             Controls.Add(MasterPanel);
             DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            KeyPreview = true;
             MaximizeBox = false;
             MaximumSize = new Size(1096, 849);
             MinimumSize = new Size(1096, 849);
@@ -440,16 +529,18 @@
             revealedHints.PerformLayout();
             gameStats.ResumeLayout(false);
             gameStats.PerformLayout();
-            panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)btn_DarkLight).EndInit();
+            panel3.ResumeLayout(false);
+            playersFinished.ResumeLayout(false);
+            playersInRoom.ResumeLayout(false);
             MasterPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private libraries.CustomControls.CustomButton customButton1;
-        private libraries.CustomControls.CustomButton customButton2;
+        private libraries.CustomControls.CustomButton GetHintBtn;
+        private libraries.CustomControls.CustomButton ExitBtn;
         private Panel panel1;
         private Panel panel2;
         private Panel panel3;
@@ -475,5 +566,10 @@
         private libraries.CustomControls.CustomPictureBox customPictureBox1;
         private libraries.CustomControls.CustomButton customButton3;
         private libraries.CustomControls.CustomButton customButton4;
+        private libraries.CustomControls.CustomButton RestartGameBtn;
+        private libraries.CustomControls.CustomGroupBox playersInRoom;
+        private ListBox listPlayers;
+        private libraries.CustomControls.CustomGroupBox playersFinished;
+        private ListBox listFinishedPlayers;
     }
 }

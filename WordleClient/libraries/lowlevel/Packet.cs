@@ -158,16 +158,18 @@ namespace WordleClient.libraries.lowlevel
         public bool Approved { get; init; } = approved;
     }
     public sealed class GAME_STATUS_UPDATE_REQUEST_Packet(
-        string sender, bool iswin)
-        : Packet(PacketType.GAME_STATUS_UPDATE_REQUEST, sender, "Server")
+        GameStatus gs,
+        string sender, string recipient)
+        : Packet(PacketType.GAME_STATUS_UPDATE_REQUEST, sender, recipient)
     {
-        public string Username { get; init; } = sender;
-        public bool Iswin { get; init; } = iswin;
+        public GameStatus GS { get; init; } = gs;
     }
     public sealed class GAME_STATUS_UPDATE_RESPONSE_Packet(
+        GameStatus gs,
         string sender, string recipient)
         : Packet(PacketType.GAME_STATUS_UPDATE_RESPONSE, sender, recipient)
     {
+        public GameStatus GS { get; init; } = gs;
     }
 
     /* ============================================================
