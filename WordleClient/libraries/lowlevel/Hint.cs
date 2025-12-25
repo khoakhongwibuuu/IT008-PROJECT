@@ -2,21 +2,30 @@
 {
     public enum HintType
     {
-        Absent = 0,
-        Present = 1
+        Absent = 0, Present = 1
     }
     public enum AbsentType
     {
-        CONSONANT = 0,
-        VOWEL = 1
+        CONSONANT = 0, VOWEL = 1
     }
     public class Hint
     {
-        public HintType h_type { get; set; }
-        public char? pre_letter { get; set; } // null if h_type = absent
-        public AbsentType? abs_type { get; set; } // null if h_type = present
+        public HintType h_type
+        {
+            get;
+            set;
+        }
+        public char? pre_letter
+        {
+            get;
+            set;
+        }
+        public AbsentType? abs_type
+        {
+            get;
+            set;
+        }
         public Hint() { }
-
         public Hint(HintType type, char? letter = null, AbsentType? absentType = null)
         {
             h_type = type;

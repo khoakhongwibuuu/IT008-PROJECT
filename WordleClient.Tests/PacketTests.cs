@@ -38,8 +38,11 @@ namespace WordleClient.Tests
                 topic: "Animals",
                 level: "Easy",
                 maxAttempts: 6,
+                gameSeed: 1,
+                numPlayers: 3,
                 sender: "server",
-                recipient: "client");
+                recipient: "client"
+            );
 
             string json = packet.ToJson();
 

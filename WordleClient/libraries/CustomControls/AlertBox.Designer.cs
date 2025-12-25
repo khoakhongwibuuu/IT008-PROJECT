@@ -33,7 +33,6 @@
             customGroupBox1.Controls.Add(lbl_Content);
             customGroupBox1.Controls.Add(lbl_Caption);
             customGroupBox1.Controls.Add(customPictureBox1);
-            customGroupBox1.ForeColor = SystemColors.ControlText;
             customGroupBox1.Location = new Point(0, 0);
             customGroupBox1.Name = "customGroupBox1";
             customGroupBox1.Size = new Size(420, 80);
@@ -59,7 +58,7 @@
             lbl_Caption.AutoSize = true;
             lbl_Caption.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lbl_Caption.ForeColor = Color.Black;
-            lbl_Caption.Location = new Point(68, 11);
+            lbl_Caption.Location = new Point(68, 9);
             lbl_Caption.Name = "lbl_Caption";
             lbl_Caption.Size = new Size(81, 30);
             lbl_Caption.TabIndex = 4;
@@ -87,7 +86,6 @@
             ClientSize = new Size(420, 80);
             Controls.Add(customGroupBox1);
             Name = "AlertBox";
-            Load += AlertBox_Load;
             customGroupBox1.ResumeLayout(false);
             customGroupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)customPictureBox1).EndInit();

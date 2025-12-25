@@ -1,13 +1,11 @@
 ﻿using Microsoft.Data.Sqlite;
 using WordleClient.libraries.lowlevel;
-
 using System.Diagnostics;
 namespace WordleClient.libraries.ingame
 {
     public class SingleplayerLogger
     {
         private readonly SqliteConnection sql_con;
-
         public SingleplayerLogger()
         {
             Debug.WriteLine("[SingleplayerLogger] Initialing.");
@@ -15,38 +13,29 @@ namespace WordleClient.libraries.ingame
             string basePath = Path.Combine(localAppData, "WordleClient");
             string userDataDir = Path.Combine(basePath, "userdata");
             string dbPath = Path.Combine(userDataDir, "singleplayer-log.db");
-
-            // Ensure the directory exists
             if (!Directory.Exists(userDataDir))
             {
                 Debug.WriteLine($"[SingleplayerLogger] Creating directory at {userDataDir}");
                 Directory.CreateDirectory(userDataDir);
             }
-
-            // Create the database file with the TABLE if it doesn't exist
             if (!File.Exists(dbPath))
             {
                 Debug.WriteLine($"[SingleplayerLogger] Creating database at {dbPath}");
                 string tempConnectionString = $"Data Source={dbPath};";
-
                 try
                 {
                     using var tempConnection = new SqliteConnection(tempConnectionString);
                     tempConnection.Open();
-
-                    string createTableSql = @"
-            CREATE TABLE IF NOT EXISTS SINGLEPLAYER_PLAYLOG (
-                TIMESTAMP  INTEGER NOT NULL,
-                TOKEN      TEXT NOT NULL,
-                TOPIC      TEXT NOT NULL,
-                DIFFICULTY TEXT NOT NULL,
-                IS_SOLVED  INTEGER NOT NULL,
-                MAX_ATTEMPTS_ALLOWED INTEGER NOT NULL,
-                USED_ATTEMPTS INTEGER NOT NULL,
-                PRIMARY KEY (TIMESTAMP, TOKEN, TOPIC)
-            );
-            ";
-
+                    string createTableSql = @"CREATE TABLE IF NOT EXISTS SINGLEPLAYER_PLAYLOG (
+                        TIMESTAMP  INTEGER NOT NULL,                
+                        TOKEN      TEXT NOT NULL,                
+                        TOPIC      TEXT NOT NULL,                
+                        DIFFICULTY TEXT NOT NULL,                
+                        IS_SOLVED  INTEGER NOT NULL,                
+                        MAX_ATTEMPTS_ALLOWED INTEGER NOT NULL,                
+                        USED_ATTEMPTS INTEGER NOT NULL,                
+                        PRIMARY KEY (TIMESTAMP, TOKEN, TOPIC)            
+                    );";
                     using var command = tempConnection.CreateCommand();
                     command.CommandText = createTableSql;
                     command.ExecuteNonQuery();
@@ -56,9 +45,6 @@ namespace WordleClient.libraries.ingame
                     Debug.WriteLine("[SingleplayerLogger] DB creation error: " + ex);
                 }
             }
-
-
-            // Database connection initialise
             string connectionString = $"Data Source={dbPath};Mode=ReadWriteCreate;";
             sql_con = new SqliteConnection(connectionString);
             sql_con.Open();
@@ -67,27 +53,23 @@ namespace WordleClient.libraries.ingame
         {
             using (SqliteCommand cmd = sql_con.CreateCommand())
             {
-                cmd.CommandText = @"
-                INSERT INTO SINGLEPLAYER_PLAYLOG 
-                (TIMESTAMP, TOKEN, TOPIC, DIFFICULTY, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS) 
-                VALUES 
-                (@timestamp, @token, @topic, @difficulty, @is_solved, @max_attempts_allowed, @used_attempts);";
-
+                cmd.CommandText = @"INSERT INTO SINGLEPLAYER_PLAYLOG 
+                    (TIMESTAMP, TOKEN, TOPIC, DIFFICULTY, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS)
+                    VALUES                
+                    (@timestamp, @token, @topic, @difficulty, @is_solved, @max_attempts_allowed, @used_attempts);";
                 cmd.Parameters.AddWithValue("@timestamp", SPL.Timestamp);
                 cmd.Parameters.AddWithValue("@token", SPL.Token);
                 cmd.Parameters.AddWithValue("@topic", SPL.Group);
-                cmd.Parameters.AddWithValue("@difficulty", SPL.Difficulty); 
+                cmd.Parameters.AddWithValue("@difficulty", SPL.Difficulty);
                 cmd.Parameters.AddWithValue("@is_solved", SPL.IsSolved ? 1 : 0);
                 cmd.Parameters.AddWithValue("@max_attempts_allowed", SPL.MaxAttempts);
                 cmd.Parameters.AddWithValue("@used_attempts", SPL.UsedAttempts);
-
                 cmd.ExecuteNonQuery();
             }
         }
         public List<SingleplayerPlayLog> LoadFromDatabase(string? GROUP_NAME)
         {
             List<SingleplayerPlayLog> playLogs = [];
-
             using (SqliteCommand cmd = sql_con.CreateCommand())
             {
                 if (GROUP_NAME != null)
@@ -95,8 +77,7 @@ namespace WordleClient.libraries.ingame
                     cmd.CommandText = "SELECT TIMESTAMP, TOKEN, TOPIC, DIFFICULTY, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS FROM SINGLEPLAYER_PLAYLOG WHERE TOPIC = @groupName;";
                     cmd.Parameters.AddWithValue("@groupName", GROUP_NAME);
                 }
-                else
-                    cmd.CommandText = "SELECT TIMESTAMP, TOKEN, TOPIC, DIFFICULTY, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS FROM SINGLEPLAYER_PLAYLOG;";
+                else cmd.CommandText = "SELECT TIMESTAMP, TOKEN, TOPIC, DIFFICULTY, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS FROM SINGLEPLAYER_PLAYLOG;";
                 using (SqliteDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -134,7 +115,8 @@ namespace WordleClient.libraries.ingame
         }
         public void ClearDatabase()
         {
-            using var cmd = sql_con.CreateCommand();
+            using
+            var cmd = sql_con.CreateCommand();
             cmd.CommandText = "DELETE FROM SINGLEPLAYER_PLAYLOG;";
             cmd.ExecuteNonQuery();
         }

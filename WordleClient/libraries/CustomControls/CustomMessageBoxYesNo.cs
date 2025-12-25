@@ -1,8 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using WordleClient.libraries.StateFrom;
-
+﻿using WordleClient.libraries.StateFrom;
 namespace WordleClient.libraries.CustomControls
 {
     public partial class CustomMessageBoxYesNo : CustomForm
@@ -12,29 +8,30 @@ namespace WordleClient.libraries.CustomControls
         private Point originalLocation;
         private bool moveLeft = true;
         private int shakeCount = 0;
-
         public CustomMessageBoxYesNo()
         {
             InitializeComponent();
-
-
-            customButtonYes.Click += (s, e) => { CustomSound.PlayClick(); result = DialogResult.Yes; this.Close(); };
-            customButtonNo.Click += (s, e) => { CustomSound.PlayClick(); result = DialogResult.No; this.Close(); };
-
-            // Timer cho hiệu ứng lắc lư
+            customButtonYes.Click += (s, e) =>
+            {
+                CustomSound.PlayClick();
+                result = DialogResult.Yes;
+                this.Close();
+            };
+            customButtonNo.Click += (s, e) =>
+            {
+                CustomSound.PlayClick();
+                result = DialogResult.No;
+                this.Close();
+            };
             timeAnimation = new System.Windows.Forms.Timer();
             timeAnimation.Interval = 50;
             timeAnimation.Tick += TimeAnimation_Tick;
         }
-
         private void TimeAnimation_Tick(object? sender, EventArgs e)
         {
             int offset = 5;
             Point loc = this.Location;
-            this.Location = moveLeft
-                ? new Point(loc.X - offset, loc.Y)
-                : new Point(loc.X + offset, loc.Y);
-
+            this.Location = moveLeft ? new Point(loc.X - offset, loc.Y) : new Point(loc.X + offset, loc.Y);
             moveLeft = !moveLeft;
             shakeCount += 1;
             if (shakeCount >= 10)
@@ -43,18 +40,12 @@ namespace WordleClient.libraries.CustomControls
                 this.Location = originalLocation;
             }
         }
-
         public static DialogResult Show(Form owner, string content, MessageBoxIcon icon)
         {
-            using var msgBox = new CustomMessageBoxYesNo();
-
-            // Set caption và content
+            using
+            var msgBox = new CustomMessageBoxYesNo();
             msgBox.lbl_Content.Text = content;
-
-            // Center
             msgBox.lbl_Content.Left = (msgBox.ClientSize.Width - msgBox.lbl_Content.Width) / 2;
-
-            // Option Icon
             switch (icon)
             {
                 case MessageBoxIcon.Information:
@@ -73,15 +64,8 @@ namespace WordleClient.libraries.CustomControls
                     msgBox.customPictureBox1.Image = null;
                     break;
             }
-
-            // Display Center
             msgBox.StartPosition = FormStartPosition.Manual;
-            msgBox.Location = new Point(
-                owner.Location.X + (owner.Width - msgBox.Width) / 2,
-                owner.Location.Y + (owner.Height - msgBox.Height) / 2
-            );
-
-            // Shake setup
+            msgBox.Location = new Point(owner.Location.X + (owner.Width - msgBox.Width) / 2, owner.Location.Y + (owner.Height - msgBox.Height) / 2);
             msgBox.originalLocation = msgBox.Location;
             msgBox.shakeCount = 0;
             msgBox.moveLeft = true;

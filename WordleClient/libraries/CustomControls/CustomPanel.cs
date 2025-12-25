@@ -1,5 +1,4 @@
 ﻿using System.Drawing.Drawing2D;
-
 namespace WordleClient.libraries.CustomControls
 {
     public partial class CustomPanel : UserControl
@@ -8,7 +7,6 @@ namespace WordleClient.libraries.CustomControls
         private float gradientAngle = 90F;
         private Color gradientTopColor = Color.DodgerBlue;
         private Color gradientBottomColor = Color.CadetBlue;
-        // Constructor
         private void InitializeComponent()
         {
             this.SuspendLayout();
@@ -29,11 +27,42 @@ namespace WordleClient.libraries.CustomControls
             this.ForeColor = Color.Black;
             this.Size = new Size(350, 200);
         }
-        public int BorderRadius { get => borderRadius; set { borderRadius = value; this.Invalidate(); } }
-        public float GradientAngle { get => gradientAngle; set { gradientAngle = value; this.Invalidate(); } }
-        public Color GradientTopColor { get => gradientTopColor; set { gradientTopColor = value; this.Invalidate(); } }
-        public Color GradientBottomColor { get => gradientBottomColor; set { gradientBottomColor = value; this.Invalidate(); } }
-        //Methods
+        public int BorderRadius
+        {
+            get => borderRadius;
+            set
+            {
+                borderRadius = value;
+                this.Invalidate();
+            }
+        }
+        public float GradientAngle
+        {
+            get => gradientAngle;
+            set
+            {
+                gradientAngle = value;
+                this.Invalidate();
+            }
+        }
+        public Color GradientTopColor
+        {
+            get => gradientTopColor;
+            set
+            {
+                gradientTopColor = value;
+                this.Invalidate();
+            }
+        }
+        public Color GradientBottomColor
+        {
+            get => gradientBottomColor;
+            set
+            {
+                gradientBottomColor = value;
+                this.Invalidate();
+            }
+        }
         private GraphicsPath GetFigurePath(RectangleF rect, float radius)
         {
             GraphicsPath path = new GraphicsPath();
@@ -52,7 +81,6 @@ namespace WordleClient.libraries.CustomControls
             LinearGradientBrush brush = new LinearGradientBrush(this.ClientRectangle, this.GradientTopColor, this.GradientBottomColor, this.gradientAngle);
             Graphics graphics = e.Graphics;
             graphics.FillRectangle(brush, ClientRectangle);
-            // Border Radius
             RectangleF rectF = new RectangleF(0, 0, this.Width, this.Height);
             if (borderRadius > 2)
             {
