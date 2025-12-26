@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+
 //using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
@@ -54,6 +56,37 @@ namespace WordleClient.libraries.network
             Task.Run(ListenLoop, _cts.Token);
             Task.Run(PingLoop, _cts.Token);
         }
+        //private async Task ListenLoop()
+        //{
+        //    try
+        //    {
+        //        while (!_cts.IsCancellationRequested)
+        //        {
+        //            Packet? packet = await ReceiveAsync();
+        //            if (packet == null) break;
+
+        //            if (packet.Type == PacketType.PING)
+        //            {
+        //                var ping = (PING_Packet)packet;
+        //                await SendAsync(new PONG_Packet(
+        //                    ping.Timestamp, "Server", packet.Sender));
+        //                continue;
+        //            }
+
+        //            if (packet.Type == PacketType.PONG)
+        //            {
+        //                _lastPong = DateTime.UtcNow;
+        //                continue;
+        //            }
+
+        //            PacketReceived?.Invoke(this, packet);
+        //        }
+        //    }
+        //    finally
+        //    {
+        //        Dispose();
+        //    }
+        //}
         private async Task ListenLoop()
         {
             try
@@ -61,7 +94,17 @@ namespace WordleClient.libraries.network
                 while (!_cts.IsCancellationRequested)
                 {
                     Packet? packet = await ReceiveAsync();
-                    if (packet == null) break;
+
+                    if (packet == null)
+                    {
+                        Debug.WriteLine("[LISTEN] packet == null → breaking loop");
+                        break;
+                    }
+
+                    if (packet.Type == PacketType.UNKNOWN)
+                    {
+                        continue; // skip invalid / unparsed packet
+                    }
 
                     if (packet.Type == PacketType.PING)
                     {
@@ -85,6 +128,7 @@ namespace WordleClient.libraries.network
                 Dispose();
             }
         }
+
         private async Task PingLoop()
         {
             while (!_cts.IsCancellationRequested)
@@ -100,25 +144,73 @@ namespace WordleClient.libraries.network
                 await SendAsync(new PING_Packet("Server", ConnectionId));
             }
         }
+        //private async Task<Packet?> ReceiveAsync()
+        //{
+        //    byte[] lenBuf = new byte[4];
+        //    int read = await ReadExact(lenBuf, 4);
+        //    if (read == 0) return null;
+
+        //    int size = BitConverter.ToInt32(lenBuf, 0);
+        //    byte[] buf = new byte[size];
+        //    await ReadExact(buf, size);
+
+        //    string json = Encoding.UTF8.GetString(buf);
+
+        //    if (!PacketFactory.TryParse(json, out Packet? packet, out string? error))
+        //    {
+        //        return null;
+        //    }
+
+        //    return packet;
+        //}
         private async Task<Packet?> ReceiveAsync()
         {
-            byte[] lenBuf = new byte[4];
-            int read = await ReadExact(lenBuf, 4);
-            if (read == 0) return null;
-
-            int size = BitConverter.ToInt32(lenBuf, 0);
-            byte[] buf = new byte[size];
-            await ReadExact(buf, size);
-
-            string json = Encoding.UTF8.GetString(buf);
-
-            if (!PacketFactory.TryParse(json, out Packet? packet, out string? error))
+            try
             {
-                return null;
-            }
+                byte[] lenBuf = new byte[4];
+                int read = await ReadExact(lenBuf, 4);
 
-            return packet;
+                if (read == 0)
+                {
+                    Debug.WriteLine("[RECEIVE] ReadExact(len) returned 0 (remote closed)");
+                    return null;
+                }
+
+                int size = BitConverter.ToInt32(lenBuf, 0);
+                Debug.WriteLine($"[RECEIVE] size = {size}");
+
+                byte[] buf = new byte[size];
+                read = await ReadExact(buf, size);
+
+                if (read == 0)
+                {
+                    Debug.WriteLine("[RECEIVE] ReadExact(payload) returned 0 (remote closed)");
+                    return null;
+                }
+
+                string json = Encoding.UTF8.GetString(buf);
+                Debug.WriteLine("[RECEIVE] json = " + json);
+
+                if (!PacketFactory.TryParse(json, out Packet? packet, out string? error))
+                {
+                    Debug.WriteLine("[DROP PACKET] " + error);
+                    return new EmptyPacket();
+                }
+
+                return packet;
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.WriteLine("[RECEIVE] OperationCanceledException");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("[RECEIVE] EXCEPTION: " + ex);
+                throw;
+            }
         }
+
         private async Task<int> ReadExact(byte[] buffer, int size)
         {
             int total = 0;

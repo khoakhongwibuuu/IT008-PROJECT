@@ -171,6 +171,11 @@ namespace WordleClient.libraries.lowlevel
     {
         public GameStatus GS { get; init; } = gs;
     }
+    public sealed class EmptyPacket : Packet
+    {
+        public EmptyPacket() : base(PacketType.UNKNOWN, "", "") { }
+    }
+
 
     /* ============================================================
      * PACKET FACTORY (SAFE)

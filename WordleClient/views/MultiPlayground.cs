@@ -443,13 +443,7 @@ namespace WordleClient.views
         private void ExitBtn_Click_Client(object? sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            if (CustomMessageBoxYesNo.Show(this,
-                "Are you sure you want to exit?",
-                MessageBoxIcon.Warning)
-                == DialogResult.Yes)
-            {
-                this.Close();
-            }
+            this.Close();
         }
 
         /* ============================================================
