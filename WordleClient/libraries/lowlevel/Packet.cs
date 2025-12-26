@@ -245,10 +245,10 @@ namespace WordleClient.libraries.lowlevel
                         JsonSerializer.Deserialize<JOIN_APPROVAL_RESPONSE_Packet>(json),
 
                     PacketType.GAME_STATUS_UPDATE_REQUEST =>
-                        JsonSerializer.Deserialize<GAME_STATUS_UPDATE_REQUEST_Packet>(json),
+                            JsonSerializer.Deserialize<GAME_STATUS_UPDATE_REQUEST_Packet>(json, Packet.JsonOptions),
 
                     PacketType.GAME_STATUS_UPDATE_RESPONSE =>
-                        JsonSerializer.Deserialize<GAME_STATUS_UPDATE_RESPONSE_Packet>(json),
+                        JsonSerializer.Deserialize<GAME_STATUS_UPDATE_RESPONSE_Packet>(json, Packet.JsonOptions),
 
                     _ => null
                 };
