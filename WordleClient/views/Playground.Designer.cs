@@ -97,6 +97,7 @@
             // 
             panel1.Controls.Add(playerInfo);
             panel1.Controls.Add(revealedHints);
+            panel1.Controls.Add(btn_DarkLight);
             panel1.Controls.Add(gameStats);
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
@@ -170,7 +171,7 @@
             revealedHints.Controls.Add(label7);
             revealedHints.Controls.Add(lbl_Hint2_Placeholder);
             revealedHints.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            revealedHints.Location = new Point(3, 648);
+            revealedHints.Location = new Point(3, 302);
             revealedHints.Name = "revealedHints";
             revealedHints.Size = new Size(294, 159);
             revealedHints.TabIndex = 19;
@@ -342,7 +343,6 @@
             // 
             panel3.Controls.Add(customButton3);
             panel3.Controls.Add(customButton4);
-            panel3.Controls.Add(btn_DarkLight);
             panel3.Controls.Add(customButton2);
             panel3.Controls.Add(customButton1);
             panel3.Location = new Point(780, 0);
@@ -397,7 +397,7 @@
             btn_DarkLight.Cursor = Cursors.Hand;
             btn_DarkLight.gradientAngle1 = 90F;
             btn_DarkLight.Image = Properties.Resources.Light;
-            btn_DarkLight.Location = new Point(228, 586);
+            btn_DarkLight.Location = new Point(12, 738);
             btn_DarkLight.Margin = new Padding(3, 2, 3, 2);
             btn_DarkLight.Name = "btn_DarkLight";
             btn_DarkLight.Size = new Size(60, 60);

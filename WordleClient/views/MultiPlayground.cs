@@ -898,6 +898,14 @@ namespace WordleClient.views
                 }
             }
         }
+        private void listFinishedPlayers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            listFinishedPlayers.ClearSelected();
+        }
+        private void listPlayers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            listPlayers.ClearSelected();
+        }
 
         /* ============================================================
          * PLAYER INPUTS
@@ -1092,7 +1100,7 @@ namespace WordleClient.views
                         else
                         {
                             GameEnded = true;
-                            
+
                             streak = 0;
                             lbl_Streak.Text = streak.ToString();
 

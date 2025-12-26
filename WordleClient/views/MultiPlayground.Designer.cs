@@ -406,6 +406,7 @@
             listFinishedPlayers.Name = "listFinishedPlayers";
             listFinishedPlayers.Size = new Size(253, 84);
             listFinishedPlayers.TabIndex = 0;
+            listFinishedPlayers.SelectedIndexChanged += listFinishedPlayers_SelectedIndexChanged;
             // 
             // playersInRoom
             // 
@@ -436,6 +437,7 @@
             listPlayers.Name = "listPlayers";
             listPlayers.Size = new Size(253, 84);
             listPlayers.TabIndex = 0;
+            listPlayers.SelectedIndexChanged += listPlayers_SelectedIndexChanged;
             // 
             // RestartGameBtn
             // 
