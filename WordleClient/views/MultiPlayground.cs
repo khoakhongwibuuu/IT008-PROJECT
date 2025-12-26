@@ -728,40 +728,35 @@ namespace WordleClient.views
          * ============================================================ */
         private void UpdateCurrentPlayerList(List<string> AllPlayers)
         {
-            BeginInvoke(() =>
+
+            listPlayers.Items.Clear();
+            string? tmpServerUsername = null;
+            foreach (string raw in AllPlayers)
             {
-                listPlayers.Items.Clear();
-                string? tmpServerUsername = null;
-                foreach (string raw in AllPlayers)
-                {
-                    Player p = Player.Parse(raw);
+                Player p = Player.Parse(raw);
 
-                    tmpServerUsername ??= p.Username;
+                tmpServerUsername ??= p.Username;
 
-                    if (p.Username == tmpServerUsername)
-                        listPlayers.Items
-                            .Add($"HOST: {p.Username}{(PlayerName == p.Username
-                                ? " (YOU)"
-                                : String.Empty)}");
-                    else
-                        listPlayers.Items
-                            .Add($"{p.Username}{(PlayerName == p.Username
-                                ? " (YOU)"
-                                : String.Empty)}");
-                }
-            });
+                if (p.Username == tmpServerUsername)
+                    listPlayers.Items
+                        .Add($"HOST: {p.Username}{(PlayerName == p.Username
+                            ? " (YOU)"
+                            : String.Empty)}");
+                else
+                    listPlayers.Items
+                        .Add($"{p.Username}{(PlayerName == p.Username
+                            ? " (YOU)"
+                            : String.Empty)}");
+            }
         }
         private void UpdateFinishedPlayerList(List<GameStatus> AllPlayers)
         {
-            BeginInvoke(() =>
-            {
-                listFinishedPlayers.Items.Clear();
+            listFinishedPlayers.Items.Clear();
 
-                foreach (var raw in AllPlayers)
-                {
-                    listFinishedPlayers.Items.Add($"{raw.Username} - {(raw.IsWin ? "SOLVED" : "FAILED")}");
-                }
-            });
+            foreach (var raw in AllPlayers)
+            {
+                listFinishedPlayers.Items.Add($"{raw.Username} - {(raw.IsWin ? "SOLVED" : "FAILED")}");
+            }
         }
 
         /* ============================================================
