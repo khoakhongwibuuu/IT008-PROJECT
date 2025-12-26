@@ -999,10 +999,12 @@ namespace WordleClient.views
                         if (result.IsFullValue(TriState.MATCH))
                         {
                             GameEnded = true;
+
                             streak++;
                             lbl_Streak.Text = streak.ToString();
 
                             CustomSound.PlayClickAlert();
+
                             new AlertBox(
                                 1500, CustomDarkLight.IsDark)
                                 .ShowAlert(this,
@@ -1051,14 +1053,19 @@ namespace WordleClient.views
                         else
                         {
                             GameEnded = true;
+                            
+                            streak = 0;
+                            lbl_Streak.Text = streak.ToString();
+
                             CustomSound.PlayClickGameOver();
-                            inputLocked = false;
 
                             new AlertBox(
                                 1500, CustomDarkLight.IsDark)
                                 .ShowAlert(this,
                                 "Game Over", "You could not guess the word.",
                                 MessageBoxIcon.None);
+
+                            inputLocked = false;
 
                             var payload = new GameStatus(PlayerName, false);
 
@@ -1323,7 +1330,12 @@ namespace WordleClient.views
             if (lives <= 0)
             {
                 GameEnded = true;
+
+                streak = 0;
+                lbl_Streak.Text = streak.ToString();
+
                 CustomSound.PlayClickGameOver();
+
                 new AlertBox(
                     1700, CustomDarkLight.IsDark)
                     .ShowAlert(this,
@@ -1415,8 +1427,6 @@ namespace WordleClient.views
                 "Server",
                 "All"
             ));
-
-            //RestartGameBtn.Visible = false;
 
             ResetGame(
                 new WDBRecord_Simplified(
