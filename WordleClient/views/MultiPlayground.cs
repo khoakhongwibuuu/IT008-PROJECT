@@ -605,7 +605,6 @@ namespace WordleClient.views
          * ============================================================ */
         private void ResetGame(WDBRecord_Simplified TheChosenOne)
         {
-            ThemeManager.ApplyTheme(this);
             FinishedPlayers.Clear();
             listFinishedPlayers.Items.Clear();
 
@@ -631,6 +630,7 @@ namespace WordleClient.views
             BuildKeyboard();
             PositionKeyboard();
             matrixPanel.Refresh();
+            ThemeManager.ApplyTheme(this);
             this.Refresh();
         }
 
@@ -1021,11 +1021,7 @@ namespace WordleClient.views
                                 }
                                 catch (TimeoutException)
                                 {
-                                    //new AlertBox
-                                    //    (1500, CustomDarkLight.IsDark)
-                                    //    .ShowAlert(this,
-                                    //    "Network Error", "Cannot send finish signal to the server.",
-                                    //    MessageBoxIcon.Error);
+
                                 }
                             }
                             else
@@ -1074,11 +1070,7 @@ namespace WordleClient.views
                                 }
                                 catch (TimeoutException)
                                 {
-                                    //new AlertBox
-                                    //    (1500, CustomDarkLight.IsDark)
-                                    //    .ShowAlert(this,
-                                    //    "Network Error", "Cannot send finish signal to the server.",
-                                    //    MessageBoxIcon.Error);
+
                                 }
                             }
                             else
@@ -1282,18 +1274,25 @@ namespace WordleClient.views
             ExitBtn.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
             customButton3.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
             customButton4.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            RestartGameBtn.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+
             GetHintBtn.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
             ExitBtn.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
             customButton3.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
             customButton4.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+            RestartGameBtn.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
+
             GetHintBtn.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
             ExitBtn.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
             customButton3.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
             customButton4.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            RestartGameBtn.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+
             GetHintBtn.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
             ExitBtn.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
             customButton3.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
             customButton4.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
+            RestartGameBtn.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
         }
         private void LoadHearts()
         {
@@ -1341,11 +1340,7 @@ namespace WordleClient.views
                     }
                     catch (TimeoutException)
                     {
-                        //new AlertBox
-                        //    (1500, CustomDarkLight.IsDark)
-                        //    .ShowAlert(this,
-                        //    "Network Error", "Cannot send finish signal to the server.",
-                        //    MessageBoxIcon.Error);
+
                     }
                 }
                 else
@@ -1421,7 +1416,7 @@ namespace WordleClient.views
                 "All"
             ));
 
-            RestartGameBtn.Visible = false;
+            //RestartGameBtn.Visible = false;
 
             ResetGame(
                 new WDBRecord_Simplified(
