@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 //using System.Diagnostics;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace WordleClient.libraries.network
         private readonly TcpClient _client;
         private readonly NetworkStream _stream;
         private readonly CancellationTokenSource _cts = new();
+        private readonly CancellationTokenSource _heartbeatCts = new();
 
         private readonly TimeSpan _pingInterval = TimeSpan.FromSeconds(5);
         private DateTime _lastPong = DateTime.UtcNow;
@@ -54,115 +56,137 @@ namespace WordleClient.libraries.network
         public void Start()
         {
             Task.Run(ListenLoop, _cts.Token);
-            Task.Run(PingLoop, _cts.Token);
+            Task.Run(PingLoop, _heartbeatCts.Token);
         }
-        //private async Task ListenLoop()
-        //{
-        //    try
-        //    {
-        //        while (!_cts.IsCancellationRequested)
-        //        {
-        //            Packet? packet = await ReceiveAsync();
-        //            if (packet == null) break;
-
-        //            if (packet.Type == PacketType.PING)
-        //            {
-        //                var ping = (PING_Packet)packet;
-        //                await SendAsync(new PONG_Packet(
-        //                    ping.Timestamp, "Server", packet.Sender));
-        //                continue;
-        //            }
-
-        //            if (packet.Type == PacketType.PONG)
-        //            {
-        //                _lastPong = DateTime.UtcNow;
-        //                continue;
-        //            }
-
-        //            PacketReceived?.Invoke(this, packet);
-        //        }
-        //    }
-        //    finally
-        //    {
-        //        Dispose();
-        //    }
-        //}
         private async Task ListenLoop()
         {
+            Debug.WriteLine($"[LISTEN START] {ConnectionId}");
+
             try
             {
                 while (!_cts.IsCancellationRequested)
                 {
-                    Packet? packet = await ReceiveAsync();
+                    Packet? packet;
 
-                    if (packet == null)
+                    try
                     {
-                        Debug.WriteLine("[LISTEN] packet == null → breaking loop");
+                        packet = await ReceiveAsync();
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        Debug.WriteLine($"[LISTEN] {ConnectionId} canceled");
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"[LISTEN ERROR] {ConnectionId}");
+                        Debug.WriteLine(ex);
                         break;
                     }
 
-                    if (packet.Type == PacketType.UNKNOWN)
+                    // 🔴 REAL disconnect: remote closed socket
+                    if (packet == null)
                     {
-                        continue; // skip invalid / unparsed packet
+                        Debug.WriteLine($"[LISTEN] {ConnectionId} stream closed");
+                        break;
                     }
 
+                    // ⚠️ Invalid / unparsed packet → ignore
+                    if (packet.Type == PacketType.EMPTY)
+                    {
+                        Debug.WriteLine($"[LISTEN] {ConnectionId} ignored invalid packet");
+                        continue;
+                    }
+
+                    // ==========================
+                    // HEARTBEAT HANDLING
+                    // ==========================
                     if (packet.Type == PacketType.PING)
                     {
-                        var ping = (PING_Packet)packet;
-                        await SendAsync(new PONG_Packet(
-                            ping.Timestamp, "Server", packet.Sender));
+                        Debug.WriteLine($"[LISTEN] {ConnectionId} ← PING");
+
+                        try
+                        {
+                            await SendAsync(new PONG_Packet(
+                                ((PING_Packet)packet).Timestamp,
+                                ConnectionId,      // sender = this connection
+                                packet.Sender));  // recipient = ping sender
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine($"[LISTEN] {ConnectionId} PONG send failed");
+                            Debug.WriteLine(ex);
+                            break;
+                        }
+
                         continue;
                     }
 
                     if (packet.Type == PacketType.PONG)
                     {
+                        Debug.WriteLine($"[LISTEN] {ConnectionId} ← PONG");
                         _lastPong = DateTime.UtcNow;
                         continue;
                     }
 
-                    PacketReceived?.Invoke(this, packet);
+                    // ==========================
+                    // NORMAL PACKET DISPATCH
+                    // ==========================
+                    try
+                    {
+                        PacketReceived?.Invoke(this, packet);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Never kill the connection because of handler bugs
+                        Debug.WriteLine($"[LISTEN] {ConnectionId} handler error");
+                        Debug.WriteLine(ex);
+                    }
                 }
             }
             finally
             {
+                Debug.WriteLine($"[LISTEN END → DISPOSE] {ConnectionId}");
                 Dispose();
             }
         }
-
         private async Task PingLoop()
         {
-            while (!_cts.IsCancellationRequested)
+            while (!_heartbeatCts.IsCancellationRequested)
             {
-                await Task.Delay(_pingInterval, _cts.Token);
-
-                if (DateTime.UtcNow - _lastPong > _pingInterval * 3)
+                try
                 {
+                    await Task.Delay(_pingInterval, _heartbeatCts.Token);
+
+                    var delta = DateTime.UtcNow - _lastPong;
+
+                    if (delta > _pingInterval * 6)
+                    {
+                        Debug.WriteLine($"[HEARTBEAT] {ConnectionId} timeout → disconnect");
+                        Dispose();
+                        return;
+                    }
+
+                    if (delta > _pingInterval * 3)
+                    {
+                        Debug.WriteLine($"[HEARTBEAT] {ConnectionId} delayed pong ({delta.TotalSeconds:F1}s)");
+                        continue; // warn but do not disconnect
+                    }
+
+                    await SendAsync(new PING_Packet("Server", ConnectionId));
+                }
+                catch (OperationCanceledException)
+                {
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"[HEARTBEAT ERROR] {ConnectionId}: {ex}");
                     Dispose();
                     return;
                 }
-
-                await SendAsync(new PING_Packet("Server", ConnectionId));
             }
         }
-        //private async Task<Packet?> ReceiveAsync()
-        //{
-        //    byte[] lenBuf = new byte[4];
-        //    int read = await ReadExact(lenBuf, 4);
-        //    if (read == 0) return null;
-
-        //    int size = BitConverter.ToInt32(lenBuf, 0);
-        //    byte[] buf = new byte[size];
-        //    await ReadExact(buf, size);
-
-        //    string json = Encoding.UTF8.GetString(buf);
-
-        //    if (!PacketFactory.TryParse(json, out Packet? packet, out string? error))
-        //    {
-        //        return null;
-        //    }
-
-        //    return packet;
-        //}
         private async Task<Packet?> ReceiveAsync()
         {
             try
@@ -210,7 +234,6 @@ namespace WordleClient.libraries.network
                 throw;
             }
         }
-
         private async Task<int> ReadExact(byte[] buffer, int size)
         {
             int total = 0;
@@ -224,11 +247,17 @@ namespace WordleClient.libraries.network
         }
         public void Dispose()
         {
-            if (_cts.IsCancellationRequested) return;
+            Debug.WriteLine($"[SERVER DISPOSE] {ConnectionId}");
 
-            _cts.Cancel();
+            if (_cts.IsCancellationRequested)
+                return;
+
+            _heartbeatCts.Cancel(); // stop heartbeat
+            _cts.Cancel();          // stop listen loop
+
             _stream?.Close();
             _client?.Close();
+
             Disconnected?.Invoke(this);
         }
     }

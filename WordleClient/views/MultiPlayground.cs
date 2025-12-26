@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using SQLitePCL;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using WordleClient.libraries.CustomControls;
@@ -63,25 +64,27 @@ namespace WordleClient.views
         private async Task<Hint> RequestHintAsync(int seed)
         {
             if (isServer)
-                throw new InvalidOperationException("Server should not call client async requests.");
+                throw new InvalidOperationException();
 
             await _requestLock.WaitAsync();
             try
             {
-                _hintWaiter = new TaskCompletionSource<Hint>();
+                _hintWaiter = new TaskCompletionSource<Hint>(
+                    TaskCreationOptions.RunContinuationsAsynchronously);
 
-                SEND_HINT_REQUEST_Packet packet =
-                    new(PlayerName, seed, PlayerName, "Server");
+                await PacketConnectionManager.SendAsync(
+                    new SEND_HINT_REQUEST_Packet(PlayerName, seed, PlayerName, "Server"));
 
-                await PacketConnectionManager.SendAsync(packet);
+                using var timeoutCts = new CancellationTokenSource(3000);
 
                 var completed = await Task.WhenAny(
                     _hintWaiter.Task,
-                    Task.Delay(3000, _disconnectCts.Token));
+                    Task.Delay(Timeout.Infinite, timeoutCts.Token));
 
                 if (completed != _hintWaiter.Task)
-                    throw new TimeoutException("Hint request timed out.");
+                    throw new TimeoutException();
 
+                timeoutCts.Cancel();
                 return await _hintWaiter.Task;
             }
             finally
@@ -98,20 +101,22 @@ namespace WordleClient.views
             await _requestLock.WaitAsync();
             try
             {
-                _resultWaiter = new TaskCompletionSource<StateArray>();
+                _resultWaiter = new TaskCompletionSource<StateArray>(
+                    TaskCreationOptions.RunContinuationsAsynchronously);
 
-                SEND_GUESS_Packet packet =
-                    new(guess, PlayerName, "Server");
+                await PacketConnectionManager.SendAsync(
+                    new SEND_GUESS_Packet(guess, PlayerName, "Server"));
 
-                await PacketConnectionManager.SendAsync(packet);
+                using var timeoutCts = new CancellationTokenSource(3000);
 
                 var completed = await Task.WhenAny(
                     _resultWaiter.Task,
-                    Task.Delay(3000, _disconnectCts.Token));
+                    Task.Delay(Timeout.Infinite, timeoutCts.Token));
 
                 if (completed != _resultWaiter.Task)
                     throw new TimeoutException("Result request timed out.");
 
+                timeoutCts.Cancel();
                 return await _resultWaiter.Task;
             }
             finally
@@ -124,23 +129,26 @@ namespace WordleClient.views
         {
             if (isServer)
                 throw new InvalidOperationException("Server should not call client async requests.");
+
             await _requestLock.WaitAsync();
             try
             {
-                _finishedConfirmWaiter = new TaskCompletionSource<GameStatus>();
+                _finishedConfirmWaiter = new TaskCompletionSource<GameStatus>(
+                    TaskCreationOptions.RunContinuationsAsynchronously);
 
-                GAME_STATUS_UPDATE_REQUEST_Packet packet =
-                    new(gs, PlayerName, "Server");
+                await PacketConnectionManager.SendAsync(
+                    new GAME_STATUS_UPDATE_REQUEST_Packet(gs, PlayerName, "Server"));
 
-                await PacketConnectionManager.SendAsync(packet);
+                using var timeoutCts = new CancellationTokenSource(3000);
 
                 var completed = await Task.WhenAny(
                     _finishedConfirmWaiter.Task,
-                    Task.Delay(3000, _disconnectCts.Token));
+                    Task.Delay(Timeout.Infinite, timeoutCts.Token));
 
                 if (completed != _finishedConfirmWaiter.Task)
-                    throw new TimeoutException("Result request timed out.");
+                    throw new TimeoutException("Finish confirmation timed out.");
 
+                timeoutCts.Cancel();
                 return await _finishedConfirmWaiter.Task;
             }
             finally
@@ -155,10 +163,10 @@ namespace WordleClient.views
          * ============================================================ */
         private void OnServerPacket(PacketConnection conn, Packet packet)
         {
-
             if (!isServer || gameInstance == null)
                 return;
 
+            // JOIN requests must be handled immediately (no UI involved)
             if (packet is JOIN_REQUEST_Packet reeq)
             {
                 Debug.WriteLine($"Received a JOIN REQUEST FROM {reeq.Sender}");
@@ -210,19 +218,34 @@ namespace WordleClient.views
                     {
                         Debug.WriteLine($"Received payload! Payload requested to add {req.GS.Username}");
 
-                        if (!FinishedPlayers.Any(f => f.Username == req.GS.Username))
-                        {
-                            FinishedPlayers.Add(req.GS);
-                        }
+                        // Marshal UI work to UI thread
+                        if (IsDisposed)
+                            return;
 
-                        UpdateFinishedPlayerList(FinishedPlayers);
+                        BeginInvoke(new Action(() =>
+                        {
+                            if (IsDisposed)
+                                return;
+
+                            if (!FinishedPlayers.Any(f => f.Username == req.GS.Username))
+                            {
+                                FinishedPlayers.Add(req.GS);
+                            }
+
+                            UpdateFinishedPlayerList(FinishedPlayers);
+                            //UpdateRestartButtonVisibility();
+                        }));
+
+                        // Network broadcast can stay on background thread
                         ServerManager.Broadcast(
                             new GAME_STATUS_UPDATE_RESPONSE_Packet(
                                 req.GS, "Server", "All"));
+
                         break;
                     }
             }
         }
+
         private void OnClientDisconnectedUI(string ip)
         {
             BeginInvoke(() =>
@@ -245,6 +268,9 @@ namespace WordleClient.views
          * ============================================================ */
         private void OnPacketReceived(Packet packet)
         {
+            if (_clientCleanupDone)
+                return;
+
             BeginInvoke(() =>
             {
                 switch (packet)
@@ -456,14 +482,15 @@ namespace WordleClient.views
 
             _clientCleanupDone = true;
 
-            dictionaryChecker.Dispose();
-
             _disconnectCts.Cancel();
+
             _hintWaiter?.TrySetCanceled();
             _resultWaiter?.TrySetCanceled();
+            _finishedConfirmWaiter?.TrySetCanceled();
 
             PacketConnectionManager.PacketReceived -= OnPacketReceived;
             PacketConnectionManager.Disconnected -= OnDisconnected;
+
             PacketConnectionManager.Disconnect();
         }
         private void CleanupServerOnce()
@@ -509,6 +536,8 @@ namespace WordleClient.views
         }
         private void Playground_FormClosing_Server(object? sender, FormClosingEventArgs e)
         {
+            Debug.WriteLine("[SERVER] Playground_FormClosing_Server fired");
+
             if (!_forceClose)
             {
                 if (CustomMessageBoxYesNo.Show(
@@ -745,14 +774,18 @@ namespace WordleClient.views
                             : String.Empty)}");
             }
         }
-        private void UpdateFinishedPlayerList(List<GameStatus> AllPlayers)
+        private void UpdateFinishedPlayerList(List<GameStatus> allPlayers)
         {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(() => UpdateFinishedPlayerList(allPlayers)));
+                return;
+            }
+
             listFinishedPlayers.Items.Clear();
 
-            foreach (var raw in AllPlayers)
-            {
-                listFinishedPlayers.Items.Add($"{raw.Username} - {(raw.IsWin ? "SOLVED" : "FAILED")}");
-            }
+            foreach (var p in allPlayers)
+                listFinishedPlayers.Items.Add($"{p.Username} - {(p.IsWin ? "SOLVED" : "FAILED")}");
         }
 
         /* ============================================================
@@ -1015,9 +1048,18 @@ namespace WordleClient.views
                                 {
                                     await SendFinishedSignal(payload);
                                 }
+                                catch (TaskCanceledException)
+                                {
+                                    // Network disconnected while waiting
+                                    return;
+                                }
                                 catch (TimeoutException)
                                 {
-
+                                    MessageBox.Show(
+                                        "Server did not respond.",
+                                        "Warning",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Warning);
                                 }
                             }
                             else
@@ -1069,9 +1111,18 @@ namespace WordleClient.views
                                 {
                                     await SendFinishedSignal(payload);
                                 }
+                                catch (TaskCanceledException)
+                                {
+                                    // Network disconnected while waiting
+                                    return;
+                                }
                                 catch (TimeoutException)
                                 {
-
+                                    MessageBox.Show(
+                                        "Server did not respond.",
+                                        "Warning",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Warning);
                                 }
                             }
                             else
@@ -1345,9 +1396,18 @@ namespace WordleClient.views
                         await SendFinishedSignal(payload);
                         Debug.WriteLine("Payload has return!!!");
                     }
+                    catch (TaskCanceledException)
+                    {
+                        // Network disconnected while waiting
+                        return;
+                    }
                     catch (TimeoutException)
                     {
-
+                        MessageBox.Show(
+                            "Server did not respond.",
+                            "Warning",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
                     }
                 }
                 else

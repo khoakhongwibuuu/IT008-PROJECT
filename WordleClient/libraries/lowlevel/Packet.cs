@@ -9,7 +9,7 @@ namespace WordleClient.libraries.lowlevel
      * ============================================================ */
     public enum PacketType
     {
-        UNKNOWN = 0,
+        EMPTY = 0,
         JOIN_REQUEST = 1,
         JOIN_RESPONSE = 2,
         START_GAME = 3,
@@ -173,7 +173,7 @@ namespace WordleClient.libraries.lowlevel
     }
     public sealed class EmptyPacket : Packet
     {
-        public EmptyPacket() : base(PacketType.UNKNOWN, "", "") { }
+        public EmptyPacket() : base(PacketType.EMPTY, "", "") { }
     }
 
 
