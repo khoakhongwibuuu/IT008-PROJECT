@@ -208,6 +208,8 @@ namespace WordleClient.views
 
                 case GAME_STATUS_UPDATE_REQUEST_Packet req:
                     {
+                        Debug.WriteLine($"Received payload! Payload requested to add {req.GS.Username}");
+
                         if (!FinishedPlayers.Any(f => f.Username == req.GS.Username))
                         {
                             FinishedPlayers.Add(req.GS);
@@ -262,7 +264,7 @@ namespace WordleClient.views
                     case GAME_STATUS_UPDATE_RESPONSE_Packet resp:
                         {
                             Debug.WriteLine($"Added {resp.GS.Username} to finished players.");
-                            _finishedConfirmWaiter?.SetResult(resp.GS);
+                            _finishedConfirmWaiter?.TrySetResult(resp.GS);
 
                             if (!FinishedPlayers.Any(f => f.Username == resp.GS.Username))
                             {
@@ -1335,6 +1337,7 @@ namespace WordleClient.views
                     try
                     {
                         await SendFinishedSignal(payload);
+                        Debug.WriteLine("Payload has return!!!");
                     }
                     catch (TimeoutException)
                     {
