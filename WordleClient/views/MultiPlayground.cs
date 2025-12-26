@@ -46,9 +46,9 @@ namespace WordleClient.views
          * CLIENT-USAGE ONLY ATTRIBUTES
          * ============================================================ */
         private readonly SemaphoreSlim _requestLock = new(1, 1);
-        private TaskCompletionSource<Hint>? _hintWaiter;
-        private TaskCompletionSource<StateArray>? _resultWaiter;
-        private TaskCompletionSource<GameStatus>? _finishedConfirmWaiter;
+        private TaskCompletionSource<Hint>? _hintWaiter = null;
+        private TaskCompletionSource<StateArray>? _resultWaiter = null;
+        private TaskCompletionSource<GameStatus>? _finishedConfirmWaiter = null;
         private CancellationTokenSource _disconnectCts = new();
 
         /* ============================================================
@@ -56,8 +56,6 @@ namespace WordleClient.views
          * ============================================================ */
         private GameInstance? gameInstance = null;
         private string? LastToken = null;
-        private string? LastLevel = null;
-        private string? LastTopic = null;
 
         /* ============================================================
          * CLIENT-USAGE ONLY METHODS
@@ -263,6 +261,7 @@ namespace WordleClient.views
 
                     case GAME_STATUS_UPDATE_RESPONSE_Packet resp:
                         {
+                            Debug.WriteLine($"Added {resp.GS.Username} to finished players.");
                             _finishedConfirmWaiter?.SetResult(resp.GS);
 
                             if (!FinishedPlayers.Any(f => f.Username == resp.GS.Username))
@@ -567,8 +566,6 @@ namespace WordleClient.views
 
             this.gameInstance = new(TheChosenOne);
             this.LastToken = TheChosenOne.TOKEN;
-            this.LastTopic = TheChosenOne.GROUP_NAME;
-            this.LastLevel = TheChosenOne.LEVEL;
 
             BaseConstructor(
                 new WDBRecord_Simplified(
@@ -731,34 +728,40 @@ namespace WordleClient.views
          * ============================================================ */
         private void UpdateCurrentPlayerList(List<string> AllPlayers)
         {
-            listPlayers.Items.Clear();
-            string? tmpServerUsername = null;
-            foreach (string raw in AllPlayers)
+            BeginInvoke(() =>
             {
-                Player p = Player.Parse(raw);
+                listPlayers.Items.Clear();
+                string? tmpServerUsername = null;
+                foreach (string raw in AllPlayers)
+                {
+                    Player p = Player.Parse(raw);
 
-                tmpServerUsername ??= p.Username;
+                    tmpServerUsername ??= p.Username;
 
-                if (p.Username == tmpServerUsername)
-                    listPlayers.Items
-                        .Add($"HOST: {p.Username}{(PlayerName == p.Username
-                            ? " (YOU)"
-                            : String.Empty)}");
-                else
-                    listPlayers.Items
-                        .Add($"{p.Username}{(PlayerName == p.Username
-                            ? " (YOU)"
-                            : String.Empty)}");
-            }
+                    if (p.Username == tmpServerUsername)
+                        listPlayers.Items
+                            .Add($"HOST: {p.Username}{(PlayerName == p.Username
+                                ? " (YOU)"
+                                : String.Empty)}");
+                    else
+                        listPlayers.Items
+                            .Add($"{p.Username}{(PlayerName == p.Username
+                                ? " (YOU)"
+                                : String.Empty)}");
+                }
+            });
         }
         private void UpdateFinishedPlayerList(List<GameStatus> AllPlayers)
         {
-            listFinishedPlayers.Items.Clear();
-
-            foreach (var raw in AllPlayers)
+            BeginInvoke(() =>
             {
-                listFinishedPlayers.Items.Add($"{raw.Username} - {(raw.IsWin ? "SOLVED" : "FAILED")}");
-            }
+                listFinishedPlayers.Items.Clear();
+
+                foreach (var raw in AllPlayers)
+                {
+                    listFinishedPlayers.Items.Add($"{raw.Username} - {(raw.IsWin ? "SOLVED" : "FAILED")}");
+                }
+            });
         }
 
         /* ============================================================
@@ -1377,8 +1380,7 @@ namespace WordleClient.views
             WordDatabaseReader wdr = new();
             WDBRecord? TheChosenOne = null;
 
-            do TheChosenOne = wdr.ReadRandomWord(
-                LastTopic!, LastLevel!);
+            do TheChosenOne = wdr.ReadRandomWord(null, null);
 
             while (
                 TheChosenOne != null
