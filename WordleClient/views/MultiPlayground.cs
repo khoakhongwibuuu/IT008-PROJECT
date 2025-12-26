@@ -627,6 +627,9 @@ namespace WordleClient.views
          * ============================================================ */
         private void ResetGame(WDBRecord_Simplified TheChosenOne)
         {
+            dictionaryChecker.Dispose();
+            dictionaryChecker = new(TheChosenOne.TOKEN_LENGTH);
+
             FinishedPlayers.Clear();
             listFinishedPlayers.Items.Clear();
 
@@ -1463,9 +1466,6 @@ namespace WordleClient.views
 
             gameInstance = new GameInstance(
                 TheChosenOne);
-
-            dictionaryChecker = new DictionaryChecker(
-                TheChosenOne.TOKEN.Length);
 
             Random rd = new();
             GameSeed = rd.Next(0, 2);
