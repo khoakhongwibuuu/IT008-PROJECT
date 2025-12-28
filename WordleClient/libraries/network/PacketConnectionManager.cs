@@ -8,19 +8,18 @@ namespace WordleClient.libraries.network
     public static class PacketConnectionManager
     {
         private static PacketConnection? _connection;
+        public static bool IsConnected => _connection != null;
 
         /* ============================================================
          * EVENTS
          * ============================================================ */
-
+        // Fires when received a packet from the server
         public static event Action<Packet>? PacketReceived;
-        public static event Action<string>? ErrorOccurred;
+        // Fires when the server disconnects
         public static event Action? Disconnected;
 
-        public static bool IsConnected => _connection != null;
-
         /* ============================================================
-         * CLIENT CONNECT
+         * CONNECTS TO A SERVER ASYNCHRONOUSLY
          * ============================================================ */
         public static async Task ConnectAsync(string host, int port)
         {
@@ -34,7 +33,7 @@ namespace WordleClient.libraries.network
         }
 
         /* ============================================================
-         * ATTACH (CLIENT OR SERVER)
+         * ATTACHES AN EXISTING TcpClient TO PacketConnection
          * ============================================================ */
         public static void Attach(TcpClient client)
         {
@@ -47,7 +46,7 @@ namespace WordleClient.libraries.network
 
             _connection.PacketReceived += OnPacketReceived;
             _connection.Disconnected += OnDisconnected;
-            _connection.Start(); // ✅ correct method
+            _connection.Start();
         }
 
         /* ============================================================

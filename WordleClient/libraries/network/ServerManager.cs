@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using WordleClient.libraries.ingame;
 using WordleClient.libraries.lowlevel;
 
@@ -14,20 +16,21 @@ namespace WordleClient.libraries.network
         private static TcpListener? _listener;
         private static bool _running;
 
-        // key = IP address
+        // Active client connections keyed by IP
         private static readonly ConcurrentDictionary<string, PacketConnection>
             _clients = new();
 
         /* ============================================================
-         * EVENTS (SERVER → UI)
+         * EVENTS (SERVER -> UI)
          * ============================================================ */
-        // Fired ONLY for UI-related server events
+        // Fired for packets that require UI or game logic handling
         public static event Action<PacketConnection, Packet>? ServerPacketReceived;
+        // Fired when a client disconnects, used to update player list
         public static event Action<string>? ClientDisconnected;
         public static bool IsRunning => _running;
 
         /* ============================================================
-         * START / STOP
+         * LIFECYCLE
          * ============================================================ */
         public static void Start(int port)
         {
@@ -57,6 +60,7 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * ACCEPT LOOP
          * ============================================================ */
+        // Accepts incoming TCP clients and attaches PacketConnections
         private static async Task AcceptLoop()
         {
             while (_running)
@@ -75,8 +79,9 @@ namespace WordleClient.libraries.network
         }
 
         /* ============================================================
-         * PACKET DISPATCH (NETWORK → SERVER)
+         * PACKET DISPATCH (CLIENTS -> SERVER)
          * ============================================================ */
+        // Central packet router for all incoming packets
         private static void OnPacketReceived(
             PacketConnection conn,
             Packet packet)
@@ -109,11 +114,12 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * JOIN FLOW
          * ============================================================ */
+        // Handles initial join request, the UI decides whether to approve or not
         private static void HandleJoinRequest(
             PacketConnection conn,
             JOIN_REQUEST_Packet join)
         {
-            // Room full → immediate reject
+            // Room full -> immediate reject
             if (!GameRoom.HasSpace)
             {
                 _ = conn.SendAsync(
@@ -129,7 +135,6 @@ namespace WordleClient.libraries.network
                 join.Username,
                 conn.ConnectionId);
 
-            // IMPORTANT:
             // Notify SERVER UI directly (NOT over network)
             ServerPacketReceived?.Invoke(
                 conn,
@@ -137,6 +142,7 @@ namespace WordleClient.libraries.network
                     pending.Serialize(),
                     "Server"));
         }
+        // Finalises approval/denial and notifies client
         private static void HandleApprovalResponse(
             JOIN_APPROVAL_RESPONSE_Packet res)
         {
@@ -162,6 +168,7 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * PLAYER LIST SYNC
          * ============================================================ */
+        // Broadcasts the authoritative player list to all clients
         public static void BroadcastPlayerList()
         {
             Broadcast(
@@ -174,6 +181,7 @@ namespace WordleClient.libraries.network
         /* ============================================================
          * DISCONNECT HANDLING
          * ============================================================ */
+        // Handles client disconnection
         private static void OnClientDisconnected(PacketConnection conn)
         {
             _clients.TryRemove(conn.ConnectionId, out _);
@@ -190,7 +198,7 @@ namespace WordleClient.libraries.network
         }
 
         /* ============================================================
-         * SEND HELPERS (SERVER → CLIENTS)
+         * SENDERS (SERVER -> CLIENTS)
          * ============================================================ */
         public static void Broadcast(Packet packet)
         {
