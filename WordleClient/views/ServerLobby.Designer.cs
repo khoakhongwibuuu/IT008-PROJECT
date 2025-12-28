@@ -32,8 +32,8 @@ namespace WordleClient.views
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServerLobby));
             customPanel1 = new CustomPanel();
-            customGroupBox1 = new CustomGroupBox();
-            customGroupBox2 = new CustomGroupBox();
+            GB_PlayerWaitForApproval = new CustomGroupBox();
+            GB_Settings = new CustomGroupBox();
             customLabel4 = new CustomLabel();
             customLabel3 = new CustomLabel();
             customLabel2 = new CustomLabel();
@@ -41,7 +41,8 @@ namespace WordleClient.views
             trackBarGuess = new TrackBar();
             btn_Exit = new CustomPictureBox();
             btn_StartGame = new CustomButton();
-            customGroupBox2.SuspendLayout();
+            GB_PlayerApproved = new CustomGroupBox();
+            GB_Settings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarGuess).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btn_Exit).BeginInit();
             SuspendLayout();
@@ -61,52 +62,52 @@ namespace WordleClient.views
             customPanel1.Size = new Size(665, 588);
             customPanel1.TabIndex = 0;
             // 
-            // customGroupBox1
+            // GB_PlayerWaitForApproval
             // 
-            customGroupBox1.BackColor = Color.Transparent;
-            customGroupBox1.BackgroundColor = Color.White;
-            customGroupBox1.BorderColor = Color.Teal;
-            customGroupBox1.BorderRadius = 15;
-            customGroupBox1.BorderSize = 2;
-            customGroupBox1.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            customGroupBox1.ForeColor = Color.White;
-            customGroupBox1.Location = new Point(98, 25);
-            customGroupBox1.Margin = new Padding(3, 2, 3, 2);
-            customGroupBox1.Name = "customGroupBox1";
-            customGroupBox1.Padding = new Padding(3, 2, 3, 2);
-            customGroupBox1.Size = new Size(469, 329);
-            customGroupBox1.TabIndex = 1;
-            customGroupBox1.TabStop = false;
-            customGroupBox1.Text = "Manage other players";
-            customGroupBox1.TextColor = Color.Black;
-            customGroupBox1.TitleAlign = ContentAlignment.TopLeft;
-            customGroupBox1.TitlePadding = 10;
+            GB_PlayerWaitForApproval.BackColor = Color.Transparent;
+            GB_PlayerWaitForApproval.BackgroundColor = Color.White;
+            GB_PlayerWaitForApproval.BorderColor = Color.Teal;
+            GB_PlayerWaitForApproval.BorderRadius = 15;
+            GB_PlayerWaitForApproval.BorderSize = 2;
+            GB_PlayerWaitForApproval.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            GB_PlayerWaitForApproval.ForeColor = Color.White;
+            GB_PlayerWaitForApproval.Location = new Point(98, 25);
+            GB_PlayerWaitForApproval.Margin = new Padding(3, 2, 3, 2);
+            GB_PlayerWaitForApproval.Name = "GB_PlayerWaitForApproval";
+            GB_PlayerWaitForApproval.Padding = new Padding(3, 2, 3, 2);
+            GB_PlayerWaitForApproval.Size = new Size(469, 163);
+            GB_PlayerWaitForApproval.TabIndex = 1;
+            GB_PlayerWaitForApproval.TabStop = false;
+            GB_PlayerWaitForApproval.Text = "Manage pending requests";
+            GB_PlayerWaitForApproval.TextColor = Color.Black;
+            GB_PlayerWaitForApproval.TitleAlign = ContentAlignment.TopLeft;
+            GB_PlayerWaitForApproval.TitlePadding = 10;
             // 
-            // customGroupBox2
+            // GB_Settings
             // 
-            customGroupBox2.BackColor = Color.Transparent;
-            customGroupBox2.BackgroundColor = Color.White;
-            customGroupBox2.BorderColor = Color.Teal;
-            customGroupBox2.BorderRadius = 15;
-            customGroupBox2.BorderSize = 2;
-            customGroupBox2.Controls.Add(customLabel4);
-            customGroupBox2.Controls.Add(customLabel3);
-            customGroupBox2.Controls.Add(customLabel2);
-            customGroupBox2.Controls.Add(customLabel1);
-            customGroupBox2.Controls.Add(trackBarGuess);
-            customGroupBox2.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
-            customGroupBox2.ForeColor = Color.White;
-            customGroupBox2.Location = new Point(100, 358);
-            customGroupBox2.Margin = new Padding(3, 2, 3, 2);
-            customGroupBox2.Name = "customGroupBox2";
-            customGroupBox2.Padding = new Padding(3, 2, 3, 2);
-            customGroupBox2.Size = new Size(467, 118);
-            customGroupBox2.TabIndex = 3;
-            customGroupBox2.TabStop = false;
-            customGroupBox2.Text = "Select maximum attempts for all players";
-            customGroupBox2.TextColor = Color.Black;
-            customGroupBox2.TitleAlign = ContentAlignment.TopLeft;
-            customGroupBox2.TitlePadding = 10;
+            GB_Settings.BackColor = Color.Transparent;
+            GB_Settings.BackgroundColor = Color.White;
+            GB_Settings.BorderColor = Color.Teal;
+            GB_Settings.BorderRadius = 15;
+            GB_Settings.BorderSize = 2;
+            GB_Settings.Controls.Add(customLabel4);
+            GB_Settings.Controls.Add(customLabel3);
+            GB_Settings.Controls.Add(customLabel2);
+            GB_Settings.Controls.Add(customLabel1);
+            GB_Settings.Controls.Add(trackBarGuess);
+            GB_Settings.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+            GB_Settings.ForeColor = Color.White;
+            GB_Settings.Location = new Point(98, 359);
+            GB_Settings.Margin = new Padding(3, 2, 3, 2);
+            GB_Settings.Name = "GB_Settings";
+            GB_Settings.Padding = new Padding(3, 2, 3, 2);
+            GB_Settings.Size = new Size(469, 118);
+            GB_Settings.TabIndex = 3;
+            GB_Settings.TabStop = false;
+            GB_Settings.Text = "Select maximum attempts for all players";
+            GB_Settings.TextColor = Color.Black;
+            GB_Settings.TitleAlign = ContentAlignment.TopLeft;
+            GB_Settings.TitlePadding = 10;
             // 
             // customLabel4
             // 
@@ -218,20 +219,41 @@ namespace WordleClient.views
             btn_StartGame.Name = "btn_StartGame";
             btn_StartGame.Size = new Size(469, 65);
             btn_StartGame.TabIndex = 8;
-            btn_StartGame.Text = "Start game";
             btn_StartGame.TextAlign = ContentAlignment.MiddleCenter;
             btn_StartGame.TextColor = Color.White;
             btn_StartGame.Click += btn_StartGame_Click;
+            // 
+            // GB_PlayerApproved
+            // 
+            GB_PlayerApproved.BackColor = Color.Transparent;
+            GB_PlayerApproved.BackgroundColor = Color.White;
+            GB_PlayerApproved.BorderColor = Color.Teal;
+            GB_PlayerApproved.BorderRadius = 15;
+            GB_PlayerApproved.BorderSize = 2;
+            GB_PlayerApproved.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            GB_PlayerApproved.ForeColor = Color.White;
+            GB_PlayerApproved.Location = new Point(98, 192);
+            GB_PlayerApproved.Margin = new Padding(3, 2, 3, 2);
+            GB_PlayerApproved.Name = "GB_PlayerApproved";
+            GB_PlayerApproved.Padding = new Padding(3, 2, 3, 2);
+            GB_PlayerApproved.Size = new Size(469, 163);
+            GB_PlayerApproved.TabIndex = 2;
+            GB_PlayerApproved.TabStop = false;
+            GB_PlayerApproved.Text = "Manage in room players";
+            GB_PlayerApproved.TextColor = Color.Black;
+            GB_PlayerApproved.TitleAlign = ContentAlignment.TopLeft;
+            GB_PlayerApproved.TitlePadding = 10;
             // 
             // ServerLobby
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(665, 588);
+            Controls.Add(GB_PlayerApproved);
             Controls.Add(btn_StartGame);
             Controls.Add(btn_Exit);
-            Controls.Add(customGroupBox2);
-            Controls.Add(customGroupBox1);
+            Controls.Add(GB_Settings);
+            Controls.Add(GB_PlayerWaitForApproval);
             Controls.Add(customPanel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 2, 3, 2);
@@ -239,8 +261,8 @@ namespace WordleClient.views
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Server Lobby";
             Load += ServerLobby_Load;
-            customGroupBox2.ResumeLayout(false);
-            customGroupBox2.PerformLayout();
+            GB_Settings.ResumeLayout(false);
+            GB_Settings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackBarGuess).EndInit();
             ((System.ComponentModel.ISupportInitialize)btn_Exit).EndInit();
             ResumeLayout(false);
@@ -249,8 +271,8 @@ namespace WordleClient.views
         #endregion
 
         private CustomPanel customPanel1;
-        private CustomGroupBox customGroupBox1;
-        private CustomGroupBox customGroupBox2;
+        private CustomGroupBox GB_PlayerWaitForApproval;
+        private CustomGroupBox GB_Settings;
         private TrackBar trackBarGuess;
         private CustomPictureBox btn_Exit;
         private CustomButton btn_StartGame;
@@ -258,5 +280,6 @@ namespace WordleClient.views
         private CustomLabel customLabel3;
         private CustomLabel customLabel2;
         private CustomLabel customLabel1;
+        private CustomGroupBox GB_PlayerApproved;
     }
 }

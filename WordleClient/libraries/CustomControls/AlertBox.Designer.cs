@@ -2,116 +2,101 @@
 {
     partial class AlertBox
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
             base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            customPictureBox1 = new CustomPictureBox();
-            lbl_Caption = new Label();
+            customGroupBox1 = new CustomGroupBox();
             lbl_Content = new Label();
-            customPanel1 = new CustomPanel();
+            lbl_Caption = new Label();
+            customPictureBox1 = new CustomPictureBox();
+            customGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)customPictureBox1).BeginInit();
             SuspendLayout();
             // 
-            // customPictureBox1
+            // customGroupBox1
             // 
-            customPictureBox1.boderGradientBottom1 = Color.FromArgb(128, 255, 255);
-            customPictureBox1.boderGradientTop1 = Color.MediumSlateBlue;
-            customPictureBox1.boderRadius1 = 40;
-            customPictureBox1.boderSize1 = 2;
-            customPictureBox1.gradientAngle1 = 90F;
-            customPictureBox1.Image = Properties.Resources.Tick;
-            customPictureBox1.Location = new Point(27, -1);
-            customPictureBox1.Margin = new Padding(3, 2, 3, 2);
-            customPictureBox1.Name = "customPictureBox1";
-            customPictureBox1.Size = new Size(55, 56);
-            customPictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            customPictureBox1.TabIndex = 0;
-            customPictureBox1.TabStop = false;
-            // 
-            // lbl_Caption
-            // 
-            lbl_Caption.AutoSize = true;
-            lbl_Caption.BackColor = Color.FromArgb(224, 224, 224);
-            lbl_Caption.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbl_Caption.Location = new Point(112, 7);
-            lbl_Caption.Name = "lbl_Caption";
-            lbl_Caption.Size = new Size(100, 20);
-            lbl_Caption.TabIndex = 1;
-            lbl_Caption.Text = "Caption Here";
+            customGroupBox1.BackColor = Color.Transparent;
+            customGroupBox1.BackgroundColor = Color.White;
+            customGroupBox1.BorderColor = Color.Black;
+            customGroupBox1.BorderRadius = 15;
+            customGroupBox1.BorderSize = 2;
+            customGroupBox1.Controls.Add(lbl_Content);
+            customGroupBox1.Controls.Add(lbl_Caption);
+            customGroupBox1.Controls.Add(customPictureBox1);
+            customGroupBox1.Location = new Point(0, 0);
+            customGroupBox1.Name = "customGroupBox1";
+            customGroupBox1.Size = new Size(420, 80);
+            customGroupBox1.TabIndex = 0;
+            customGroupBox1.TabStop = false;
+            customGroupBox1.TextColor = Color.Black;
+            customGroupBox1.TitleAlign = ContentAlignment.TopLeft;
+            customGroupBox1.TitlePadding = 10;
             // 
             // lbl_Content
             // 
             lbl_Content.AutoSize = true;
-            lbl_Content.BackColor = Color.White;
-            lbl_Content.Font = new Font("Segoe UI", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            lbl_Content.Font = new Font("Segoe UI", 14F);
             lbl_Content.ForeColor = Color.Black;
-            lbl_Content.Location = new Point(112, 31);
+            lbl_Content.Location = new Point(68, 41);
             lbl_Content.Name = "lbl_Content";
-            lbl_Content.Size = new Size(107, 21);
-            lbl_Content.TabIndex = 1;
-            lbl_Content.Text = "Content Here";
+            lbl_Content.Size = new Size(167, 25);
+            lbl_Content.TabIndex = 3;
+            lbl_Content.Text = "Content goes here";
             // 
-            // customPanel1
+            // lbl_Caption
             // 
-            customPanel1.BackColor = Color.White;
-            customPanel1.BorderRadius = 30;
-            customPanel1.Dock = DockStyle.Fill;
-            customPanel1.ForeColor = Color.Black;
-            customPanel1.GradientAngle = 90F;
-            customPanel1.GradientBottomColor = Color.FromArgb(192, 255, 192);
-            customPanel1.GradientTopColor = Color.FromArgb(128, 255, 255);
-            customPanel1.Location = new Point(0, 0);
-            customPanel1.Margin = new Padding(3, 2, 3, 2);
-            customPanel1.Name = "customPanel1";
-            customPanel1.Size = new Size(591, 56);
-            customPanel1.TabIndex = 2;
+            lbl_Caption.AutoSize = true;
+            lbl_Caption.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            lbl_Caption.ForeColor = Color.Black;
+            lbl_Caption.Location = new Point(68, 9);
+            lbl_Caption.Name = "lbl_Caption";
+            lbl_Caption.Size = new Size(81, 30);
+            lbl_Caption.TabIndex = 4;
+            lbl_Caption.Text = "Notice";
+            // 
+            // customPictureBox1
+            // 
+            customPictureBox1.BackColor = Color.White;
+            customPictureBox1.boderGradientBottom1 = Color.Transparent;
+            customPictureBox1.boderGradientTop1 = Color.Transparent;
+            customPictureBox1.boderRadius1 = 20;
+            customPictureBox1.boderSize1 = 1;
+            customPictureBox1.gradientAngle1 = 90F;
+            customPictureBox1.Location = new Point(12, 16);
+            customPictureBox1.Name = "customPictureBox1";
+            customPictureBox1.Size = new Size(50, 50);
+            customPictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            customPictureBox1.TabIndex = 5;
+            customPictureBox1.TabStop = false;
             // 
             // AlertBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BorderRadius = 30;
-            ClientSize = new Size(591, 56);
-            Controls.Add(lbl_Content);
-            Controls.Add(lbl_Caption);
-            Controls.Add(customPictureBox1);
-            Controls.Add(customPanel1);
-            Margin = new Padding(3, 2, 3, 2);
+            ClientSize = new Size(420, 80);
+            Controls.Add(customGroupBox1);
             Name = "AlertBox";
-            Text = "AlertBox";
+            customGroupBox1.ResumeLayout(false);
+            customGroupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)customPictureBox1).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private CustomPictureBox customPictureBox1;
-        private Label lbl_Caption;
+        private CustomGroupBox customGroupBox1;
         private Label lbl_Content;
-        private CustomPanel customPanel1;
+        private Label lbl_Caption;
+        private CustomPictureBox customPictureBox1;
     }
 }

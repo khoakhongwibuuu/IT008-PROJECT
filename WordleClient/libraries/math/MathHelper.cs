@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WordleClient.libraries.lowlevel;
-
 namespace WordleClient.libraries.math
 {
     public static class MathHelper
     {
         public static SinglePlayAnalytic AnalyseSingleResult(List<SingleplayerPlayLog> singlePlayLogs)
         {
-            SinglePlayAnalytic analytic = new SinglePlayAnalytic(); 
+            SinglePlayAnalytic analytic = new SinglePlayAnalytic();
             foreach (var log in singlePlayLogs)
             {
                 analytic.playCount++;

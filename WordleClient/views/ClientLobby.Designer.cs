@@ -33,12 +33,14 @@ namespace WordleClient.views
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClientLobby));
             customPanel1 = new CustomPanel();
             customGroupBox1 = new CustomGroupBox();
+            listBoxPlayers = new ListBox();
             customGroupBox2 = new CustomGroupBox();
             lblStatus = new Label();
             btn_search = new Button();
             textBox1 = new TextBox();
             btn_Exit = new CustomPictureBox();
             btn_JoinRequest = new CustomButton();
+            customGroupBox1.SuspendLayout();
             customGroupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)btn_Exit).BeginInit();
             SuspendLayout();
@@ -65,6 +67,7 @@ namespace WordleClient.views
             customGroupBox1.BorderColor = Color.Teal;
             customGroupBox1.BorderRadius = 15;
             customGroupBox1.BorderSize = 2;
+            customGroupBox1.Controls.Add(listBoxPlayers);
             customGroupBox1.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             customGroupBox1.ForeColor = Color.White;
             customGroupBox1.Location = new Point(98, 25);
@@ -74,10 +77,20 @@ namespace WordleClient.views
             customGroupBox1.Size = new Size(469, 329);
             customGroupBox1.TabIndex = 1;
             customGroupBox1.TabStop = false;
-            customGroupBox1.Text = "Panel A";
+            customGroupBox1.Text = "Other players in room";
             customGroupBox1.TextColor = Color.Black;
             customGroupBox1.TitleAlign = ContentAlignment.TopLeft;
             customGroupBox1.TitlePadding = 10;
+            // 
+            // listBoxPlayers
+            // 
+            listBoxPlayers.BorderStyle = BorderStyle.None;
+            listBoxPlayers.FormattingEnabled = true;
+            listBoxPlayers.ItemHeight = 25;
+            listBoxPlayers.Location = new Point(31, 45);
+            listBoxPlayers.Name = "listBoxPlayers";
+            listBoxPlayers.Size = new Size(411, 250);
+            listBoxPlayers.TabIndex = 0;
             // 
             // customGroupBox2
             // 
@@ -98,7 +111,7 @@ namespace WordleClient.views
             customGroupBox2.Size = new Size(467, 133);
             customGroupBox2.TabIndex = 3;
             customGroupBox2.TabStop = false;
-            customGroupBox2.Text = "Panel B";
+            customGroupBox2.Text = "Server IP";
             customGroupBox2.TextColor = Color.Black;
             customGroupBox2.TitleAlign = ContentAlignment.TopLeft;
             customGroupBox2.TitlePadding = 10;
@@ -184,7 +197,7 @@ namespace WordleClient.views
             Name = "ClientLobby";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Client Lobby";
-            Load += ClientLobby_Load;
+            customGroupBox1.ResumeLayout(false);
             customGroupBox2.ResumeLayout(false);
             customGroupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)btn_Exit).EndInit();
@@ -201,5 +214,6 @@ namespace WordleClient.views
         private TextBox textBox1;
         private Button btn_search;
         private Label lblStatus;
+        private ListBox listBoxPlayers;
     }
 }

@@ -62,7 +62,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
-            label2.Location = new Point(40, 370);
+            label2.Location = new Point(27, 370);
             label2.Name = "label2";
             label2.Size = new Size(172, 30);
             label2.TabIndex = 1;
@@ -149,7 +149,6 @@
             customLabel1.Size = new Size(149, 95);
             customLabel1.StartColor = Color.MediumSlateBlue;
             customLabel1.TabIndex = 14;
-            customLabel1.Text = "customlabel1";
             // 
             // customLabel2
             // 
@@ -158,13 +157,12 @@
             customLabel2.EndColor = Color.FromArgb(128, 255, 255);
             customLabel2.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold);
             customLabel2.ForeColor = Color.White;
-            customLabel2.Location = new Point(228, 227);
+            customLabel2.Location = new Point(236, 227);
             customLabel2.Name = "customLabel2";
             customLabel2.ShadowOffset = 4;
             customLabel2.Size = new Size(149, 95);
             customLabel2.StartColor = Color.MediumSlateBlue;
             customLabel2.TabIndex = 14;
-            customLabel2.Text = "customLabel1";
             // 
             // customLabel3
             // 
@@ -173,13 +171,12 @@
             customLabel3.EndColor = Color.FromArgb(128, 255, 255);
             customLabel3.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold);
             customLabel3.ForeColor = Color.White;
-            customLabel3.Location = new Point(448, 227);
+            customLabel3.Location = new Point(439, 227);
             customLabel3.Name = "customLabel3";
             customLabel3.ShadowOffset = 4;
             customLabel3.Size = new Size(149, 95);
             customLabel3.StartColor = Color.MediumSlateBlue;
             customLabel3.TabIndex = 14;
-            customLabel3.Text = "customLabel1";
             // 
             // customLabel4
             // 
@@ -188,13 +185,12 @@
             customLabel4.EndColor = Color.FromArgb(128, 255, 255);
             customLabel4.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold);
             customLabel4.ForeColor = Color.White;
-            customLabel4.Location = new Point(51, 440);
+            customLabel4.Location = new Point(27, 440);
             customLabel4.Name = "customLabel4";
             customLabel4.ShadowOffset = 4;
             customLabel4.Size = new Size(149, 95);
             customLabel4.StartColor = Color.MediumSlateBlue;
             customLabel4.TabIndex = 14;
-            customLabel4.Text = "customLabel1";
             // 
             // customLabel5
             // 
@@ -203,13 +199,12 @@
             customLabel5.EndColor = Color.FromArgb(128, 255, 255);
             customLabel5.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             customLabel5.ForeColor = Color.White;
-            customLabel5.Location = new Point(237, 440);
+            customLabel5.Location = new Point(236, 440);
             customLabel5.Name = "customLabel5";
             customLabel5.ShadowOffset = 4;
             customLabel5.Size = new Size(149, 95);
             customLabel5.StartColor = Color.MediumSlateBlue;
             customLabel5.TabIndex = 14;
-            customLabel5.Text = "customLabel1";
             // 
             // customLabel6
             // 
@@ -218,13 +213,12 @@
             customLabel6.EndColor = Color.FromArgb(128, 255, 255);
             customLabel6.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold);
             customLabel6.ForeColor = Color.White;
-            customLabel6.Location = new Point(448, 440);
+            customLabel6.Location = new Point(439, 440);
             customLabel6.Name = "customLabel6";
             customLabel6.ShadowOffset = 4;
             customLabel6.Size = new Size(149, 95);
             customLabel6.StartColor = Color.MediumSlateBlue;
             customLabel6.TabIndex = 14;
-            customLabel6.Text = "customLabel1";
             // 
             // label7
             // 
@@ -279,6 +273,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Statistic";
             FormClosed += Form1_FormClosed;
+            Load += Statistic_Load;
             ((System.ComponentModel.ISupportInitialize)btn_Exit).EndInit();
             ResumeLayout(false);
             PerformLayout();

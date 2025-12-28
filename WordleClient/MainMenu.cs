@@ -11,12 +11,10 @@ namespace WordleClient
         }
         private void MainMenu_Load(object sender, EventArgs e)
         {
-            //CustomSound.ToggleMute();
             ProfileState.Load();
             customPictureBox1.Image = ProfileState.GetAvatar();
             if (!CustomSound.IsMuted()) CustomSound.PlayBackgroundLoop();
             btn_Sound.Image = CustomSound.IsMuted() ? (CustomDarkLight.IsDark ? Properties.Resources.MusicOffDark : Properties.Resources.MusicOffLight) : (CustomDarkLight.IsDark ? Properties.Resources.MusicOnDark : Properties.Resources.MusicOnLight);
-            //ThemeManager.ApplyTheme(this);
         }
         private void Exit_Click(object sender, EventArgs e)
         {
@@ -40,7 +38,7 @@ namespace WordleClient
         private void btn_SinglePlayer_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            FormOption formOption = new FormOption();
+            FormOption formOption = new();
             formOption.FormClosed += FormOption_FormClosed;
             formOption.Show();
             this.Hide();
@@ -48,30 +46,35 @@ namespace WordleClient
         private void btn_Client_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            ClientLobby clientLobby = new ClientLobby();
+            ClientLobby clientLobby = new();
             clientLobby.FormClosed += ClientLobby_FormClosed;
             clientLobby.Show();
             this.Hide();
         }
-
         private void btn_Server_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            ServerLobby serverLobby = new ServerLobby();
+            ServerLobby serverLobby = new();
             serverLobby.FormClosed += ServerLobby_FormClosed;
             serverLobby.Show();
             this.Hide();
         }
-
         private void btn_Stats_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            Statistic statistic = new Statistic();
+            this.Hide();
+            Statistic statistic = new();
             statistic.ShowDialog();
+            this.Show();
+        }
+        private void btn_Guide_Click(object sender, EventArgs e)
+        {
+            CustomSound.PlayClick();
+            FormHelp help = new();
+            help.ShowDialog();
         }
         private void FormOption_FormClosed(object? sender, FormClosedEventArgs e)
         {
-            // Only show MainMenu again when FormOption indicates it should return to main.
             if (sender is FormOption fo && fo.ReturnToMainOnClose)
             {
                 this.Show();
@@ -79,7 +82,6 @@ namespace WordleClient
         }
         private void ClientLobby_FormClosed(object? sender, FormClosedEventArgs e)
         {
-            // Only show MainMenu again when ClientLobby indicates it should return to main.
             if (sender is ClientLobby cl && cl.ReturnToMainOnClose)
             {
                 this.Show();
@@ -87,7 +89,6 @@ namespace WordleClient
         }
         private void ServerLobby_FormClosed(object? sender, FormClosedEventArgs e)
         {
-            // Only show MainMenu again when ServerLobby indicates it should return to main.
             if (sender is ServerLobby sl && sl.ReturnToMainOnClose)
             {
                 this.Show();
@@ -96,15 +97,13 @@ namespace WordleClient
         private void customPictureBox1_Click(object sender, EventArgs e)
         {
             CustomSound.PlayClick();
-            FormProfile formProfile = new FormProfile();
+            FormProfile formProfile = new();
             formProfile.ShowDialog();
-            customPictureBox1.Image = ProfileState.GetAvatar();
-        }
-        private void btn_Guide_Click(object sender, EventArgs e)
-        {
-            CustomSound.PlayClick();
-            FormHelp help = new FormHelp();
-            help.ShowDialog();
+            if (formProfile.RequireRestart)
+            {
+                MessageBox.Show("Changes will take effect after restarting the application.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Application.Restart();
+            }
         }
     }
 }

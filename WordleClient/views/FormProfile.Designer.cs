@@ -105,11 +105,10 @@
             customPictureBox1.gradientAngle1 = 90F;
             customPictureBox1.Location = new Point(186, 74);
             customPictureBox1.Name = "customPictureBox1";
-            customPictureBox1.Size = new Size(101, 84);
+            customPictureBox1.Size = new Size(101, 101);
             customPictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             customPictureBox1.TabIndex = 3;
             customPictureBox1.TabStop = false;
-            customPictureBox1.Click += CustomPictureBox1_Click;
             // 
             // label2
             // 
@@ -117,7 +116,7 @@
             label2.BackColor = Color.Silver;
             label2.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.Black;
-            label2.Location = new Point(149, 268);
+            label2.Location = new Point(147, 283);
             label2.Name = "label2";
             label2.Size = new Size(173, 30);
             label2.TabIndex = 5;
@@ -191,7 +190,7 @@
             customPictureBox9.gradientAngle1 = 90F;
             customPictureBox9.Location = new Point(348, 173);
             customPictureBox9.Name = "customPictureBox9";
-            customPictureBox9.Size = new Size(101, 84);
+            customPictureBox9.Size = new Size(101, 101);
             customPictureBox9.SizeMode = PictureBoxSizeMode.StretchImage;
             customPictureBox9.TabIndex = 7;
             customPictureBox9.TabStop = false;
@@ -205,7 +204,7 @@
             customPictureBox5.gradientAngle1 = 90F;
             customPictureBox5.Location = new Point(348, 31);
             customPictureBox5.Name = "customPictureBox5";
-            customPictureBox5.Size = new Size(101, 84);
+            customPictureBox5.Size = new Size(101, 101);
             customPictureBox5.SizeMode = PictureBoxSizeMode.StretchImage;
             customPictureBox5.TabIndex = 7;
             customPictureBox5.TabStop = false;
@@ -219,7 +218,7 @@
             customPictureBox8.gradientAngle1 = 90F;
             customPictureBox8.Location = new Point(230, 173);
             customPictureBox8.Name = "customPictureBox8";
-            customPictureBox8.Size = new Size(101, 84);
+            customPictureBox8.Size = new Size(101, 101);
             customPictureBox8.SizeMode = PictureBoxSizeMode.StretchImage;
             customPictureBox8.TabIndex = 6;
             customPictureBox8.TabStop = false;
@@ -233,7 +232,7 @@
             customPictureBox7.gradientAngle1 = 90F;
             customPictureBox7.Location = new Point(117, 173);
             customPictureBox7.Name = "customPictureBox7";
-            customPictureBox7.Size = new Size(101, 84);
+            customPictureBox7.Size = new Size(101, 101);
             customPictureBox7.SizeMode = PictureBoxSizeMode.StretchImage;
             customPictureBox7.TabIndex = 5;
             customPictureBox7.TabStop = false;
@@ -247,7 +246,7 @@
             customPictureBox4.gradientAngle1 = 90F;
             customPictureBox4.Location = new Point(230, 31);
             customPictureBox4.Name = "customPictureBox4";
-            customPictureBox4.Size = new Size(101, 84);
+            customPictureBox4.Size = new Size(101, 101);
             customPictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
             customPictureBox4.TabIndex = 6;
             customPictureBox4.TabStop = false;
@@ -261,7 +260,7 @@
             customPictureBox6.gradientAngle1 = 90F;
             customPictureBox6.Location = new Point(7, 173);
             customPictureBox6.Name = "customPictureBox6";
-            customPictureBox6.Size = new Size(101, 84);
+            customPictureBox6.Size = new Size(101, 101);
             customPictureBox6.SizeMode = PictureBoxSizeMode.StretchImage;
             customPictureBox6.TabIndex = 4;
             customPictureBox6.TabStop = false;
@@ -275,7 +274,7 @@
             customPictureBox3.gradientAngle1 = 90F;
             customPictureBox3.Location = new Point(117, 31);
             customPictureBox3.Name = "customPictureBox3";
-            customPictureBox3.Size = new Size(101, 84);
+            customPictureBox3.Size = new Size(101, 101);
             customPictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
             customPictureBox3.TabIndex = 5;
             customPictureBox3.TabStop = false;
@@ -289,7 +288,7 @@
             customPictureBox2.gradientAngle1 = 90F;
             customPictureBox2.Location = new Point(7, 31);
             customPictureBox2.Name = "customPictureBox2";
-            customPictureBox2.Size = new Size(101, 84);
+            customPictureBox2.Size = new Size(101, 101);
             customPictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             customPictureBox2.TabIndex = 4;
             customPictureBox2.TabStop = false;

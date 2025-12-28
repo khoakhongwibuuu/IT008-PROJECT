@@ -6,42 +6,47 @@ namespace WordleClient.libraries.StateFrom
 {
     internal class ProfileState
     {
-        // User profile fields
-        public string Nickname { get; set; } = "Player1";
-        public string? AvatarPath { get; set; } = null;
-        // JSON file to store profile data
+        public string Nickname
+        {
+            get;
+            set;
+        } = Environment.UserName;
+        public string? AvatarPath
+        {
+            get;
+            set;
+        } = null;
         private static readonly string saveFile = "profile.json";
-        public static ProfileState? Current { get; private set; } = new ProfileState();
-        // Cached options for JSON serialization
+        private static readonly string configFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WordleClient", "userdata");
+        public static ProfileState? Current
+        {
+            get;
+            private set;
+        } = new ProfileState();
         private static readonly JsonSerializerOptions jsonOptions = new()
         {
             WriteIndented = true
         };
-        // Load profile from JSON file (deserialize)
         public static void Load()
         {
-            string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WordleClient", "userdata");
-            string filepath = Path.Combine(folder, saveFile);
+            string filepath = Path.Combine(configFolder, saveFile);
             if (File.Exists(filepath))
             {
                 string json = File.ReadAllText(filepath);
-                Current = JsonSerializer.Deserialize<ProfileState>(json,jsonOptions) ?? new ProfileState();
+                Current = JsonSerializer.Deserialize<ProfileState>(json, jsonOptions) ?? new ProfileState();
             }
             else
             {
-                Current = new ProfileState(); 
+                Current = new ProfileState();
             }
         }
-        // Save profile to JSON file (serialize)
         public static void Save()
         {
-            string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WordleClient", "userdata");
-            Directory.CreateDirectory(folder);
-            string filePath = Path.Combine(folder, saveFile);
-            string json= JsonSerializer.Serialize(Current,jsonOptions);
-            File.WriteAllText(filePath,json);
+            if (!Directory.Exists(configFolder)) Directory.CreateDirectory(configFolder);
+            string filePath = Path.Combine(configFolder, saveFile);
+            string json = JsonSerializer.Serialize(Current, jsonOptions);
+            File.WriteAllText(filePath, json);
         }
-        // Get avatar image based on AvatarPath
         public static Image GetAvatar()
         {
             if (Current != null && !string.IsNullOrEmpty(Current.AvatarPath))
@@ -55,7 +60,12 @@ namespace WordleClient.libraries.StateFrom
                     return img;
                 }
             }
-            return Properties.Resources.Avatar9; 
+            return Properties.Resources.Avatar0;
+        }
+        public static String GetPlayername()
+        {
+            if (ProfileState.Current == null) return String.Empty;
+            return ProfileState.Current.Nickname;
         }
     }
 }

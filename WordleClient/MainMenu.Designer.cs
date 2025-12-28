@@ -413,9 +413,9 @@ namespace WordleClient
             customPictureBox1.boderRadius1 = 40;
             customPictureBox1.boderSize1 = 2;
             customPictureBox1.gradientAngle1 = 90F;
-            customPictureBox1.Location = new Point(499, 317);
+            customPictureBox1.Location = new Point(499, 307);
             customPictureBox1.Name = "customPictureBox1";
-            customPictureBox1.Size = new Size(96, 86);
+            customPictureBox1.Size = new Size(96, 96);
             customPictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             customPictureBox1.TabIndex = 16;
             customPictureBox1.TabStop = false;
