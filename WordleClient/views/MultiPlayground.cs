@@ -14,11 +14,11 @@ namespace WordleClient.views
         /* ============================================================
          * SHARED ATTRIBUTES
          * ============================================================ */
-        private int rows; // literally readonly
-        private int cols; // literally readonly
+        private int rows;
+        private int cols;
         private int streak = 0;
         private int lives = 3;
-        private Panel matrixPanel; // literally readonly
+        private Panel matrixPanel;
         private Panel? keyboardPanel;
         private readonly Dictionary<char, CharBox> keyboardKeys = [];
         private const int boxSize = 60;
@@ -245,7 +245,6 @@ namespace WordleClient.views
                     }
             }
         }
-
         private void OnClientDisconnectedUI(string ip)
         {
             BeginInvoke(() =>
@@ -255,11 +254,7 @@ namespace WordleClient.views
                 NumOfPlayers = GameRoom.NumPlayers;
 
                 UpdateCurrentPlayerList(GameRoom.SerializePlayers());
-                ServerManager.Broadcast(
-                new PLAYER_LIST_SYNC_Packet(
-                    GameRoom.SerializePlayers(),
-                    "Server",
-                    "All"));
+                ServerManager.BroadcastPlayerList();
             });
         }
 
@@ -451,11 +446,7 @@ namespace WordleClient.views
             label8.Text = nickname;
 
             await Task.Delay(1500);
-            ServerManager.Broadcast(
-                new PLAYER_LIST_SYNC_Packet(
-                    GameRoom.SerializePlayers(),
-                    "Server",
-                    "All"));
+            ServerManager.BroadcastPlayerList();
         }
 
         /* ============================================================
@@ -1321,6 +1312,18 @@ namespace WordleClient.views
             playersInRoom.BackgroundColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
             playersFinished.BackgroundColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
 
+            GetHintBtn.BackColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+            ExitBtn.BackColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+            customButton3.BackColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+            customButton4.BackColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+            RestartGameBtn.BackColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+
+            GetHintBtn.BackgroundColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+            ExitBtn.BackgroundColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+            customButton3.BackgroundColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+            customButton4.BackgroundColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+            RestartGameBtn.BackgroundColor = CustomDarkLight.IsDark ? Color.FromArgb(25, 26, 36) : Color.White;
+
             gameStats.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
             revealedHints.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
             playerInfo.TextColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
@@ -1344,18 +1347,6 @@ namespace WordleClient.views
             customButton3.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
             customButton4.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
             RestartGameBtn.BorderColor = CustomDarkLight.IsDark ? Color.White : Color.Black;
-
-            GetHintBtn.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
-            ExitBtn.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
-            customButton3.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
-            customButton4.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
-            RestartGameBtn.BackColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
-
-            GetHintBtn.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
-            ExitBtn.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
-            customButton3.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
-            customButton4.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
-            RestartGameBtn.BackgroundColor = !CustomDarkLight.IsDark ? Color.White : Color.FromArgb(25, 26, 36);
         }
         private void LoadHearts()
         {
