@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-
-//using System.Diagnostics;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
@@ -15,15 +13,25 @@ namespace WordleClient.libraries.network
     {
         private readonly TcpClient _client;
         private readonly NetworkStream _stream;
+
+        // Controls listen loop lifetime
         private readonly CancellationTokenSource _cts = new();
+
+        // Controls heartbeat loop lifetime
         private readonly CancellationTokenSource _heartbeatCts = new();
 
+        // Controls heartbeat loop lifetime
         private readonly TimeSpan _pingInterval = TimeSpan.FromSeconds(5);
         private DateTime _lastPong = DateTime.UtcNow;
 
         public string ConnectionId { get; }
 
+        /* ============================================================
+         * EVENTS
+         * ============================================================ */
+        // Fires when a valid packet arrives
         public event Action<PacketConnection, Packet>? PacketReceived;
+        // Fires when connection closes
         public event Action<PacketConnection>? Disconnected;
 
         public PacketConnection(TcpClient client, string id)
@@ -33,7 +41,10 @@ namespace WordleClient.libraries.network
             _stream = client.GetStream();
         }
 
-        /* ================= SEND ================= */
+        /* ============================================================
+         * SEND
+         * ============================================================ */
+        // Sends a packet using length-prefixed framing, any failure -> connection disposed
         public async Task SendAsync(Packet packet)
         {
             try
@@ -51,13 +62,7 @@ namespace WordleClient.libraries.network
                 Dispose();
             }
         }
-
-        /* ================= LISTEN ================= */
-        public void Start()
-        {
-            Task.Run(ListenLoop, _cts.Token);
-            Task.Run(PingLoop, _heartbeatCts.Token);
-        }
+        // Main receive loop for TCP Connection
         private async Task ListenLoop()
         {
             Debug.WriteLine($"[LISTEN START] {ConnectionId}");
@@ -84,33 +89,31 @@ namespace WordleClient.libraries.network
                         break;
                     }
 
-                    // 🔴 REAL disconnect: remote closed socket
+                    // REAL disconnect: remote closed socket
                     if (packet == null)
                     {
                         Debug.WriteLine($"[LISTEN] {ConnectionId} stream closed");
                         break;
                     }
 
-                    // ⚠️ Invalid / unparsed packet → ignore
+                    // Invalid / unparsed packet -> ignore
                     if (packet.Type == PacketType.EMPTY)
                     {
                         Debug.WriteLine($"[LISTEN] {ConnectionId} ignored invalid packet");
                         continue;
                     }
 
-                    // ==========================
                     // HEARTBEAT HANDLING
-                    // ==========================
                     if (packet.Type == PacketType.PING)
                     {
-                        Debug.WriteLine($"[LISTEN] {ConnectionId} ← PING");
+                        Debug.WriteLine($"[LISTEN] {ConnectionId} <- PING");
 
                         try
                         {
                             await SendAsync(new PONG_Packet(
                                 ((PING_Packet)packet).Timestamp,
                                 ConnectionId,      // sender = this connection
-                                packet.Sender));  // recipient = ping sender
+                                packet.Sender));   // recipient = ping sender
                         }
                         catch (Exception ex)
                         {
@@ -124,14 +127,12 @@ namespace WordleClient.libraries.network
 
                     if (packet.Type == PacketType.PONG)
                     {
-                        Debug.WriteLine($"[LISTEN] {ConnectionId} ← PONG");
+                        Debug.WriteLine($"[LISTEN] {ConnectionId} <- PONG");
                         _lastPong = DateTime.UtcNow;
                         continue;
                     }
 
-                    // ==========================
                     // NORMAL PACKET DISPATCH
-                    // ==========================
                     try
                     {
                         PacketReceived?.Invoke(this, packet);
@@ -146,10 +147,11 @@ namespace WordleClient.libraries.network
             }
             finally
             {
-                Debug.WriteLine($"[LISTEN END → DISPOSE] {ConnectionId}");
+                Debug.WriteLine($"[LISTEN END -> DISPOSE] {ConnectionId}");
                 Dispose();
             }
         }
+        // Connection liveness watchdog
         private async Task PingLoop()
         {
             while (!_heartbeatCts.IsCancellationRequested)
@@ -162,7 +164,7 @@ namespace WordleClient.libraries.network
 
                     if (delta > _pingInterval * 6)
                     {
-                        Debug.WriteLine($"[HEARTBEAT] {ConnectionId} timeout → disconnect");
+                        Debug.WriteLine($"[HEARTBEAT] {ConnectionId} timeout -> disconnect");
                         Dispose();
                         return;
                     }
@@ -187,6 +189,7 @@ namespace WordleClient.libraries.network
                 }
             }
         }
+        // Decoder
         private async Task<Packet?> ReceiveAsync()
         {
             try
@@ -234,17 +237,29 @@ namespace WordleClient.libraries.network
                 throw;
             }
         }
+        // Bytes reader from the stream
         private async Task<int> ReadExact(byte[] buffer, int size)
         {
             int total = 0;
             while (total < size)
             {
                 int r = await _stream.ReadAsync(buffer.AsMemory(total, size - total));
-                if (r == 0) return 0;
+                if (r == 0) return 0; // The peer closed the connection
                 total += r;
             }
             return total;
         }
+
+        /* ============================================================
+         * LIFECYCLE
+         * ============================================================ */
+        // Starts listening AND heartbeat loops
+        public void Start()
+        {
+            Task.Run(ListenLoop, _cts.Token);
+            Task.Run(PingLoop, _heartbeatCts.Token);
+        }
+        // Close the connection
         public void Dispose()
         {
             Debug.WriteLine($"[SERVER DISPOSE] {ConnectionId}");
