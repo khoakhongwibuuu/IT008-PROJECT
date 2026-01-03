@@ -943,7 +943,7 @@ namespace WordleClient.views
                     new AlertBox(
                         1500, CustomDarkLight.IsDark)
                         .ShowAlert(this,
-                        "Network Error", "Cannot get result from server. Please try again later.",
+                        "Network Error", "Cannot get hint from server. Please try again later.",
                         MessageBoxIcon.Error);
                 }
                 catch (OperationCanceledException)
