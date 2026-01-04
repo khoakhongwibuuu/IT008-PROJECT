@@ -1,0 +1,128 @@
+﻿using Microsoft.Data.Sqlite;
+using WordleClient.libraries.lowlevel;
+using System.Diagnostics;
+namespace WordleClient.libraries.ingame
+{
+    public class SingleplayerLogger
+    {
+        private readonly SqliteConnection sql_con;
+        public SingleplayerLogger()
+        {
+            Debug.WriteLine("[SingleplayerLogger] Initialing.");
+            string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string basePath = Path.Combine(localAppData, "WordleClient");
+            string userDataDir = Path.Combine(basePath, "userdata");
+            string dbPath = Path.Combine(userDataDir, "singleplayer-log.db");
+            if (!Directory.Exists(userDataDir))
+            {
+                Debug.WriteLine($"[SingleplayerLogger] Creating directory at {userDataDir}");
+                Directory.CreateDirectory(userDataDir);
+            }
+            if (!File.Exists(dbPath))
+            {
+                Debug.WriteLine($"[SingleplayerLogger] Creating database at {dbPath}");
+                string tempConnectionString = $"Data Source={dbPath};";
+                try
+                {
+                    using var tempConnection = new SqliteConnection(tempConnectionString);
+                    tempConnection.Open();
+                    string createTableSql = @"CREATE TABLE IF NOT EXISTS SINGLEPLAYER_PLAYLOG (
+                        TIMESTAMP  INTEGER NOT NULL,                
+                        TOKEN      TEXT NOT NULL,                
+                        TOPIC      TEXT NOT NULL,                
+                        DIFFICULTY TEXT NOT NULL,                
+                        IS_SOLVED  INTEGER NOT NULL,                
+                        MAX_ATTEMPTS_ALLOWED INTEGER NOT NULL,                
+                        USED_ATTEMPTS INTEGER NOT NULL,                
+                        PRIMARY KEY (TIMESTAMP, TOKEN, TOPIC)            
+                    );";
+                    using var command = tempConnection.CreateCommand();
+                    command.CommandText = createTableSql;
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("[SingleplayerLogger] DB creation error: " + ex);
+                }
+            }
+            string connectionString = $"Data Source={dbPath};Mode=ReadWriteCreate;";
+            sql_con = new SqliteConnection(connectionString);
+            sql_con.Open();
+        }
+        public void SaveToDatabase(SingleplayerPlayLog SPL)
+        {
+            using (SqliteCommand cmd = sql_con.CreateCommand())
+            {
+                cmd.CommandText = @"INSERT INTO SINGLEPLAYER_PLAYLOG 
+                    (TIMESTAMP, TOKEN, TOPIC, DIFFICULTY, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS)
+                    VALUES                
+                    (@timestamp, @token, @topic, @difficulty, @is_solved, @max_attempts_allowed, @used_attempts);";
+                cmd.Parameters.AddWithValue("@timestamp", SPL.Timestamp);
+                cmd.Parameters.AddWithValue("@token", SPL.Token);
+                cmd.Parameters.AddWithValue("@topic", SPL.Group);
+                cmd.Parameters.AddWithValue("@difficulty", SPL.Difficulty);
+                cmd.Parameters.AddWithValue("@is_solved", SPL.IsSolved ? 1 : 0);
+                cmd.Parameters.AddWithValue("@max_attempts_allowed", SPL.MaxAttempts);
+                cmd.Parameters.AddWithValue("@used_attempts", SPL.UsedAttempts);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public List<SingleplayerPlayLog> LoadFromDatabase(string? GROUP_NAME)
+        {
+            List<SingleplayerPlayLog> playLogs = [];
+            using (SqliteCommand cmd = sql_con.CreateCommand())
+            {
+                if (GROUP_NAME != null)
+                {
+                    cmd.CommandText = "SELECT TIMESTAMP, TOKEN, TOPIC, DIFFICULTY, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS FROM SINGLEPLAYER_PLAYLOG WHERE TOPIC = @groupName;";
+                    cmd.Parameters.AddWithValue("@groupName", GROUP_NAME);
+                }
+                else cmd.CommandText = "SELECT TIMESTAMP, TOKEN, TOPIC, DIFFICULTY, IS_SOLVED, MAX_ATTEMPTS_ALLOWED, USED_ATTEMPTS FROM SINGLEPLAYER_PLAYLOG;";
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        long timestamp = reader.GetInt64(0);
+                        string token = reader.GetString(1);
+                        string group = reader.GetString(2);
+                        string diff = reader.GetString(3);
+                        bool isSolved = reader.GetInt32(4) != 0;
+                        int maxAttempts = reader.GetInt32(5);
+                        int usedAttempts = reader.GetInt32(6);
+                        SingleplayerPlayLog playLog = new(timestamp, token, group, diff, isSolved, maxAttempts, usedAttempts);
+                        playLogs.Add(playLog);
+                    }
+                }
+            }
+            return playLogs;
+        }
+        public List<string> LoadAllGroups()
+        {
+            List<string> groups = [];
+            using (SqliteCommand cmd = sql_con.CreateCommand())
+            {
+                cmd.CommandText = "SELECT DISTINCT TOPIC FROM SINGLEPLAYER_PLAYLOG;";
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string group = reader.GetString(0);
+                        groups.Add(group);
+                    }
+                }
+            }
+            return groups;
+        }
+        public void ClearDatabase()
+        {
+            using
+            var cmd = sql_con.CreateCommand();
+            cmd.CommandText = "DELETE FROM SINGLEPLAYER_PLAYLOG;";
+            cmd.ExecuteNonQuery();
+        }
+        public void Close()
+        {
+            sql_con.Close();
+        }
+    }
+}
